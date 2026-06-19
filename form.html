@@ -1,0 +1,2910 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DO依頼フォーム テストサイト</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #20252d;
+        --muted: #657082;
+        --line: #d9dee7;
+        --soft: #f5f7fa;
+        --paper: #ffffff;
+        --brand: #0f766e;
+        --brand-strong: #0f4f4a;
+        --accent: #eab308;
+        --danger: #c2410c;
+        --focus: 0 0 0 3px rgba(15, 118, 110, 0.18);
+        --shadow-soft: 0 18px 44px rgba(29, 45, 57, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--ink);
+        background: #f3f6f8;
+        letter-spacing: 0;
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+
+      button {
+        border: 0;
+      }
+
+      .app {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 280px minmax(0, 1fr);
+      }
+
+      .rail {
+        background: linear-gradient(180deg, #132f35 0%, #10282f 100%);
+        color: #f8fafc;
+        padding: 28px 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+      }
+
+      .brand {
+        display: grid;
+        gap: 8px;
+      }
+
+      .brand b {
+        font-size: 22px;
+        line-height: 1.2;
+      }
+
+      .brand span {
+        color: #c7d2d9;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .steps {
+        display: grid;
+        gap: 8px;
+      }
+
+      .step-tab {
+        width: 100%;
+        min-height: 46px;
+        display: grid;
+        grid-template-columns: 28px 1fr;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        border-radius: 8px;
+        background: transparent;
+        color: #dbe7ea;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .step-tab[aria-current="step"] {
+        background: #f8fafc;
+        color: #173238;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14);
+      }
+
+      .step-tab:focus-visible,
+      .choice:focus-within,
+      .primary:focus-visible,
+      .ghost:focus-visible,
+      .icon-button:focus-visible,
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        box-shadow: var(--focus);
+      }
+
+      .step-number {
+        width: 28px;
+        height: 28px;
+        display: grid;
+        place-items: center;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .step-tab[aria-current="step"] .step-number {
+        background: var(--brand);
+        color: #fff;
+      }
+
+      .rail-note {
+        margin-top: auto;
+        border-top: 1px solid rgba(255, 255, 255, 0.14);
+        padding-top: 18px;
+        color: #d0dde1;
+        font-size: 13px;
+        line-height: 1.7;
+      }
+
+      .main {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        min-width: 0;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 4;
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--line);
+        padding: 14px clamp(16px, 4vw, 40px);
+      }
+
+      .mobile-brand {
+        display: none;
+      }
+
+      .progress-line {
+        height: 8px;
+        border-radius: 999px;
+        background: #e5e9ef;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, var(--brand), #22a699);
+        transition: width 180ms ease;
+      }
+
+      .work {
+        width: min(1040px, 100%);
+        margin: 0 auto;
+        padding: 30px clamp(16px, 4vw, 44px) 28px;
+      }
+
+      .headline {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        align-items: flex-start;
+        margin-bottom: 22px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(24px, 3vw, 38px);
+        line-height: 1.2;
+        letter-spacing: 0;
+      }
+
+      .lead {
+        margin: 8px 0 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .status-stack {
+        display: grid;
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+
+      .info-box {
+        border: 1px solid #cfd6df;
+        border-radius: 8px;
+        background: #fff;
+        overflow: hidden;
+        box-shadow: 0 8px 20px rgba(29, 45, 57, 0.05);
+      }
+
+      .info-box-title {
+        padding: 12px 18px;
+        background: #69737f;
+        color: #fff;
+        font-weight: 800;
+      }
+
+      .info-box-body {
+        padding: 16px 18px;
+      }
+
+      .submission-status {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 900;
+      }
+
+      .status-icon {
+        width: 34px;
+        height: 34px;
+        border: 3px solid #f3a600;
+        border-radius: 6px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2px;
+        padding: 4px;
+      }
+
+      .status-icon i {
+        display: block;
+        border-radius: 999px 999px 3px 3px;
+        background: #f3a600;
+      }
+
+      .notice-box {
+        border-color: #f4b05b;
+      }
+
+      .notice-box .info-box-title {
+        background: #ea8a1f;
+      }
+
+      .notice-scroll {
+        max-height: 150px;
+        overflow: auto;
+        padding-right: 8px;
+        font-size: 13px;
+        line-height: 1.8;
+      }
+
+      .notice-item + .notice-item {
+        margin-top: 18px;
+        padding-top: 16px;
+        border-top: 1px solid #e2e2e2;
+      }
+
+      .notice-date {
+        margin: 0 0 10px;
+        color: #ff6f00;
+        font-size: 14px;
+        font-weight: 900;
+      }
+
+      .notice-scroll p {
+        margin: 0;
+      }
+
+      .notice-scroll a {
+        color: #1546c7;
+        text-decoration: underline;
+      }
+
+      .autosave {
+        flex: 0 0 auto;
+        color: #28504d;
+        background: #e8f5f2;
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .catalog-reflected {
+        display: none;
+        margin: 0 0 16px;
+        padding: 12px 14px;
+        border: 1px solid #bfe3dc;
+        border-radius: 8px;
+        background: #edf9f6;
+        color: var(--brand-strong);
+        font-size: 13px;
+        font-weight: 800;
+        line-height: 1.6;
+      }
+
+      .catalog-reflected.is-visible {
+        display: block;
+      }
+
+      .panel {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: clamp(20px, 3vw, 30px);
+        box-shadow: var(--shadow-soft);
+      }
+
+      .screen {
+        display: none;
+      }
+
+      .screen.active {
+        display: block;
+      }
+
+      .section-title {
+        margin: 0 0 18px;
+        font-size: 20px;
+        line-height: 1.3;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .section-title::before {
+        content: "";
+        width: 5px;
+        height: 22px;
+        border-radius: 999px;
+        background: var(--brand);
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .designer-preferences {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .designer-preferences label {
+        font-size: 12px;
+      }
+
+      .field {
+        display: grid;
+        gap: 8px;
+      }
+
+      .field.full {
+        grid-column: 1 / -1;
+      }
+
+      label,
+      .field-label {
+        font-weight: 800;
+        font-size: 14px;
+      }
+
+      .hint {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12.5px;
+        line-height: 1.65;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        min-height: 46px;
+        border: 1px solid #c9d2dc;
+        border-radius: 8px;
+        padding: 11px 12px;
+        background: #fbfcfd;
+        color: var(--ink);
+        transition: border-color 140ms ease, background 140ms ease, box-shadow 140ms ease;
+      }
+
+      input:hover,
+      select:hover,
+      textarea:hover {
+        border-color: #9aa9b8;
+        background: #fff;
+      }
+
+      textarea {
+        min-height: 118px;
+        resize: vertical;
+      }
+
+      .choices {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        gap: 10px;
+      }
+
+      .choices.two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .choice {
+        position: relative;
+        min-height: 76px;
+        border: 1px solid #c9d2dc;
+        border-radius: 8px;
+        background: #fff;
+        cursor: pointer;
+        overflow: hidden;
+        transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+      }
+
+      .choice:hover {
+        border-color: #8ba2b4;
+        box-shadow: 0 8px 18px rgba(29, 45, 57, 0.07);
+      }
+
+      .choice input {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+      }
+
+      .choice span {
+        min-height: 76px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 4px;
+        align-items: center;
+        padding: 12px;
+        font-weight: 700;
+        line-height: 1.35;
+      }
+
+      .choice span small {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 650;
+        line-height: 1.45;
+      }
+
+      .choice input:checked + span {
+        background: #e8f5f2;
+        color: var(--brand-strong);
+        box-shadow: inset 0 0 0 2px var(--brand);
+      }
+
+      .choice input:checked + span small {
+        color: var(--brand-strong);
+      }
+
+      .check-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .media-choice-list {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      }
+
+      .size-button-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        max-height: 360px;
+        overflow: auto;
+        padding-right: 2px;
+      }
+
+      .size-tools {
+        display: grid;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .size-tools .hint {
+        padding: 9px 10px;
+        border-radius: 8px;
+        background: #eef8f6;
+        color: var(--brand-strong);
+        font-weight: 700;
+      }
+
+      .size-button {
+        min-height: 44px;
+        border-radius: 8px;
+        padding: 10px 12px;
+        border: 1px solid #c9d2dc;
+        background: #fff;
+        color: var(--ink);
+        text-align: left;
+        font-weight: 700;
+        line-height: 1.45;
+        cursor: pointer;
+        transition: border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
+      }
+
+      .size-button:hover {
+        border-color: #8ba2b4;
+        box-shadow: 0 6px 14px rgba(29, 45, 57, 0.06);
+      }
+
+      .check {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        min-height: 44px;
+        padding: 10px 12px;
+        border: 1px solid #c9d2dc;
+        border-radius: 8px;
+        background: #fff;
+        font-weight: 650;
+        transition: border-color 140ms ease, background 140ms ease, box-shadow 140ms ease;
+      }
+
+      .check:hover {
+        border-color: #8ba2b4;
+        box-shadow: 0 6px 14px rgba(29, 45, 57, 0.06);
+      }
+
+      .check input {
+        width: 18px;
+        min-height: 18px;
+        accent-color: var(--brand);
+      }
+
+      .check.active {
+        background: #e6f5f2;
+        border-color: var(--brand);
+        color: var(--brand-strong);
+      }
+
+      .check:has(input:checked) {
+        background: #e6f5f2;
+        border-color: var(--brand);
+        color: var(--brand-strong);
+      }
+
+      .size-button.active {
+        background: #e6f5f2;
+        border-color: var(--brand);
+        color: var(--brand-strong);
+      }
+
+      .size-button.is-selected {
+        background: #173238;
+        border-color: #173238;
+        color: #fff;
+      }
+
+      .size-button.is-selected::after {
+        content: "追加済み";
+        display: inline-block;
+        margin-left: 8px;
+        padding: 2px 6px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.16);
+        font-size: 11px;
+      }
+
+      .selected-size-panel {
+        margin-top: 12px;
+        padding: 12px;
+        border: 1px solid #cfd6df;
+        border-radius: 8px;
+        background: #f7faf9;
+      }
+
+      .selected-size-panel b {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 13px;
+      }
+
+      .selected-size-list {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .selected-size-chip {
+        border: 1px solid #cfd6df;
+        border-radius: 999px;
+        padding: 6px 9px;
+        background: #fff;
+        color: var(--ink);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .quick-add {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .tag {
+        min-height: 38px;
+        border-radius: 999px;
+        padding: 8px 12px;
+        border: 1px solid #cfd6df;
+        background: #fff;
+        color: var(--ink);
+        cursor: pointer;
+        font-weight: 650;
+      }
+
+      .tag.active {
+        background: #173238;
+        border-color: #173238;
+        color: #fff;
+      }
+
+      .image-list {
+        display: grid;
+        gap: 14px;
+      }
+
+      .image-item {
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        gap: 10px;
+        align-items: end;
+        border: 1px solid #d8e0e8;
+        border-radius: 8px;
+        padding: 14px;
+        background: #f8fafb;
+      }
+
+      .image-item .field {
+        min-width: 0;
+      }
+
+      .image-detail-grid {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .image-detail-grid .full {
+        grid-column: 1 / -1;
+      }
+
+      .image-item.is-collapsed .image-detail-grid {
+        display: none;
+      }
+
+      .detail-toggle {
+        min-height: 42px;
+        border-radius: 8px;
+        padding: 0 12px;
+        border: 1px solid #cfd6df;
+        background: #fff;
+        color: var(--ink);
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .compact-options {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .compact-options label {
+        min-height: 42px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid #cfd6df;
+        border-radius: 8px;
+        background: #fff;
+        padding: 8px 10px;
+        font-weight: 700;
+      }
+
+      .compact-options input {
+        width: 16px;
+        min-height: 16px;
+        accent-color: var(--brand);
+      }
+
+      .add-row {
+        display: flex;
+        justify-content: flex-start;
+        margin-top: 10px;
+      }
+
+      .small-button {
+        min-height: 40px;
+        border-radius: 8px;
+        padding: 0 13px;
+        border: 1px solid #cfd6df;
+        background: #fff;
+        color: var(--ink);
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .inline-tools {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .icon-button {
+        width: 42px;
+        height: 42px;
+        border-radius: 8px;
+        background: #eef2f5;
+        color: var(--ink);
+        cursor: pointer;
+        font-size: 20px;
+      }
+
+      .summary {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .summary-item {
+        border: 1px solid #d8e0e8;
+        border-radius: 8px;
+        padding: 12px 13px;
+        background: #fbfcfd;
+      }
+
+      .summary-item b {
+        display: block;
+        font-size: 13px;
+        color: #506070;
+        margin-bottom: 6px;
+      }
+
+      .summary-item span {
+        display: block;
+        min-height: 22px;
+        line-height: 1.55;
+        white-space: pre-line;
+        word-break: break-word;
+        font-weight: 650;
+      }
+
+      .backlog-copy {
+        margin-top: 20px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .backlog-copy textarea {
+        min-height: 320px;
+        font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+        white-space: pre;
+      }
+
+      .copy-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .copy-status {
+        color: var(--brand-strong);
+        font-weight: 700;
+        font-size: 13px;
+      }
+
+      .notice {
+        margin-top: 18px;
+        background: #fffaf0;
+        border: 1px solid #f1d28a;
+        border-radius: 8px;
+        padding: 13px 14px;
+        color: #65450b;
+        line-height: 1.65;
+      }
+
+      .deadline-guide {
+        display: grid;
+        gap: 16px;
+        margin-top: 16px;
+      }
+
+      .deadline-table-wrap {
+        overflow-x: auto;
+        border: 1px solid #c9d2dc;
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      .deadline-table {
+        width: 100%;
+        min-width: 720px;
+        border-collapse: collapse;
+      }
+
+      .deadline-table th,
+      .deadline-table td {
+        border: 1px solid #cfd6df;
+        padding: 12px 10px;
+        text-align: center;
+        vertical-align: middle;
+        font-weight: 800;
+        line-height: 1.45;
+      }
+
+      .deadline-table th {
+        background: #69737f;
+        color: #fff;
+        font-size: 12px;
+      }
+
+      .deadline-table .deadline-side {
+        background: var(--brand);
+        color: #fff;
+        min-width: 82px;
+      }
+
+      .deadline-table .deadline-days {
+        color: #e53935;
+        font-size: 16px;
+      }
+
+      .deadline-note {
+        margin: 0;
+        padding: 14px 18px;
+        border-radius: 8px;
+        background: #fffaf0;
+        color: #1f2933;
+        font-size: 13px;
+        line-height: 1.75;
+      }
+
+      .deadline-note li + li {
+        margin-top: 4px;
+      }
+
+      .deadline-subtitle {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .rate-table {
+        min-width: 980px;
+      }
+
+      .rate-table td {
+        min-width: 74px;
+        height: 48px;
+        font-size: 12px;
+      }
+
+      .rate-table .rate-row-title {
+        min-width: 96px;
+        background: #fff;
+        color: var(--ink);
+      }
+
+      .rate-table .rate-cutoff {
+        display: block;
+        margin-top: 4px;
+        color: #e53935;
+        font-weight: 800;
+      }
+
+      .rate-table .rate-disabled {
+        background:
+          linear-gradient(to bottom right, transparent calc(50% - 1px), #aab2bd 50%, transparent calc(50% + 1px)),
+          #fff;
+      }
+
+      .actions {
+        position: sticky;
+        bottom: 0;
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px clamp(16px, 4vw, 40px);
+        background: rgba(255, 255, 255, 0.94);
+        border-top: 1px solid var(--line);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 -12px 28px rgba(29, 45, 57, 0.08);
+      }
+
+      .primary,
+      .ghost {
+        min-height: 48px;
+        border-radius: 8px;
+        padding: 0 18px;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .primary {
+        background: var(--brand);
+        color: #fff;
+        box-shadow: 0 10px 20px rgba(15, 118, 110, 0.18);
+      }
+
+      .primary:hover {
+        background: var(--brand-strong);
+      }
+
+      .primary.send {
+        background: #173238;
+      }
+
+      .ghost {
+        background: #fff;
+        color: var(--ink);
+        border: 1px solid #cfd6df;
+      }
+
+      .error {
+        display: none;
+        margin-top: 14px;
+        color: var(--danger);
+        font-weight: 700;
+      }
+
+      .error.show {
+        display: block;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      .designer-catalog {
+        display: none !important;
+        margin-bottom: 18px;
+        padding: 18px;
+        border-radius: 8px;
+        background: #122428;
+        color: #f5f7f8;
+        box-shadow: 0 18px 36px rgba(18, 36, 40, 0.18);
+      }
+
+      .catalog-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        align-items: center;
+      }
+
+      .catalog-head b {
+        display: block;
+        font-size: 18px;
+        letter-spacing: 0;
+      }
+
+      .catalog-head p {
+        margin: 5px 0 0;
+        color: #c7d3d5;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .catalog-status {
+        display: none;
+        flex: 0 0 auto;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        padding: 8px 10px;
+        color: #e8f0f1;
+        font-size: 12px;
+        line-height: 1.5;
+        background: rgba(255, 255, 255, 0.07);
+        text-align: right;
+      }
+
+      .catalog-toggle {
+        flex: 0 0 auto;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        border-radius: 8px;
+        padding: 9px 12px;
+        background: rgba(255, 255, 255, 0.1);
+        color: #f5f7f8;
+        cursor: pointer;
+        font-weight: 800;
+      }
+
+      .catalog-modes {
+        display: none !important;
+      }
+
+      .designer-catalog.is-collapsed .catalog-modes,
+      .designer-catalog.is-collapsed .designer-grid {
+        display: none;
+      }
+
+      .catalog-modes {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      .catalog-mode,
+      .designer-card {
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.08);
+        color: inherit;
+        cursor: pointer;
+        text-align: left;
+        transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+      }
+
+      .catalog-mode {
+        padding: 12px;
+        font-weight: 800;
+      }
+
+      .catalog-mode small {
+        display: block;
+        margin-top: 5px;
+        color: #c7d3d5;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .catalog-mode.active,
+      .designer-card.active {
+        border-color: #51d2c3;
+        background: rgba(81, 210, 195, 0.14);
+      }
+
+      .catalog-mode:focus-visible,
+      .designer-card:focus-visible {
+        outline: 3px solid rgba(81, 210, 195, 0.35);
+        outline-offset: 2px;
+      }
+
+      .designer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(188px, 1fr));
+        gap: 10px;
+        max-height: 560px;
+        overflow: auto;
+        padding-right: 2px;
+        margin-top: 14px;
+      }
+
+      .designer-card {
+        overflow: hidden;
+        padding: 0;
+        min-height: 238px;
+      }
+
+      .designer-card:hover {
+        transform: translateY(-1px);
+      }
+
+      .designer-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        margin-bottom: 10px;
+        background: #f5f7f8;
+        color: #122428;
+        font-weight: 900;
+      }
+
+      .designer-thumb {
+        position: relative;
+        height: 112px;
+        overflow: hidden;
+        background: #0b171a;
+      }
+
+      .designer-thumb::before,
+      .designer-thumb::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.18);
+      }
+
+      .designer-thumb::before {
+        width: 82px;
+        height: 82px;
+        left: 12px;
+        bottom: 12px;
+      }
+
+      .designer-thumb::after {
+        width: 58px;
+        height: 58px;
+        right: 16px;
+        top: 18px;
+      }
+
+      .designer-thumb-lines {
+        position: absolute;
+        inset: 12px;
+        display: grid;
+        gap: 7px;
+        align-content: start;
+        z-index: 1;
+      }
+
+      .designer-thumb-lines i {
+        display: block;
+        height: 7px;
+        border-radius: 2px;
+        background: rgba(255, 255, 255, 0.7);
+      }
+
+      .designer-thumb-lines i:nth-child(1) { width: 54%; }
+      .designer-thumb-lines i:nth-child(2) { width: 72%; }
+      .designer-thumb-lines i:nth-child(3) { width: 44%; }
+      .designer-thumb-lines i:nth-child(4) { width: 26%; height: 18px; margin-top: 5px; }
+
+      .tone-lp .designer-thumb { background: linear-gradient(90deg, #122428 50%, #221632 50%); }
+      .tone-sns .designer-thumb { background: linear-gradient(90deg, #10312d 50%, #102428 50%); }
+      .tone-video .designer-thumb { background: linear-gradient(90deg, #25150e 50%, #080916 50%); }
+      .tone-banner .designer-thumb { background: linear-gradient(90deg, #2c0b1e 50%, #1c0f21 50%); }
+      .tone-hp .designer-thumb { background: linear-gradient(90deg, #0c1423 50%, #07191d 50%); }
+
+      .tone-lp .designer-thumb-lines i:nth-child(4) { background: #16a47c; }
+      .tone-sns .designer-thumb-lines i:nth-child(4) { background: #75d7c9; }
+      .tone-video .designer-thumb-lines i:nth-child(4) { background: #f06518; }
+      .tone-banner .designer-thumb-lines i:nth-child(4) { background: #dc3c91; }
+      .tone-hp .designer-thumb-lines i:nth-child(4) { background: #159bd3; }
+
+      .designer-body {
+        padding: 10px 12px 12px;
+      }
+
+      .designer-meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+
+      .designer-name {
+        display: block;
+        font-weight: 900;
+        margin-bottom: 5px;
+      }
+
+      .designer-body > span:not(.designer-avatar):not(.designer-name) {
+        display: block;
+        color: #c7d3d5;
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .designer-score {
+        margin-top: 10px;
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+
+      .designer-score i {
+        font-style: normal;
+        border-radius: 999px;
+        padding: 3px 7px;
+        background: rgba(255, 255, 255, 0.12);
+        color: #f5f7f8;
+        font-size: 11px;
+        font-weight: 800;
+      }
+
+      .designer-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 80;
+        display: grid;
+        place-items: center;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.62);
+      }
+
+      .designer-dialog {
+        width: min(780px, 100%);
+        max-height: min(760px, calc(100vh - 40px));
+        overflow: auto;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.13);
+        background: #102428;
+        color: #f5f7f8;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+      }
+
+      .designer-dialog-head,
+      .designer-dialog-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 12px;
+        padding: 18px 24px;
+      }
+
+      .designer-dialog-head {
+        align-items: flex-start;
+      }
+
+      .designer-dialog-title {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .designer-dialog-title h3 {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      .designer-dialog-body {
+        padding: 0 24px 24px;
+      }
+
+      .designer-dialog-body p {
+        color: #b8c9cc;
+        line-height: 1.7;
+        margin: 0 0 14px;
+      }
+
+      .designer-works {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .designer-work {
+        height: 150px;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #0b171a;
+      }
+
+      .designer-dialog-actions {
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        position: sticky;
+        bottom: 0;
+        background: #102428;
+      }
+
+      .modal-close {
+        width: 40px;
+        height: 40px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 8px;
+        background: transparent;
+        color: #d7e6e8;
+        cursor: pointer;
+        font-size: 24px;
+        line-height: 1;
+      }
+
+      .designer-dialog-actions .primary,
+      .designer-dialog-actions .ghost {
+        flex: 0 0 auto;
+      }
+
+      .designer-dialog-actions strong,
+      #designerModalBack {
+        display: none;
+      }
+
+      @media (max-width: 980px) {
+        .designer-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .designer-works {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 860px) {
+        .catalog-head {
+          display: block;
+        }
+
+        .catalog-status {
+          margin-top: 10px;
+          text-align: left;
+        }
+
+        .catalog-toggle {
+          width: 100%;
+          margin-top: 10px;
+        }
+
+        .catalog-modes,
+        .designer-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .designer-works {
+          grid-template-columns: 1fr;
+        }
+
+        .app {
+          display: block;
+        }
+
+        .rail {
+          display: none;
+        }
+
+        .mobile-brand {
+          display: flex;
+          justify-content: space-between;
+          gap: 12px;
+          align-items: center;
+          margin-bottom: 12px;
+        }
+
+        .mobile-brand b {
+          font-size: 16px;
+        }
+
+        .mobile-brand span {
+          color: var(--muted);
+          font-size: 13px;
+          white-space: nowrap;
+        }
+
+        .headline {
+          display: grid;
+        }
+
+        .status-stack {
+          grid-template-columns: 1fr;
+          gap: 10px;
+        }
+
+        .notice-scroll {
+          max-height: 72px;
+        }
+
+        .autosave {
+          width: fit-content;
+        }
+
+        .work {
+          padding-top: 22px;
+        }
+
+        .form-grid,
+        .designer-preferences,
+        .summary {
+          grid-template-columns: 1fr;
+        }
+
+        .choices,
+        .choices.two,
+        .check-row {
+          grid-template-columns: 1fr;
+        }
+
+        .image-item {
+          grid-template-columns: 1fr;
+        }
+
+        .image-detail-grid,
+        .compact-options {
+          grid-template-columns: 1fr;
+        }
+
+        .choice,
+        .choice span {
+          min-height: 76px;
+        }
+
+        .actions {
+          padding-bottom: calc(14px + env(safe-area-inset-bottom));
+        }
+
+        .primary,
+        .ghost {
+          flex: 1;
+          padding-inline: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <aside class="rail" aria-label="入力ステップ">
+        <div class="brand">
+          <b>DO依頼フォーム</b>
+          <span>営業が迷わず、制作側が聞き返しにくい依頼を作るためのテスト版です。</span>
+        </div>
+        <nav class="steps" id="desktopSteps"></nav>
+        <p class="rail-note">選択肢を中心に進め、最後に不足分だけ補足できます。入力内容はこの画面内だけで確認できます。</p>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div class="mobile-brand">
+            <b>DO依頼フォーム</b>
+            <span id="mobileStepText">1 / 6</span>
+          </div>
+          <div class="progress-line" aria-hidden="true">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </header>
+
+        <div class="work">
+
+          <section class="status-stack" aria-label="入稿状況とお知らせ">
+            <div class="info-box">
+              <div class="info-box-title">入稿状況</div>
+              <div class="info-box-body">
+                <div class="submission-status">
+                  <span class="status-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+                  <span>普通：通常受付中</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="info-box notice-box">
+              <div class="info-box-title">お知らせ</div>
+              <div class="info-box-body">
+                <div class="notice-scroll">
+                  <article class="notice-item">
+                    <h2 class="notice-date">2026/05/27　社員総会の日のお知らせ</h2>
+                    <p>6/5（金）は社員総会のため、営業日外の日となっております。</p>
+                    <p>DOご依頼の際は営業日で納期計算をさせていただいておりますので、6/5（金）は含まれません。6/5（金）の納期指定も受け付けかねますので、週内に画像がほしいなどのご依頼の際は6/4（木）希望でご依頼くださいませ。</p>
+                    <p>依頼日により納期に関しての詳細は、「デザインオーダー納期早見表」をご確認ください。</p>
+                  </article>
+                  <article class="notice-item">
+                    <h2 class="notice-date">2026/04/15　GW休暇前のDO納期について</h2>
+                    <p>5営業日案件のご依頼（1〜2デザイン作成・総枚数4枚以下程度の制作など）は、4/23（木）までにご依頼で5/1（金）までにお渡しとなります。</p>
+                    <p>7営業日案件のご依頼（3デザイン以上作成・総枚数5枚以上の制作など）は、余裕をもってご依頼ください。</p>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="headline">
+            <div>
+              <h1 id="pageTitle">まず依頼タイプを選択</h1>
+              <p class="lead" id="pageLead">選んだ内容に合わせて、必要な質問だけ表示します。</p>
+            </div>
+            <div class="autosave">確認用プレビュー</div>
+          </div>
+          <div class="catalog-reflected" id="catalogReflectedText"></div>
+
+          <form class="panel" id="orderForm">
+            <input type="hidden" id="designerRequestType" name="designerRequestType" value="標準的な指名">
+            <input type="hidden" id="designerName" name="designerName" value="">
+            <input type="hidden" id="designerEvaluation" name="designerEvaluation" value="指名評価">
+            <section class="screen active" data-title="まず依頼タイプを選択" data-lead="選んだ内容に合わせて、必要な質問だけ表示します。">
+              <h2 class="section-title">何を依頼しますか</h2>
+              <div class="field">
+                <div class="choices">
+                  <label class="choice"><input type="radio" name="requestType" value="新規デザイン制作" required><span>新規デザイン制作<small>新しくデザインを作成する依頼です</small></span></label>
+                  <label class="choice"><input type="radio" name="requestType" value="修正/リサイズ"><span>修正/リサイズ<small>過去制作データの修正依頼になります</small></span></label>
+                  <label class="choice"><input type="radio" name="requestType" value="有料案件"><span>有料案件<small>有料対応として入稿する依頼です</small></span></label>
+                  <label class="choice"><input type="radio" name="requestType" value="長期保留入稿"><span>長期保留入稿<small>バックログ入稿に紐づく依頼です</small></span></label>
+                </div>
+              </div>
+              <div class="field full">
+                <span class="field-label">デザイナー指名希望</span>
+                <div class="designer-preferences">
+                  <div class="field">
+                    <label for="designerFirstChoice">第一希望</label>
+                    <select id="designerFirstChoice" name="designerFirstChoice" data-designer-select>
+                      <option value="">選択しない</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="designerSecondChoice">第二希望</label>
+                    <select id="designerSecondChoice" name="designerSecondChoice" data-designer-select>
+                      <option value="">選択しない</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="designerThirdChoice">第三希望</label>
+                    <select id="designerThirdChoice" name="designerThirdChoice" data-designer-select>
+                      <option value="">選択しない</option>
+                    </select>
+                  </div>
+                </div>
+                <p class="hint">指名料 4pt が加算されます。</p>
+                <p class="hint">第一希望しか記載がない場合は状況により、指名なしとして制作を進めさせていただく場合がございます。</p>
+              </div>
+            </section>
+
+            <section class="screen" data-title="依頼者と店舗情報" data-lead="毎回必要な基本情報を、短く入力します。">
+              <h2 class="section-title">誰の、どの店舗の依頼ですか</h2>
+              <div class="form-grid">
+                <div class="field">
+                  <label for="branch">支社名</label>
+                  <select id="branch" name="branch" required>
+                    <option value="">選択してください</option>
+                    <option>東京本社</option>
+                    <option>横浜支社</option>
+                    <option>東京中央支社</option>
+                    <option>池袋支社</option>
+                    <option>経営本部</option>
+                    <option>北海道支社</option>
+                    <option>北関東支社</option>
+                    <option>東海支社</option>
+                    <option>関西支社①</option>
+                    <option>関西支社②</option>
+                    <option>中四国支社</option>
+                    <option>九州支社</option>
+                    <option>南九州支部</option>
+                    <option>ACL</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="salesName">営業担当者</label>
+                  <select id="salesName" name="salesName" required>
+                    <option value="">支社を選択してください</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <span class="field-label">記入者</span>
+                  <div class="choices two">
+                    <label class="choice"><input type="radio" name="writer" value="本人" required><span>本人</span></label>
+                    <label class="choice"><input type="radio" name="writer" value="代理"><span>代理</span></label>
+                  </div>
+                </div>
+                <div class="field" data-direct-only>
+                  <label for="email" id="emailLabel">連絡先メール</label>
+                  <input id="email" name="email" type="email" autocomplete="email" placeholder="本人の場合は営業担当者のメール" required>
+                </div>
+                <div class="field" data-proxy-only hidden>
+                  <label for="proxyName">代理人名</label>
+                  <input id="proxyName" name="proxyName" autocomplete="name" placeholder="フォームを記入している方の名前">
+                </div>
+                <div class="field" data-proxy-only hidden>
+                  <label for="proxyEmail">代理人メールアドレス</label>
+                  <input id="proxyEmail" name="proxyEmail" type="email" autocomplete="email" placeholder="代理人に連絡がつくメール">
+                </div>
+                <div class="field">
+                  <label for="shopName">店舗名</label>
+                  <input id="shopName" name="shopName" required>
+                </div>
+                <div class="field">
+                  <label for="shopHpUrl">店舗HP URL</label>
+                  <input id="shopHpUrl" name="shopHpUrl" type="url" placeholder="店舗公式HPのURL">
+                </div>
+                <div class="field">
+                  <label for="area">エリア</label>
+                  <input id="area" name="area" placeholder="例: 東京都 渋谷" required>
+                </div>
+                <div class="field">
+                  <label for="industry">業種</label>
+                  <select id="industry" name="industry" required>
+                    <option value="">選択してください</option>
+                    <option>風俗</option>
+                    <option>一般メンズエステ</option>
+                    <option>ナイトワーク</option>
+                    <option>ホスト</option>
+                    <option>その他</option>
+                  </select>
+                </div>
+                <div class="field" data-industry-other hidden>
+                  <label for="industryOther">その他の業種</label>
+                  <input id="industryOther" name="industryOther" placeholder="業種を入力">
+                </div>
+                <div class="field">
+                  <label for="billing">請求方法</label>
+                  <select id="billing" name="billing" required>
+                    <option value="">選択してください</option>
+                    <option selected>ポイント</option>
+                    <option>有料</option>
+                  </select>
+                </div>
+                <div class="field full" data-paid-only hidden>
+                  <label for="submissionUrl">入稿URL</label>
+                  <input id="submissionUrl" name="submissionUrl" type="url" placeholder="有料案件の入稿URLを入力">
+                </div>
+                <div class="field full" data-hold-only hidden>
+                  <label for="holdSubmissionUrl">対象入稿URL</label>
+                  <input id="holdSubmissionUrl" name="holdSubmissionUrl" type="url" placeholder="バックログ入稿の対象URLを入力">
+                </div>
+              </div>
+            </section>
+
+            <section class="screen" data-title="媒体と画像内容" data-lead="制作物のサイズ・枚数・掲載先をまとめます。">
+              <h2 class="section-title">どこに掲載する画像ですか</h2>
+              <div class="form-grid">
+                <div class="field full">
+                  <span class="field-label">媒体名（複数選択可）</span>
+                  <div class="check-row media-choice-list" id="mediaChoiceList"></div>
+                  <p class="hint">掲載したい媒体をすべて選んでください。複数媒体で同じデザインにする場合は、下の「全画像共通のデザイン指示」にまとめて入力できます。</p>
+                </div>
+                <div class="field" data-media-other hidden>
+                  <label for="mediaOther">その他の媒体名</label>
+                  <input id="mediaOther" name="mediaOther" placeholder="媒体名・プラン名を入力">
+                </div>
+                <div class="field full">
+                  <label for="publishUrl">掲載URL</label>
+                  <textarea id="publishUrl" name="publishUrl" placeholder="複数媒体の場合は、媒体名とURLを改行で入力してください。例: バニラ https://..."></textarea>
+                  <label class="check"><input type="checkbox" name="noUrl" value="URLなし">URLなし</label>
+                </div>
+                <div class="field full">
+                  <label for="sizePlan">プラン/サイズ展開</label>
+                  <select id="sizePlan" name="sizePlan">
+                    <option value="">選択してください</option>
+                    <option>並C 700×5000/枚（1枚まで）</option>
+                    <option>並B 700×5000/枚（2枚まで）</option>
+                    <option>並A・大盛・特盛 700×5000/枚（4枚まで）</option>
+                    <option>その他</option>
+                  </select>
+                </div>
+                <div class="field full" data-size-list>
+                  <span class="field-label">掲載枠/必要サイズ</span>
+                  <div class="size-tools">
+                    <input id="sizeSearch" type="search" placeholder="サイズ名で検索 例: メイン / SP / 700">
+                    <p class="hint">使うサイズをクリックしてください。クリックした分だけ下の「各画像の指示」に自動で追加されます。</p>
+                    <div class="add-row">
+                      <input id="manualSizeInput" type="text" placeholder="一覧にないサイズを入力 例: 300×250">
+                      <button type="button" class="small-button" id="addImageButton">手入力サイズを追加</button>
+                    </div>
+                  </div>
+                  <div class="size-button-grid">
+                    <button type="button" class="size-button" data-size="【メイン】700×300">【メイン】700×300</button>
+                    <button type="button" class="size-button" data-size="【A画像SP】640×512">【A画像SP】640×512</button>
+                    <button type="button" class="size-button" data-size="【B画像PC】1000×210">【B画像PC】1000×210</button>
+                    <button type="button" class="size-button" data-size="【サブ】200×150">【サブ】200×150</button>
+                    <button type="button" class="size-button" data-size="【一覧PC（特盛A）】200×260（100KB以内）">【一覧PC（特盛A）】200×260（100KB以内）</button>
+                    <button type="button" class="size-button" data-size="【エリアトップ上部PC】200×60（100KB以内）">【エリアトップ上部PC】200×60（100KB以内）</button>
+                    <button type="button" class="size-button" data-size="【一覧SP】640×108（100KB以内）">【一覧SP】640×108（100KB以内）</button>
+                    <button type="button" class="size-button" data-size="【PC/SP共通】552×236（500KB以内）">【PC/SP共通】552×236（500KB以内）</button>
+                    <button type="button" class="size-button" data-size="【PC】750×600（500KB以内）">【PC】750×600（500KB以内）</button>
+                    <button type="button" class="size-button" data-size="700×300px（500KB以内）">700×300px（500KB以内）</button>
+                    <button type="button" class="size-button" data-size="【B画像SP】640×132">【B画像SP】640×132</button>
+                    <button type="button" class="size-button" data-size="【即日体験入店/出稼ぎ（S以外）/未経験/人妻】700×300">【即日体験入店/出稼ぎ（S以外）/未経験/人妻】700×300</button>
+                    <button type="button" class="size-button" data-size="【一覧PC（特盛B）】200×200（100KB以内）">【一覧PC（特盛B）】200×200（100KB以内）</button>
+                    <button type="button" class="size-button" data-size="【一覧PC（大盛A）】300×85（100KB以内）">【一覧PC（大盛A）】300×85（100KB以内）</button>
+                    <button type="button" class="size-button" data-size="【店舗画像】700×300">【店舗画像】700×300</button>
+                    <button type="button" class="size-button" data-size="【PC】790×127（100KB以内）">【PC】790×127（100KB以内）</button>
+                    <button type="button" class="size-button" data-size="【SP】640×512（500KB以内）">【SP】640×512（500KB以内）</button>
+                    <button type="button" class="size-button" data-size="760×127px（100KB以内）">760×127px（100KB以内）</button>
+                    <button type="button" class="size-button" data-size="【A画像PC】1920×1080">【A画像PC】1920×1080</button>
+                    <button type="button" class="size-button" data-size="【コンテンツページPC】80×60（100KB以内）">【コンテンツページPC】80×60（100KB以内）</button>
+                    <button type="button" class="size-button" data-size="【一覧SP】280×210（100KB以内）">【一覧SP】280×210（100KB以内）</button>
+                    <button type="button" class="size-button" data-size="【一覧PC】760×127（100KB以内）">【一覧PC】760×127（100KB以内）</button>
+                    <button type="button" class="size-button" data-size="【出稼ぎトップPC】200×260（100KB以内）">【出稼ぎトップPC】200×260（100KB以内）</button>
+                    <button type="button" class="size-button" data-size="【SP】640×194（100KB以内）">【SP】640×194（100KB以内）</button>
+                    <button type="button" class="size-button" data-size="785×1060（4枚まで）">785×1060（4枚まで）</button>
+                    <button type="button" class="size-button" data-size="640×512px（500KB以内）">640×512px（500KB以内）</button>
+                    <button type="button" class="size-button" data-size="【並C】700×5000/枚（1枚まで）">【並C】700×5000/枚（1枚まで）</button>
+                    <button type="button" class="size-button" data-size="【並B】700×5000/枚（2枚まで）">【並B】700×5000/枚（2枚まで）</button>
+                    <button type="button" class="size-button" data-size="【並A・大盛・特盛】700×5000/枚（4枚まで）">【並A・大盛・特盛】700×5000/枚（4枚まで）</button>
+                  </div>
+                  <div class="selected-size-panel" id="selectedSizePanel" hidden>
+                    <b>追加済みサイズ</b>
+                    <div class="selected-size-list" id="selectedSizeList"></div>
+                  </div>
+                </div>
+                <div class="field full">
+                  <label for="imageTotalCount">画像総枚数</label>
+                  <input id="imageTotalCount" name="imageTotalCount" type="number" min="1" inputmode="numeric" placeholder="例: 6">
+                  <p class="hint">今回まとめて依頼する画像の合計枚数を入力してください。サイズ一覧をクリックした数と違う場合は、こちらの枚数を優先して確認します。</p>
+                </div>
+                <div class="field full">
+                  <label for="commonDesignNote">全画像共通のデザイン指示</label>
+                  <textarea id="commonDesignNote" name="commonDesignNote" placeholder="例: すべて同じデザインで、色味は店舗HPに合わせる。文言だけ各サイズで調整してください。"></textarea>
+                  <p class="hint">複数枚を同じ方向性で作る場合はこちらにまとめて入力してください。画像ごとに違う指示がある場合は、各カードの詳細指示に入力します。</p>
+                </div>
+                <div class="field">
+                  <label for="targetAudience">ターゲット</label>
+                  <input id="targetAudience" name="targetAudience" placeholder="例: 20代女性など">
+                </div>
+                <div class="field full">
+                  <span class="field-label">画像の希望の雰囲気・イメージ</span>
+                  <div class="check-row mood-choice-list">
+                    <label class="check"><input type="checkbox" name="imageMood" value="お任せ">お任せ</label>
+                    <label class="check"><input type="checkbox" name="imageMood" value="ポップ">ポップ</label>
+                    <label class="check"><input type="checkbox" name="imageMood" value="キュート">キュート</label>
+                    <label class="check"><input type="checkbox" name="imageMood" value="綺麗・上品">綺麗・上品</label>
+                    <label class="check"><input type="checkbox" name="imageMood" value="シンプル">シンプル</label>
+                    <label class="check"><input type="checkbox" name="imageMood" value="高級感">高級感</label>
+                    <label class="check"><input type="checkbox" name="imageMood" value="クール">クール</label>
+                    <label class="check"><input type="checkbox" name="imageMood" value="ナチュラル">ナチュラル</label>
+                    <label class="check"><input type="checkbox" name="imageMood" value="フェミニン">フェミニン</label>
+                    <label class="check"><input type="checkbox" name="imageMood" value="ゴージャス">ゴージャス</label>
+                    <label class="check"><input type="checkbox" name="imageMood" value="セクシー">セクシー</label>
+                    <label class="check"><input type="checkbox" name="imageMood" value="インパクト重視">インパクト重視</label>
+                    <label class="check"><input type="checkbox" name="imageMood" value="信頼感重視">信頼感重視</label>
+                    <label class="check"><input type="checkbox" name="imageMood" value="その他">その他</label>
+                  </div>
+                  <input name="imageMoodOther" placeholder="その他の雰囲気・イメージを入力">
+                  <button type="button" class="small-button" id="applyCommonStyleButton">ターゲット・雰囲気を全画像へ反映</button>
+                  <p class="hint">全画像で同じターゲット・雰囲気にする場合はこちらを使ってください。画像ごとに違う場合は、各カード内で個別に変更できます。</p>
+                </div>
+                <div class="field full">
+                  <span class="field-label">各画像の指示</span>
+                  <div class="image-list" id="imageList">
+                    <div class="image-item is-collapsed">
+                      <div class="field">
+                        <label>対象画像・サイズ</label>
+                        <input name="imageSpecItem" placeholder="例: 【メイン】700×300 / A画像 700×300" required>
+                      </div>
+                      <button type="button" class="detail-toggle">詳細指示を入力する</button>
+                      <button type="button" class="icon-button remove-image" title="画像指定を削除" aria-label="画像指定を削除">×</button>
+                      <div class="image-detail-grid">
+                        <div class="field full">
+                          <span class="field-label">使用人物素材について</span>
+                          <div class="compact-options">
+                            <label><input type="radio" name="personMaterial_0" value="フリーの人物素材">フリーの人物素材</label>
+                            <label><input type="radio" name="personMaterial_0" value="店舗在籍の人物画像">店舗在籍の人物画像</label>
+                            <label><input type="radio" name="personMaterial_0" value="使用しない">使用しない</label>
+                          </div>
+                        </div>
+                        <div class="field full" data-person-free hidden>
+                          <label>フリー人物素材の希望</label>
+                          <input name="freePersonNote" placeholder="例）20代前半　Yシャツの女性希望　など">
+                        </div>
+                        <div class="field full" data-person-cast hidden>
+                          <label>店舗在籍の人物画像</label>
+                          <input name="castPersonFile" type="file" accept="image/*" multiple>
+                        </div>
+                        <div class="field full">
+                          <span class="field-label">デザインについて</span>
+                          <div class="compact-options">
+                            <label><input type="radio" name="imageDesignType_0" value="おまかせ">おまかせ</label>
+                            <label><input type="radio" name="imageDesignType_0" value="参考画像あり">参考画像あり</label>
+                          </div>
+                        </div>
+                        <div class="field full" data-design-reference hidden>
+                          <label>参考にしたい制作実績URL・画像URL</label>
+                          <textarea name="imageReferenceUrl" placeholder="例: 143667 / 143668 / https://..."></textarea>
+                          <input name="imageReferenceFile" type="file" accept="image/*" multiple data-max-files="5">
+                          <p class="hint">仕上がりの雰囲気を寄せたい制作実績ページ、または参考画像URLを入力してください。制作実績のID指定はできません。添付は1回につき最大5枚までです。</p>
+                        </div>
+                        <div class="field">
+                          <label>ターゲット</label>
+                          <input name="imageTargetItem" placeholder="例: 20代女性など">
+                        </div>
+                        <div class="field full">
+                          <span class="field-label">画像の希望の雰囲気・イメージ</span>
+                          <div class="check-row mood-choice-list">
+                            <label class="check"><input type="checkbox" name="imageMoodItem" value="お任せ">お任せ</label>
+                            <label class="check"><input type="checkbox" name="imageMoodItem" value="ポップ">ポップ</label>
+                            <label class="check"><input type="checkbox" name="imageMoodItem" value="キュート">キュート</label>
+                            <label class="check"><input type="checkbox" name="imageMoodItem" value="綺麗・上品">綺麗・上品</label>
+                            <label class="check"><input type="checkbox" name="imageMoodItem" value="シンプル">シンプル</label>
+                            <label class="check"><input type="checkbox" name="imageMoodItem" value="高級感">高級感</label>
+                            <label class="check"><input type="checkbox" name="imageMoodItem" value="クール">クール</label>
+                            <label class="check"><input type="checkbox" name="imageMoodItem" value="ナチュラル">ナチュラル</label>
+                            <label class="check"><input type="checkbox" name="imageMoodItem" value="フェミニン">フェミニン</label>
+                            <label class="check"><input type="checkbox" name="imageMoodItem" value="ゴージャス">ゴージャス</label>
+                            <label class="check"><input type="checkbox" name="imageMoodItem" value="セクシー">セクシー</label>
+                            <label class="check"><input type="checkbox" name="imageMoodItem" value="インパクト重視">インパクト重視</label>
+                            <label class="check"><input type="checkbox" name="imageMoodItem" value="信頼感重視">信頼感重視</label>
+                            <label class="check"><input type="checkbox" name="imageMoodItem" value="その他">その他</label>
+                          </div>
+                          <input name="imageMoodOtherItem" placeholder="その他の雰囲気・イメージを入力">
+                        </div>
+                        <div class="field full">
+                          <label>デザイン指示</label>
+                          <textarea name="imageDesignNote" placeholder="例: 高級感を出す / 店舗カラーに合わせる / 見やすくシンプルに"></textarea>
+                        </div>
+                        <div class="field full">
+                          <label>挿入文言</label>
+                          <textarea name="imageInsertText" placeholder="画像に入れたい文言を入力"></textarea>
+                        </div>
+                        <div class="field full">
+                          <label>目立たせたい文言・部分</label>
+                          <textarea name="imageEmphasisText" placeholder="例: 日給保証 / 未経験歓迎 / 店名ロゴ"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="hint">通常は上のサイズ一覧をクリックしてください。人物素材や文言を細かく指定する場合だけ、各カードの「詳細指示を入力する」を開きます。</p>
+                </div>
+              </div>
+            </section>
+
+            <section class="screen" data-title="納期希望" data-lead="希望納期を選び、必要に応じて倍率と目安を確認します。">
+              <div class="form-grid">
+                <div class="field full">
+                  <span class="field-label">納期希望</span>
+                  <div class="choices">
+                    <label class="choice"><input type="radio" name="deadlineType" value="通常納期" required checked><span>通常納期</span></label>
+                    <label class="choice"><input type="radio" name="deadlineType" value="日付指定"><span>日付指定</span></label>
+                    <label class="choice"><input type="radio" name="deadlineType" value="事前予約"><span>事前予約</span></label>
+                  </div>
+                </div>
+                <div class="field" data-date-only hidden>
+                  <label for="deadlineDate">希望日</label>
+                  <input id="deadlineDate" name="deadlineDate" type="date">
+                </div>
+              </div>
+              <div class="deadline-guide">
+                <div class="deadline-table-wrap">
+                  <table class="deadline-table">
+                    <tbody>
+                      <tr>
+                        <th class="deadline-side" rowspan="2">納期<br>目安</th>
+                        <th>簡単な修正・リサイズ</th>
+                        <th>新規作成・大幅な修正</th>
+                        <th>重い案件</th>
+                        <th>急募</th>
+                      </tr>
+                      <tr>
+                        <td class="deadline-days">2営業日</td>
+                        <td class="deadline-days">5営業日</td>
+                        <td class="deadline-days">7営業日</td>
+                        <td class="deadline-days">10営業日</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <ul class="deadline-note">
+                  <li>納期は依頼時点では未確定です。内容や稼働状況によって希望に添えない場合があります。</li>
+                  <li>イレギュラーや依頼側での不備による修正が発生し、納期の延長、請求ポイントが追加された場合等は担当者が直接連絡します。</li>
+                  <li>納期設定前に「DO納期早見表」を必ずご確認ください。</li>
+                  <li>事前予約は130％期間のみの適用となります。</li>
+                  <li>130％期間外でのご依頼は通常納期とさせていただきますのでご了承ください。</li>
+                </ul>
+
+                <p class="deadline-subtitle">納期希望による請求ポイントの変動倍率</p>
+                <div class="deadline-table-wrap">
+                  <table class="deadline-table rate-table">
+                    <thead>
+                      <tr>
+                        <th class="deadline-side">ポイント<br>倍率表</th>
+                        <th>0営業日<br>（即日納品）</th>
+                        <th>1営業日<br>（翌日納品）</th>
+                        <th>2営業日</th>
+                        <th>3営業日</th>
+                        <th>4営業日</th>
+                        <th>5営業日</th>
+                        <th>6営業日</th>
+                        <th>7営業日</th>
+                        <th>8営業日</th>
+                        <th>9営業日</th>
+                        <th>10営業日</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th class="rate-row-title">簡単な修正<br>リサイズ</th>
+                        <td>2倍<span class="rate-cutoff">〆切 13:00</span></td>
+                        <td>1.2倍<span class="rate-cutoff">〆切 19:00</span></td>
+                        <td>通常</td>
+                        <td class="rate-disabled"></td>
+                        <td class="rate-disabled"></td>
+                        <td class="rate-disabled"></td>
+                        <td class="rate-disabled"></td>
+                        <td class="rate-disabled"></td>
+                        <td class="rate-disabled"></td>
+                        <td class="rate-disabled"></td>
+                        <td class="rate-disabled"></td>
+                      </tr>
+                      <tr>
+                        <th class="rate-row-title">新規作成<br>大幅な修正</th>
+                        <td>2倍<span class="rate-cutoff">〆切 13:00</span></td>
+                        <td>2倍<span class="rate-cutoff">〆切 19:00</span></td>
+                        <td>2倍</td>
+                        <td>1.5倍</td>
+                        <td>1.2倍</td>
+                        <td>通常</td>
+                        <td class="rate-disabled"></td>
+                        <td class="rate-disabled"></td>
+                        <td class="rate-disabled"></td>
+                        <td class="rate-disabled"></td>
+                        <td class="rate-disabled"></td>
+                      </tr>
+                      <tr>
+                        <th class="rate-row-title">重い案件</th>
+                        <td class="rate-disabled"></td>
+                        <td class="rate-disabled"></td>
+                        <td>2倍<span class="rate-cutoff">〆切 13:00</span></td>
+                        <td>2倍<span class="rate-cutoff">〆切 19:00</span></td>
+                        <td>2倍</td>
+                        <td>1.5倍</td>
+                        <td>1.2倍</td>
+                        <td>通常</td>
+                        <td class="rate-disabled"></td>
+                        <td class="rate-disabled"></td>
+                        <td class="rate-disabled"></td>
+                      </tr>
+                      <tr>
+                        <th class="rate-row-title">急募</th>
+                        <td class="rate-disabled"></td>
+                        <td class="rate-disabled"></td>
+                        <td class="rate-disabled"></td>
+                        <td class="rate-disabled"></td>
+                        <td class="rate-disabled"></td>
+                        <td>2倍<span class="rate-cutoff">〆切 13:00</span></td>
+                        <td>2倍<span class="rate-cutoff">〆切 19:00</span></td>
+                        <td>2倍</td>
+                        <td>1.5倍</td>
+                        <td>1.2倍</td>
+                        <td>通常</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+
+            <section class="screen" data-title="確認して送信" data-lead="依頼書として読みやすい形に整えて確認します。">
+              <h2 class="section-title">依頼内容プレビュー</h2>
+              <div class="summary" id="summary"></div>
+              <p class="notice">送信前に制作側が聞き返しそうな空欄がないか確認できます。実運用では、この内容をメール・管理画面・スプレッドシートへ連携します。</p>
+            </section>
+
+            <p class="error" id="errorText">必須項目を入力してください。</p>
+          </form>
+        </div>
+
+        <footer class="actions">
+          <button type="button" class="ghost" id="backButton">戻る</button>
+          <div class="inline-tools">
+            <button type="button" class="icon-button" id="resetButton" title="入力をクリア" aria-label="入力をクリア">×</button>
+            <button type="button" class="ghost" id="continueButton" hidden>同じ依頼者で続ける</button>
+            <button type="button" class="primary" id="nextButton">次へ</button>
+          </div>
+        </footer>
+      </main>
+    </div>
+
+    <script>
+      const steps = [
+        "依頼タイプ",
+        "依頼者情報",
+        "媒体・画像",
+        "納期",
+        "確認"
+      ];
+      const screens = [...document.querySelectorAll(".screen")];
+      const form = document.querySelector("#orderForm");
+      const pageTitle = document.querySelector("#pageTitle");
+      const pageLead = document.querySelector("#pageLead");
+      const progressFill = document.querySelector("#progressFill");
+      const desktopSteps = document.querySelector("#desktopSteps");
+      const mobileStepText = document.querySelector("#mobileStepText");
+      const backButton = document.querySelector("#backButton");
+      const nextButton = document.querySelector("#nextButton");
+      const resetButton = document.querySelector("#resetButton");
+      const continueButton = document.querySelector("#continueButton");
+      const addImageButton = document.querySelector("#addImageButton");
+      const applyCommonStyleButton = document.querySelector("#applyCommonStyleButton");
+      const manualSizeInput = document.querySelector("#manualSizeInput");
+      const sizeSearch = document.querySelector("#sizeSearch");
+      const imageList = document.querySelector("#imageList");
+      const mediaChoiceList = document.querySelector("#mediaChoiceList");
+      const selectedSizePanel = document.querySelector("#selectedSizePanel");
+      const selectedSizeList = document.querySelector("#selectedSizeList");
+      const errorText = document.querySelector("#errorText");
+      const summary = document.querySelector("#summary");
+      const designerRequestType = document.querySelector("#designerRequestType");
+      const designerName = document.querySelector("#designerName");
+      const designerEvaluation = document.querySelector("#designerEvaluation");
+      const designerFirstChoice = document.querySelector("#designerFirstChoice");
+      const designerSecondChoice = document.querySelector("#designerSecondChoice");
+      const designerThirdChoice = document.querySelector("#designerThirdChoice");
+      const catalogReflectedText = document.querySelector("#catalogReflectedText");
+      const designerPreferenceSelects = [...document.querySelectorAll("[data-designer-select]")];
+      const designerSelectedText = document.querySelector("#designerSelectedText");
+      const designerCatalog = document.querySelector(".designer-catalog");
+      const catalogHead = document.querySelector(".catalog-head");
+      const designerGrid = document.querySelector(".designer-grid");
+      const designerModeButtons = [...document.querySelectorAll("[data-designer-mode]")];
+      let designerCards = [...document.querySelectorAll(".designer-card")];
+      let currentStep = 0;
+      let imageItemCounter = 1;
+      const isValidationDisabled = true;
+      const selectedTags = new Set();
+      const salesByBranch = {
+        "東京本社": ["紺野拓哉", "徳永典彦", "井上道彦", "桑原崇", "福田真也", "古山基成", "長尾拓", "安田博紀", "町湧喜", "安本靖十郎", "土肥尭仁", "石川直人", "大村清志郎"],
+        "横浜支社": ["石川直人", "桑原崇", "大村清志郎", "佐藤小百合"],
+        "東京中央支社": ["徳永典彦", "出井博英", "高木健太", "中澤雄一", "宇都宮大人", "渡邉雄智", "加藤大海", "藤井祥伍", "外谷和輝", "渡邊龍哉", "二通功太"],
+        "池袋支社": ["紺野拓哉", "徳永典彦", "吉田雅弘", "小橋貴之", "大月勇幸", "新里海人", "田口博貴", "渡邉宏士", "田路智彦", "清水涼雅", "工藤絢斗", "本橋睦也", "坂本結哉", "黒田拓海", "本間頌二", "二口純輝", "疋田祥生"],
+        "経営本部": ["出井博英", "大島康人", "紺野拓哉", "徳永典彦", "宮谷弥", "藤森大輔"],
+        "北海道支社": ["伊藤敦也", "田中竜太", "古山基成", "菅原瑶介", "傳庄聖人", "小川勇介", "小野和真", "橋本渉", "築舘海里", "菅原有希"],
+        "北関東支社": ["大田原和也", "稲葉和博", "鈴木龍也", "田中竜平", "森田和哉", "伊藤敦也", "齋藤知輝", "田中竜太", "堀籠翼", "大崎拓也", "斎藤和輝", "大友慎司", "永島誠人"],
+        "東海支社": ["徳永典彦", "出井博英", "古山基成", "松本勇介", "加納誉久", "飛澤賢吾", "長谷川大樹", "守屋佳紀", "平岩史江", "中村壮汰"],
+        "関西支社①": ["岩崎拓矢", "東間圭佑", "梶原強志", "浜本大弘", "尾崎智明", "池田遼平", "阪本渉", "奥村渚", "奥野愛理"],
+        "関西支社②": ["松本勇介", "古山基成", "太田守弥", "槙祐作", "三次叶人", "畑中海都", "井上健次", "木村瑠位", "吉田胤樹", "仁木穂高", "野尻美香", "佐藤亜未", "梅田愛美"],
+        "中四国支社": ["梶原強志", "東間圭佑", "中曽健作", "村田祐樹", "石橋雄太", "住野昌美", "新甲雅彦", "佐藤凌大", "里道星", "岡田妃奈乃", "吉田理央", "鶴身竜大", "佐藤丈人"],
+        "九州支社": ["岩崎拓矢", "守田悠平", "梶原強志", "熊本祐介", "山口哲成", "下本雅弘", "林田唯人", "西村慶音", "吉田寛治", "阿部伊朔", "矢野文椰", "中谷優太", "原心"],
+        "南九州支部": ["守田悠平", "梶原強志", "井上治夫", "岩崎拓矢", "新里俊弥", "西垂水寛斗", "新堀翔太郎", "蓑田おうか", "瑞慶覧周平", "黒田剛"],
+        "ACL": ["ACL営業 小倉章吾", "ACL営業 加藤航平", "ACL営業 荒木弘次郎", "ACL業務 西村大介", "ACL営業 足立麻人", "ACL 営業 多田出 諭", "ACL営業 鈴木大翔", "ACL業務 會川滉太", "ACL営業 西山雄亮"]
+      };
+      const sharedMediaOptions = [
+        "駅ちか",
+        "風俗じゃぱん",
+        "デリヘルじゃぱん",
+        "デリヘルタウン",
+        "口コミ風俗情報局",
+        "風俗エステランキング",
+        "爆サイ.com",
+        "バニラ",
+        "ココア",
+        "メンズバニラ",
+        "G1",
+        "オリジナルHP",
+        "その他"
+      ];
+      const mediaOptionsByIndustry = {
+        "風俗": sharedMediaOptions,
+        "一般メンズエステ": sharedMediaOptions,
+        "ナイトワーク": sharedMediaOptions,
+        "ホスト": sharedMediaOptions,
+        "その他": sharedMediaOptions
+      };
+
+      const designerCatalogItems = [
+        { name: "堂角 翼", initials: "DT", tone: "lp", summary: "案件理解が早く修正が少ない。業種を問わず幅広く対応。", tags: ["LP", "高単価", "女性向け"] },
+        { name: "山口 あい", initials: "YA", tone: "sns", summary: "SNS・バナー専門。読みやすい文字組みとテンポのよいレイアウトが得意。", tags: ["バナー", "SNS", "女性向け"] },
+        { name: "佐藤 健", initials: "SK", tone: "video", summary: "LP専門。高単価店の実績多数。訴求力の高いファーストビュー構成が得意。", tags: ["LP", "高単価", "動画"] },
+        { name: "田中 みな", initials: "TM", tone: "banner", summary: "女性向け・人妻系の柔らかい色使いと繊細なデザインが得意。", tags: ["女性向け", "人妻", "バナー"] },
+        { name: "木村 拓", initials: "KT", tone: "hp", summary: "高単価店のブランドイメージを引き出す落ち着いたデザインが得意。", tags: ["高単価", "LP", "バナー"] },
+        { name: "中村 さき", initials: "NS", tone: "sns", summary: "SNS特化。若年層への訴求と拡散されやすいビジュアルが強み。", tags: ["SNS", "女性向け", "バナー"] },
+        { name: "鈴木 亮", initials: "SR", tone: "video", summary: "短納期の大量展開に強い。キャンペーン画像の量産が得意。", tags: ["バナー", "短納期", "量産"] },
+        { name: "高橋 澪", initials: "TR", tone: "banner", summary: "色気と清潔感のバランス調整が得意。写真選定の提案力も高い。", tags: ["女性向け", "写真", "バナー"] },
+        { name: "伊藤 蓮", initials: "IR", tone: "lp", summary: "情報量の多いLPを整理し、迷わず読める構成にまとめる。", tags: ["LP", "構成", "高単価"] },
+        { name: "渡辺 祐", initials: "WY", tone: "hp", summary: "店舗HPの世界観作りと落ち着いたビジュアル設計が得意。", tags: ["HP", "ブランディング", "高単価"] },
+        { name: "小林 杏", initials: "KA", tone: "sns", summary: "明るく親しみやすいトーン。求人・イベント告知の反応改善に強い。", tags: ["SNS", "求人", "イベント"] },
+        { name: "加藤 凛", initials: "KR", tone: "banner", summary: "可読性重視。スマホで見やすいバナー制作が得意。", tags: ["スマホ", "バナー", "読みやすい"] },
+        { name: "吉田 悠", initials: "YY", tone: "video", summary: "強めの訴求と目立つ配色。期間限定キャンペーンに向く。", tags: ["キャンペーン", "動画", "訴求強め"] },
+        { name: "山本 司", initials: "YS", tone: "lp", summary: "男性向け訴求と比較情報の整理が得意。媒体LPとの相性がよい。", tags: ["LP", "男性向け", "比較"] },
+        { name: "松本 ひかり", initials: "MH", tone: "sns", summary: "柔らかい雰囲気と視線誘導。初回利用向けの安心感づくりが得意。", tags: ["女性向け", "安心感", "SNS"] },
+        { name: "井上 航", initials: "IW", tone: "hp", summary: "情報設計が得意。店舗紹介・料金表まわりの整理に強い。", tags: ["HP", "情報整理", "料金"] },
+        { name: "清水 七海", initials: "SN", tone: "banner", summary: "写真を大きく見せる構成が得意。人物素材を活かしたデザイン向き。", tags: ["写真", "人物", "バナー"] },
+        { name: "林 大地", initials: "HD", tone: "video", summary: "インパクト重視。目立たせたい文言が多い案件をまとめるのが得意。", tags: ["訴求強め", "動画", "キャンペーン"] },
+        { name: "森 由衣", initials: "MY", tone: "sns", summary: "上品で控えめな雰囲気。高級感を損なわないデザインが得意。", tags: ["高級感", "女性向け", "SNS"] },
+        { name: "池田 真", initials: "IM", tone: "lp", summary: "コンバージョン重視。導線と見出しの整理が得意。", tags: ["LP", "導線", "高単価"] },
+        { name: "橋本 彩", initials: "HA", tone: "banner", summary: "ポップで分かりやすいバナー。新店告知やイベント画像に強い。", tags: ["新店", "イベント", "バナー"] },
+        { name: "石田 陸", initials: "IR2", tone: "hp", summary: "オリジナルHP向け。落ち着いた配色と余白設計が得意。", tags: ["HP", "余白", "ブランディング"] },
+        { name: "藤原 葵", initials: "FA", tone: "sns", summary: "短いコピーを活かしたSNS画像が得意。求人・日次投稿向け。", tags: ["SNS", "求人", "コピー"] },
+        { name: "岡田 蒼", initials: "OA", tone: "video", summary: "動画サムネ・動き前提の画作りに強い。派手めの案件向き。", tags: ["動画", "サムネ", "訴求強め"] },
+        { name: "長谷川 結", initials: "HY", tone: "banner", summary: "大人っぽい女性向けデザイン。落ち着いた色味が得意。", tags: ["女性向け", "大人", "バナー"] },
+        { name: "近藤 翔", initials: "KS", tone: "lp", summary: "媒体ごとのサイズ展開に強い。共通デザインの横展開が速い。", tags: ["展開", "LP", "量産"] },
+        { name: "前田 菫", initials: "MS", tone: "sns", summary: "若年層向けの明るいデザイン。軽快なSNSトーンが得意。", tags: ["SNS", "若年層", "求人"] },
+        { name: "遠藤 颯", initials: "EH", tone: "hp", summary: "店舗の世界観整理が得意。写真とテキストのバランスがよい。", tags: ["HP", "写真", "構成"] },
+        { name: "青木 美月", initials: "AM", tone: "banner", summary: "読みやすく整ったバナー。訴求文言が多い案件にも対応。", tags: ["読みやすい", "バナー", "量産"] },
+        { name: "坂本 直", initials: "SN2", tone: "video", summary: "勢いのあるキャンペーン表現。限定感・緊急感の演出が得意。", tags: ["キャンペーン", "動画", "限定"] },
+        { name: "村上 玲", initials: "MR", tone: "lp", summary: "高単価系の落ち着いたLP。丁寧な情報整理が強み。", tags: ["LP", "高単価", "情報整理"] },
+        { name: "太田 梨央", initials: "OR", tone: "sns", summary: "女性目線の柔らかいデザイン。清潔感のある投稿画像が得意。", tags: ["女性向け", "SNS", "清潔感"] },
+        { name: "西村 圭", initials: "NK", tone: "hp", summary: "ブランド感のあるHP画像。暗め・高級感のある表現が得意。", tags: ["HP", "高級感", "ブランド"] },
+        { name: "福田 真央", initials: "FM", tone: "banner", summary: "かわいい系とポップ系に強い。イベント訴求の見せ方が得意。", tags: ["ポップ", "イベント", "バナー"] },
+        { name: "三浦 仁", initials: "MJ", tone: "video", summary: "訴求の優先順位整理が得意。複数サイズでも見え方が安定する。", tags: ["動画", "展開", "構成"] }
+      ];
+
+      const catalogToggle = document.createElement("button");
+      catalogToggle.type = "button";
+      catalogToggle.className = "catalog-toggle";
+      catalogToggle.setAttribute("aria-expanded", "false");
+      catalogToggle.textContent = "カタログを見る";
+      if (catalogHead) catalogHead.append(catalogToggle);
+
+      const designerModal = document.createElement("div");
+      designerModal.className = "designer-modal";
+      designerModal.hidden = true;
+      designerModal.innerHTML = `
+        <div class="designer-dialog" role="dialog" aria-modal="true" aria-labelledby="designerModalTitle">
+          <div class="designer-dialog-head">
+            <div class="designer-dialog-title">
+              <span class="designer-avatar" id="designerModalInitials"></span>
+              <div>
+                <h3 id="designerModalTitle"></h3>
+                <div class="designer-score" id="designerModalTags"></div>
+              </div>
+            </div>
+            <button type="button" class="modal-close" id="designerModalClose" aria-label="閉じる">×</button>
+          </div>
+          <div class="designer-dialog-body">
+            <p id="designerModalSummary"></p>
+            <p>制作実績（サンプル）</p>
+            <div class="designer-works" id="designerModalWorks"></div>
+          </div>
+          <div class="designer-dialog-actions">
+            <strong id="designerModalSelectText"></strong>
+            <div class="inline-tools">
+              <button type="button" class="ghost" id="designerModalBack">戻る</button>
+              <button type="button" class="primary" id="designerModalSelect">この人に依頼する →</button>
+            </div>
+          </div>
+        </div>`;
+      document.body.append(designerModal);
+      let modalDesigner = null;
+
+      function renderDesignerCards() {
+        const designerGroups = [
+          ["東京", designerCatalogItems.slice(0, 15)],
+          ["関西", designerCatalogItems.slice(15, 27)],
+          ["九州", designerCatalogItems.slice(27)]
+        ];
+        const designerOptions = designerGroups.map(([label, items]) => {
+          const options = items
+            .map((item) => `<option value="${escapeHtml(item.name)}">${escapeHtml(item.name)}</option>`)
+            .join("");
+          return `<optgroup label="${label}">${options}</optgroup>`;
+        }).join("");
+        designerPreferenceSelects.forEach((select) => {
+          const current = select.value;
+          select.innerHTML = `<option value="">選択しない</option>${designerOptions}`;
+          select.value = current;
+        });
+        if (!designerGrid) return;
+        designerGrid.innerHTML = designerCatalogItems.map((item, index) => {
+          const tags = item.tags.map((tag) => `<i>${escapeHtml(tag)}</i>`).join("");
+          return `
+            <button type="button" class="designer-card tone-${escapeHtml(item.tone)}" data-designer-index="${index}" data-designer-name="${escapeHtml(item.name)}">
+              <div class="designer-thumb" aria-hidden="true"><span class="designer-thumb-lines"><i></i><i></i><i></i><i></i></span></div>
+              <div class="designer-body">
+                <div class="designer-meta">
+                  <span class="designer-avatar">${escapeHtml(item.initials)}</span>
+                  <span class="designer-name">${escapeHtml(item.name)}</span>
+                </div>
+                <span>${escapeHtml(item.summary)}</span>
+                <span class="designer-score">${tags}</span>
+              </div>
+            </button>`;
+        }).join("");
+        designerCards = [...document.querySelectorAll(".designer-card")];
+      }
+
+      function openDesignerModal(index) {
+        const item = designerCatalogItems[index];
+        if (!item) return;
+        modalDesigner = item;
+        document.querySelector("#designerModalInitials").textContent = item.initials;
+        document.querySelector("#designerModalTitle").textContent = item.name;
+        document.querySelector("#designerModalSummary").textContent = item.summary;
+        document.querySelector("#designerModalTags").innerHTML = item.tags.map((tag) => `<i>${escapeHtml(tag)}</i>`).join("");
+        document.querySelector("#designerModalSelectText").textContent = `${item.name} に依頼する`;
+        document.querySelector("#designerModalWorks").innerHTML = [0, 1, 2, 3].map(() => {
+          return `<div class="designer-work tone-${escapeHtml(item.tone)}"><div class="designer-thumb"><span class="designer-thumb-lines"><i></i><i></i><i></i><i></i></span></div></div>`;
+        }).join("");
+        designerModal.hidden = false;
+      }
+
+      function closeDesignerModal() {
+        designerModal.hidden = true;
+      }
+
+      function closeDesignerCatalog() {
+        if (!designerCatalog) return;
+        designerCatalog.classList.add("is-collapsed");
+        catalogToggle.setAttribute("aria-expanded", "false");
+        catalogToggle.textContent = "カタログを見る";
+      }
+
+      renderDesignerCards();
+
+      function placeDesignerCatalogInRequestStep() {
+        const work = document.querySelector(".work");
+        if (!work || !designerCatalog) return;
+        work.prepend(designerCatalog);
+      }
+
+      placeDesignerCatalogInRequestStep();
+
+      steps.forEach((label, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "step-tab";
+        button.innerHTML = `<span class="step-number">${index + 1}</span><span>${label}</span>`;
+        button.addEventListener("click", () => {
+          if (index <= currentStep || validateCurrentStep()) {
+            showStep(index);
+          }
+        });
+        desktopSteps.append(button);
+      });
+
+      function setDesignerSelection(mode, name = "") {
+        const isCatalog = mode === "catalog";
+        designerRequestType.value = isCatalog ? "デザイナーカタログからの指名" : "標準的な指名";
+        designerName.value = isCatalog ? name : "";
+        designerEvaluation.value = isCatalog ? "指名評価＋クオリティ評価" : "指名評価";
+        if (isCatalog && name) {
+          designerFirstChoice.value = name;
+        }
+        designerModeButtons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.designerMode === (isCatalog ? "catalog" : "standard"));
+        });
+        designerCards.forEach((card) => {
+          card.classList.toggle("active", isCatalog && card.dataset.designerName === name);
+        });
+        if (designerSelectedText) {
+          designerSelectedText.innerHTML = isCatalog
+            ? `デザイナーカタログからの指名<br>${name || "デザイナー未選択"}<br>${designerEvaluation.value}`
+            : `標準的な指名<br>${designerEvaluation.value}`;
+        }
+      }
+
+      designerModeButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          if (button.dataset.designerMode === "standard") {
+            setDesignerSelection("standard");
+            return;
+          }
+          setDesignerSelection("catalog", designerName.value);
+          if (designerCatalog) {
+            designerCatalog.classList.remove("is-collapsed");
+            catalogToggle.setAttribute("aria-expanded", "true");
+            catalogToggle.textContent = "カタログを閉じる";
+          }
+        });
+      });
+
+      if (designerCatalog) {
+        catalogToggle.addEventListener("click", () => {
+          const isCollapsed = designerCatalog.classList.toggle("is-collapsed");
+          catalogToggle.setAttribute("aria-expanded", String(!isCollapsed));
+          catalogToggle.textContent = isCollapsed ? "カタログを見る" : "カタログを閉じる";
+        });
+      }
+
+      if (designerGrid) {
+        designerGrid.addEventListener("click", (event) => {
+          const card = event.target.closest(".designer-card");
+          if (!card) return;
+          openDesignerModal(Number(card.dataset.designerIndex));
+        });
+      }
+
+      document.querySelector("#designerModalClose").addEventListener("click", closeDesignerModal);
+      document.querySelector("#designerModalBack").addEventListener("click", closeDesignerModal);
+      designerModal.addEventListener("click", (event) => {
+        if (event.target === designerModal) closeDesignerModal();
+      });
+      document.querySelector("#designerModalSelect").addEventListener("click", () => {
+        if (!modalDesigner) return;
+        setDesignerSelection("catalog", modalDesigner.name);
+        closeDesignerModal();
+      });
+
+      document.querySelectorAll("[data-tags='mood'] .tag").forEach((button) => {
+        button.addEventListener("click", () => {
+          button.classList.toggle("active");
+          if (button.classList.contains("active")) {
+            selectedTags.add(button.textContent);
+          } else {
+            selectedTags.delete(button.textContent);
+          }
+        });
+      });
+
+      form.addEventListener("change", () => {
+        syncSalesOptions();
+        syncMediaOptions();
+        updateBranching();
+        if (currentStep === screens.length - 1) renderSummary();
+      });
+
+      form.addEventListener("input", () => {
+        if (currentStep === screens.length - 1) renderSummary();
+      });
+
+      addImageButton.addEventListener("click", () => {
+        const manualSize = manualSizeInput?.value.trim();
+        if (manualSize) {
+          addSizeToImageList(manualSize);
+          manualSizeInput.value = "";
+          return;
+        }
+        imageList.append(createImageItem());
+        updateRemoveButtons();
+      });
+
+      manualSizeInput?.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter") return;
+        event.preventDefault();
+        addImageButton.click();
+      });
+
+      applyCommonStyleButton?.addEventListener("click", () => {
+        imageList.querySelectorAll(".image-item").forEach(applyCommonStyleToImageItem);
+        if (currentStep === screens.length - 1) renderSummary();
+      });
+
+      imageList.addEventListener("click", (event) => {
+        const toggle = event.target.closest(".detail-toggle");
+        if (toggle) {
+          const item = toggle.closest(".image-item");
+          item.classList.toggle("is-collapsed");
+          toggle.textContent = item.classList.contains("is-collapsed") ? "詳細指示を入力する" : "詳細指示を閉じる";
+          return;
+        }
+        const button = event.target.closest(".remove-image");
+        if (!button) return;
+        button.closest(".image-item").remove();
+        updateRemoveButtons();
+      });
+
+      imageList.addEventListener("change", (event) => {
+        if (event.target.matches('[name^="personMaterial_"], [name^="imageDesignType_"]')) {
+          updateImageItemBranching(event.target.closest(".image-item"));
+        }
+        if (event.target.matches('[data-max-files]')) {
+          validateFileLimit(event.target);
+        }
+      });
+
+      imageList.addEventListener("input", (event) => {
+        if (event.target.matches('[name="imageSpecItem"]')) {
+          updateSelectedSizeSummary();
+        }
+      });
+
+      document.querySelector("[data-size-list]").addEventListener("click", (event) => {
+        const button = event.target.closest(".size-button");
+        if (!button) return;
+        addSizeToImageList(button.dataset.size);
+        button.classList.add("active");
+        window.setTimeout(() => button.classList.remove("active"), 220);
+      });
+
+      sizeSearch.addEventListener("input", () => {
+        const keyword = sizeSearch.value.trim().toLowerCase();
+        document.querySelectorAll(".size-button").forEach((button) => {
+          button.hidden = keyword && !button.textContent.toLowerCase().includes(keyword);
+        });
+      });
+
+      backButton.addEventListener("click", () => showStep(Math.max(0, currentStep - 1)));
+      nextButton.addEventListener("click", () => {
+        if (!validateCurrentStep()) return;
+        if (currentStep === screens.length - 1) {
+          nextButton.textContent = "送信済み";
+          nextButton.disabled = true;
+          backButton.disabled = true;
+          continueButton.hidden = false;
+          return;
+        }
+        showStep(currentStep + 1);
+      });
+
+      resetButton.addEventListener("click", () => {
+        resetOrderForm();
+      });
+
+      continueButton.addEventListener("click", () => {
+        resetOrderForm({ keepRequester: true });
+      });
+
+      function captureRequesterValues() {
+        return {
+          branch: valueOf("branch"),
+          salesName: valueOf("salesName"),
+          email: valueOf("email"),
+          writer: valueOf("writer"),
+          proxyName: valueOf("proxyName"),
+          proxyEmail: valueOf("proxyEmail")
+        };
+      }
+
+      function restoreRequesterValues(values) {
+        if (!values) return;
+        document.querySelector("#branch").value = values.branch;
+        syncSalesOptions();
+        document.querySelector("#salesName").value = values.salesName;
+        document.querySelector("#email").value = values.email;
+        const writer = document.querySelector(`[name="writer"][value="${CSS.escape(values.writer)}"]`);
+        if (writer) writer.checked = true;
+        document.querySelector("#proxyName").value = values.proxyName;
+        document.querySelector("#proxyEmail").value = values.proxyEmail;
+      }
+
+      function resetOrderForm({ keepRequester = false } = {}) {
+        const requesterValues = keepRequester ? captureRequesterValues() : null;
+        form.reset();
+        if (keepRequester) restoreRequesterValues(requesterValues);
+        selectedTags.clear();
+        document.querySelectorAll(".tag.active").forEach((tag) => tag.classList.remove("active"));
+        setDesignerSelection("standard");
+        imageList.innerHTML = "";
+        imageList.append(createImageItem());
+        updateRemoveButtons();
+        nextButton.disabled = false;
+        nextButton.textContent = "次へ";
+        continueButton.hidden = true;
+        syncSalesOptions();
+        if (keepRequester && requesterValues) {
+          document.querySelector("#salesName").value = requesterValues.salesName;
+        }
+        syncMediaOptions();
+        updateBranching();
+        showStep(0);
+      }
+
+      function showStep(index) {
+        currentStep = index;
+        screens.forEach((screen, screenIndex) => {
+          screen.classList.toggle("active", screenIndex === index);
+        });
+        const active = screens[index];
+        pageTitle.textContent = active.dataset.title;
+        pageLead.textContent = active.dataset.lead;
+        progressFill.style.width = `${((index + 1) / screens.length) * 100}%`;
+        mobileStepText.textContent = `${index + 1} / ${screens.length}`;
+        backButton.disabled = index === 0;
+        nextButton.textContent = index === screens.length - 1
+          ? "依頼を送信"
+          : index === screens.length - 2
+            ? "依頼内容を確認"
+            : "次へ";
+        nextButton.classList.toggle("send", index === screens.length - 1);
+        if (designerCatalog) designerCatalog.hidden = index > 0;
+        if (index > 0 && designerCatalog) {
+          closeDesignerCatalog();
+        }
+        errorText.classList.remove("show");
+        [...desktopSteps.children].forEach((tab, tabIndex) => {
+          tab.setAttribute("aria-current", tabIndex === index ? "step" : "false");
+        });
+        if (index === screens.length - 1) renderSummary();
+      }
+
+      function validateCurrentStep() {
+        const fields = [...screens[currentStep].querySelectorAll("input, select, textarea")].filter((field) => {
+          return !field.disabled && field.offsetParent !== null;
+        });
+        const tooManyFiles = fields.find((field) => field.matches("[data-max-files]") && !validateFileLimit(field));
+        if (tooManyFiles) {
+          errorText.textContent = `参考画像は最大${tooManyFiles.dataset.maxFiles}枚までです。`;
+          errorText.classList.add("show");
+          tooManyFiles.focus();
+          return false;
+        }
+        if (isValidationDisabled) {
+          errorText.classList.remove("show");
+          return true;
+        }
+        const invalid = fields.find((field) => !field.checkValidity());
+        if (invalid) {
+          errorText.textContent = "必須項目を入力してください。";
+          errorText.classList.add("show");
+          invalid.reportValidity();
+          return false;
+        }
+        errorText.textContent = "必須項目を入力してください。";
+        errorText.classList.remove("show");
+        return true;
+      }
+
+      function updateBranching() {
+        const data = new FormData(form);
+        const requestType = data.get("requestType");
+        const writer = data.get("writer");
+        const mediaNames = getValues("mediaName");
+        const deadlineType = data.get("deadlineType");
+        const billingSelect = document.querySelector("#billing");
+        if (requestType === "有料案件") {
+          billingSelect.value = "有料";
+          billingSelect.dataset.autoBilling = "paid";
+        } else if (billingSelect.dataset.autoBilling === "paid") {
+          billingSelect.value = "ポイント";
+          billingSelect.dataset.autoBilling = "";
+        }
+        const billing = billingSelect.value;
+        const industry = data.get("industry");
+        const isProxy = writer === "代理";
+        const isOtherMedia = mediaNames.includes("その他");
+        const isOtherIndustry = industry === "その他";
+        const isPaid = billing === "有料";
+        const isHold = requestType === "長期保留入稿";
+
+        document.querySelectorAll("[data-proxy-only]").forEach((item) => {
+          item.hidden = !isProxy;
+          item.querySelectorAll("input, select, textarea").forEach((field) => {
+            field.required = !isValidationDisabled && isProxy;
+          });
+        });
+        document.querySelectorAll("[data-direct-only]").forEach((item) => {
+          item.hidden = isProxy;
+          item.querySelectorAll("input, select, textarea").forEach((field) => {
+            field.required = !isValidationDisabled && !isProxy;
+          });
+        });
+        document.querySelectorAll("[data-media-other]").forEach((item) => {
+          item.hidden = !isOtherMedia;
+          item.querySelectorAll("input, select, textarea").forEach((field) => {
+            field.required = !isValidationDisabled && isOtherMedia;
+          });
+        });
+        document.querySelectorAll("[data-general-size-only]").forEach((item) => {
+          item.hidden = true;
+          item.querySelectorAll("input, select, textarea").forEach((field) => {
+            field.required = false;
+          });
+        });
+        document.querySelector("[data-size-list]").hidden = mediaNames.length === 0;
+        imageList.querySelectorAll(".image-item").forEach(updateImageItemBranching);
+        document.querySelectorAll("[data-industry-other]").forEach((item) => {
+          item.hidden = !isOtherIndustry;
+          item.querySelectorAll("input, select, textarea").forEach((field) => {
+            field.required = !isValidationDisabled && isOtherIndustry;
+          });
+        });
+        document.querySelectorAll("[data-paid-only]").forEach((item) => {
+          item.hidden = !isPaid;
+          item.querySelectorAll("input, select, textarea").forEach((field) => {
+            field.required = !isValidationDisabled && isPaid;
+          });
+        });
+        document.querySelectorAll("[data-hold-only]").forEach((item) => {
+          item.hidden = !isHold;
+          item.querySelectorAll("input, select, textarea").forEach((field) => {
+            field.required = !isValidationDisabled && isHold;
+          });
+        });
+        document.querySelectorAll("[data-date-only]").forEach((item) => {
+          const isDateSpecified = deadlineType === "日付指定";
+          item.hidden = !isDateSpecified;
+          item.querySelectorAll("input, select, textarea").forEach((field) => {
+            field.required = !isValidationDisabled && isDateSpecified;
+          });
+        });
+        const email = document.querySelector("#email");
+        const emailLabel = document.querySelector("#emailLabel");
+        if (isProxy) {
+          email.required = false;
+        } else {
+          email.required = !isValidationDisabled;
+          emailLabel.textContent = "連絡先メール";
+          email.placeholder = "本人の場合は営業担当者のメール";
+        }
+        disableRequiredForPreview();
+      }
+
+      function syncMediaOptions() {
+        const industry = valueOf("industry");
+        const current = getValues("mediaName");
+        const options = mediaOptionsByIndustry[industry] || [];
+        mediaChoiceList.innerHTML = options.map((label) => {
+          const checked = current.includes(label) ? " checked" : "";
+          return `<label class="check"><input type="checkbox" name="mediaName" value="${escapeHtml(label)}"${checked}>${escapeHtml(label)}</label>`;
+        }).join("");
+      }
+
+      function syncSalesOptions() {
+        const branch = valueOf("branch");
+        const salesSelect = document.querySelector("#salesName");
+        const current = salesSelect.value;
+        const options = salesByBranch[branch] || [];
+        salesSelect.innerHTML = `<option value="">${branch ? "選択してください" : "支社を選択してください"}</option>`;
+        options.forEach((name) => {
+          const option = document.createElement("option");
+          option.value = name;
+          option.textContent = name;
+          salesSelect.append(option);
+        });
+        if (options.includes(current)) {
+          salesSelect.value = current;
+        }
+      }
+
+      function createImageItem() {
+        const itemId = imageItemCounter++;
+        const item = document.createElement("div");
+        item.className = "image-item is-collapsed";
+        item.innerHTML = `
+          <div class="field">
+            <label>対象画像・サイズ</label>
+            <input name="imageSpecItem" placeholder="例: 【メイン】700×300 / A画像 700×300" required>
+          </div>
+          <button type="button" class="detail-toggle">詳細指示を入力する</button>
+          <button type="button" class="icon-button remove-image" title="画像指定を削除" aria-label="画像指定を削除">×</button>
+          <div class="image-detail-grid">
+            <div class="field full">
+              <span class="field-label">使用人物素材について</span>
+              <div class="compact-options">
+                <label><input type="radio" name="personMaterial_${itemId}" value="フリーの人物素材">フリーの人物素材</label>
+                <label><input type="radio" name="personMaterial_${itemId}" value="店舗在籍の人物画像">店舗在籍の人物画像</label>
+                <label><input type="radio" name="personMaterial_${itemId}" value="使用しない">使用しない</label>
+              </div>
+            </div>
+            <div class="field full" data-person-free hidden>
+              <label>フリー人物素材の希望</label>
+              <input name="freePersonNote" placeholder="例）20代前半　Yシャツの女性希望　など">
+            </div>
+            <div class="field full" data-person-cast hidden>
+              <label>店舗在籍の人物画像</label>
+              <input name="castPersonFile" type="file" accept="image/*" multiple>
+            </div>
+            <div class="field full">
+              <span class="field-label">デザインについて</span>
+              <div class="compact-options">
+                <label><input type="radio" name="imageDesignType_${itemId}" value="おまかせ">おまかせ</label>
+                <label><input type="radio" name="imageDesignType_${itemId}" value="参考画像あり">参考画像あり</label>
+              </div>
+            </div>
+            <div class="field full" data-design-reference hidden>
+              <label>参考にしたい制作実績URL・画像URL</label>
+              <textarea name="imageReferenceUrl" placeholder="例: 143667 / 143668 / https://..."></textarea>
+              <input name="imageReferenceFile" type="file" accept="image/*" multiple data-max-files="5">
+              <p class="hint">仕上がりの雰囲気を寄せたい制作実績ページ、または参考画像URLを入力してください。制作実績のID指定はできません。添付は1回につき最大5枚までです。</p>
+            </div>
+            <div class="field">
+              <label>ターゲット</label>
+              <input name="imageTargetItem" placeholder="例: 20代女性など">
+            </div>
+            <div class="field full">
+              <span class="field-label">画像の希望の雰囲気・イメージ</span>
+              <div class="check-row mood-choice-list">
+                <label class="check"><input type="checkbox" name="imageMoodItem" value="お任せ">お任せ</label>
+                <label class="check"><input type="checkbox" name="imageMoodItem" value="ポップ">ポップ</label>
+                <label class="check"><input type="checkbox" name="imageMoodItem" value="キュート">キュート</label>
+                <label class="check"><input type="checkbox" name="imageMoodItem" value="綺麗・上品">綺麗・上品</label>
+                <label class="check"><input type="checkbox" name="imageMoodItem" value="シンプル">シンプル</label>
+                <label class="check"><input type="checkbox" name="imageMoodItem" value="高級感">高級感</label>
+                <label class="check"><input type="checkbox" name="imageMoodItem" value="クール">クール</label>
+                <label class="check"><input type="checkbox" name="imageMoodItem" value="ナチュラル">ナチュラル</label>
+                <label class="check"><input type="checkbox" name="imageMoodItem" value="フェミニン">フェミニン</label>
+                <label class="check"><input type="checkbox" name="imageMoodItem" value="ゴージャス">ゴージャス</label>
+                <label class="check"><input type="checkbox" name="imageMoodItem" value="セクシー">セクシー</label>
+                <label class="check"><input type="checkbox" name="imageMoodItem" value="インパクト重視">インパクト重視</label>
+                <label class="check"><input type="checkbox" name="imageMoodItem" value="信頼感重視">信頼感重視</label>
+                <label class="check"><input type="checkbox" name="imageMoodItem" value="その他">その他</label>
+              </div>
+              <input name="imageMoodOtherItem" placeholder="その他の雰囲気・イメージを入力">
+            </div>
+            <div class="field full">
+              <label>デザイン指示</label>
+              <textarea name="imageDesignNote" placeholder="例: 高級感を出す / 店舗カラーに合わせる / 見やすくシンプルに"></textarea>
+            </div>
+            <div class="field full">
+              <label>挿入文言</label>
+              <textarea name="imageInsertText" placeholder="画像に入れたい文言を入力"></textarea>
+            </div>
+            <div class="field full">
+              <label>目立たせたい文言・部分</label>
+              <textarea name="imageEmphasisText" placeholder="例: 日給保証 / 未経験歓迎 / 店名ロゴ"></textarea>
+            </div>
+          </div>
+        `;
+        return item;
+      }
+
+      function applyCommonStyleToImageItem(item) {
+        if (!item) return;
+        const target = valueOf("targetAudience");
+        const targetInput = item.querySelector('[name="imageTargetItem"]');
+        if (targetInput) targetInput.value = target;
+
+        const commonMoodValues = getValues("imageMood");
+        item.querySelectorAll('[name="imageMoodItem"]').forEach((checkbox) => {
+          checkbox.checked = commonMoodValues.includes(checkbox.value);
+        });
+
+        const commonOther = valueOf("imageMoodOther");
+        const otherInput = item.querySelector('[name="imageMoodOtherItem"]');
+        if (otherInput) otherInput.value = commonOther;
+      }
+
+      function updateImageItemBranching(item) {
+        if (!item) return;
+        const person = item.querySelector('[name^="personMaterial_"]:checked')?.value || "";
+        const designType = item.querySelector('[name^="imageDesignType_"]:checked')?.value || "";
+        const freeBox = item.querySelector("[data-person-free]");
+        const castBox = item.querySelector("[data-person-cast]");
+        const referenceBox = item.querySelector("[data-design-reference]");
+
+        setConditionalBox(freeBox, person === "フリーの人物素材");
+        setConditionalBox(castBox, person === "店舗在籍の人物画像");
+        setConditionalBox(referenceBox, designType === "参考画像あり");
+      }
+
+      function setConditionalBox(box, isVisible) {
+        box.hidden = !isVisible;
+        box.querySelectorAll("input, select, textarea").forEach((field) => {
+          field.required = !isValidationDisabled && isVisible;
+        });
+      }
+
+      function disableRequiredForPreview() {
+        if (!isValidationDisabled) return;
+        form.querySelectorAll("[required]").forEach((field) => {
+          field.required = false;
+        });
+      }
+
+      function validateFileLimit(field) {
+        const maxFiles = Number(field.dataset.maxFiles || 0);
+        if (!maxFiles || field.files.length <= maxFiles) return true;
+        field.value = "";
+        errorText.textContent = `参考画像は最大${maxFiles}枚までです。`;
+        errorText.classList.add("show");
+        return false;
+      }
+
+      function addSizeToImageList(sizeText) {
+        const emptyItem = [...imageList.querySelectorAll(".image-item")].find((item) => {
+          return !item.querySelector('[name="imageSpecItem"]').value;
+        });
+        const item = emptyItem || createImageItem();
+        item.querySelector('[name="imageSpecItem"]').value = sizeText;
+        if (!emptyItem) {
+          imageList.append(item);
+        }
+        updateRemoveButtons();
+        updateSelectedSizeSummary();
+      }
+
+      function updateRemoveButtons() {
+        const buttons = imageList.querySelectorAll(".remove-image");
+        buttons.forEach((button) => {
+          button.disabled = buttons.length <= 1;
+        });
+        updateSelectedSizeSummary();
+      }
+
+      function getSelectedSizeValues() {
+        return [...imageList.querySelectorAll('[name="imageSpecItem"]')]
+          .map((field) => field.value.trim())
+          .filter(Boolean);
+      }
+
+      function updateSelectedSizeSummary() {
+        const selectedSizes = getSelectedSizeValues();
+        const counts = selectedSizes.reduce((map, size) => {
+          map.set(size, (map.get(size) || 0) + 1);
+          return map;
+        }, new Map());
+        selectedSizePanel.hidden = selectedSizes.length === 0;
+        selectedSizeList.innerHTML = [...counts.entries()].map(([size, count]) => {
+          return `<span class="selected-size-chip">${escapeHtml(size)}${count > 1 ? ` ×${count}` : ""}</span>`;
+        }).join("");
+        document.querySelectorAll(".size-button").forEach((button) => {
+          button.classList.toggle("is-selected", counts.has(button.dataset.size));
+        });
+      }
+
+      function getValues(name) {
+        return [...form.querySelectorAll(`[name="${name}"]:checked`)].map((item) => item.value);
+      }
+
+      function valueOf(name) {
+        const data = new FormData(form);
+        return data.get(name) || "";
+      }
+
+      function renderSummary() {
+        const selectedMedia = getValues("mediaName");
+        const mediaText = selectedMedia.includes("その他")
+          ? [...selectedMedia.filter((name) => name !== "その他"), valueOf("mediaOther") || "その他"].join("、")
+          : selectedMedia.join("、");
+        const industryText = valueOf("industry") === "その他" ? valueOf("industryOther") : valueOf("industry");
+        const contactText = valueOf("writer") === "代理"
+          ? `${valueOf("proxyName")} / ${valueOf("proxyEmail")}`
+          : valueOf("email");
+        const filledImageItems = [...imageList.querySelectorAll(".image-item")].filter((item) => {
+          return item.querySelector('[name="imageSpecItem"]').value.trim();
+        });
+        const moodText = [
+          ...getValues("imageMood"),
+          valueOf("imageMoodOther")
+        ].filter(Boolean).join(" / ");
+        const imageRows = filledImageItems.map((item, index) => {
+          const spec = item.querySelector('[name="imageSpecItem"]').value || "未入力";
+          const person = item.querySelector('[name^="personMaterial_"]:checked')?.value || "人物素材未選択";
+          const freeNote = item.querySelector('[name="freePersonNote"]')?.value;
+          const castFiles = item.querySelector('[name="castPersonFile"]')?.files.length || 0;
+          const designType = item.querySelector('[name^="imageDesignType_"]:checked')?.value || "デザイン未選択";
+          const referenceUrl = item.querySelector('[name="imageReferenceUrl"]')?.value;
+          const referenceFiles = item.querySelector('[name="imageReferenceFile"]')?.files.length || 0;
+          const itemTarget = item.querySelector('[name="imageTargetItem"]')?.value || valueOf("targetAudience") || "未入力";
+          const itemMoodValues = [...item.querySelectorAll('[name="imageMoodItem"]:checked')].map((checkbox) => checkbox.value);
+          const itemMoodOther = item.querySelector('[name="imageMoodOtherItem"]')?.value;
+          const itemMood = [...itemMoodValues, itemMoodOther].filter(Boolean).join(" / ") || moodText || "指定なし";
+          const note = item.querySelector('[name="imageDesignNote"]').value || "個別指示なし";
+          const insertText = item.querySelector('[name="imageInsertText"]').value || "なし";
+          const emphasisText = item.querySelector('[name="imageEmphasisText"]').value || "なし";
+          const personDetail = person === "フリーの人物素材" && freeNote
+            ? `${person}: ${freeNote}`
+            : person === "店舗在籍の人物画像" && castFiles
+              ? `${person}: ${castFiles}ファイル添付`
+              : person;
+          const referenceParts = [
+            referenceUrl ? `参考: ${referenceUrl}` : "",
+            referenceFiles ? `${referenceFiles}ファイル添付` : ""
+          ].filter(Boolean).join(" / ");
+          const designDetail = designType === "参考画像あり" && referenceParts
+            ? `${designType}: ${referenceParts}`
+            : designType;
+          return `${index + 1}. ${spec}\nターゲット: ${itemTarget}\n雰囲気・イメージ: ${itemMood}\n人物素材: ${personDetail}\nデザイン: ${designDetail}\n指示: ${note}\n挿入文言: ${insertText}\n目立たせたい部分: ${emphasisText}`;
+        }).join("\n\n");
+        const selectedSizes = getSelectedSizeValues();
+        const sizeText = selectedSizes.length ? selectedSizes.join("\n") : "未入力";
+        const imageTotalText = valueOf("imageTotalCount") || `${filledImageItems.length}枚（各画像の指示から自動計算）`;
+        const imageTotalNumber = Number(valueOf("imageTotalCount") || 0);
+        const reviewWarnings = [];
+        if (!valueOf("requestType")) reviewWarnings.push("依頼タイプが未選択です");
+        if (!mediaText) reviewWarnings.push("媒体が未選択です");
+        if (!valueOf("noUrl") && !valueOf("publishUrl")) reviewWarnings.push("掲載URLまたはURLなしの選択がありません");
+        if (!valueOf("imageTotalCount")) reviewWarnings.push("画像総枚数が未入力です");
+        if (imageTotalNumber && filledImageItems.length && imageTotalNumber !== filledImageItems.length) {
+          reviewWarnings.push(`画像総枚数（${imageTotalNumber}枚）と各画像の指示数（${filledImageItems.length}件）が違います`);
+        }
+        if (!filledImageItems.length) reviewWarnings.push("各画像の指示が未入力です");
+        if (!valueOf("commonDesignNote") && !imageRows) reviewWarnings.push("デザイン指示が未入力です");
+        if (valueOf("deadlineType") === "日付指定" && !valueOf("deadlineDate")) reviewWarnings.push("日付指定の希望日が未入力です");
+        if (valueOf("billing") === "有料" && !valueOf("submissionUrl")) reviewWarnings.push("有料案件の入稿URLが未入力です");
+        if (valueOf("requestType") === "長期保留入稿" && !valueOf("holdSubmissionUrl")) reviewWarnings.push("バックログ入稿の対象URLが未入力です");
+        const designerChoices = [
+          ["第一希望", valueOf("designerFirstChoice")],
+          ["第二希望", valueOf("designerSecondChoice")],
+          ["第三希望", valueOf("designerThirdChoice")]
+        ].filter(([, name]) => name).map(([label, name]) => `${label}: ${name}`).join("\n");
+        const rows = [
+          ["確認アラート", reviewWarnings.length ? reviewWarnings.join("\n") : "大きな不足は見当たりません"],
+          ["デザイナー指名希望", designerChoices || "指定なし"],
+          ["依頼タイプ", valueOf("requestType")],
+          ["支社・営業", `${valueOf("branch")} / ${valueOf("salesName")}`],
+          ["記入者・連絡先", contactText],
+          ["店舗", `${valueOf("shopName")}（${valueOf("area")} / ${industryText}）`],
+          ["店舗HP URL", valueOf("shopHpUrl") || "未入力"],
+          ["請求方法", valueOf("billing")],
+          ["入稿URL", valueOf("submissionUrl") || "該当なし"],
+          ["対象入稿URL", valueOf("holdSubmissionUrl") || "該当なし"],
+          ["媒体", mediaText],
+          ["プラン/サイズ展開", valueOf("sizePlan") || "指定なし"],
+          ["選択済みサイズ", sizeText],
+          ["画像総枚数", imageTotalText],
+          ["掲載URL", valueOf("noUrl") || valueOf("publishUrl")],
+          ["ターゲット", valueOf("targetAudience") || "未入力"],
+          ["希望の雰囲気・イメージ", moodText || "指定なし"],
+          ["全画像共通のデザイン指示", valueOf("commonDesignNote") || "なし"],
+          ["画像ごとの指定", imageRows || "未入力"],
+          ["納期", `${valueOf("deadlineType")} ${valueOf("deadlineDate")}`.trim()]
+        ];
+        summary.innerHTML = rows.map(([label, text]) => {
+          return `<div class="summary-item"><b>${label}</b><span>${escapeHtml(text || "未入力")}</span></div>`;
+        }).join("");
+      }
+
+      function escapeHtml(text) {
+        return String(text)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function applyCatalogParams() {
+        const params = new URLSearchParams(window.location.search);
+        const selectedDesigner = params.get("designer") || "";
+        const selectedWork = params.get("work") || "";
+        const reflected = [];
+        if (selectedDesigner) {
+          setDesignerSelection("catalog", selectedDesigner);
+          reflected.push(`第一希望に「${selectedDesigner}」を反映しました`);
+        }
+        if (selectedWork) {
+          applyReferenceWorkToFirstImage(selectedWork);
+          reflected.push(`参考にしたい制作実績を反映しました`);
+        }
+        if (reflected.length && catalogReflectedText) {
+          catalogReflectedText.innerHTML = `カタログから反映済み<br>${reflected.map(escapeHtml).join("<br>")}`;
+          catalogReflectedText.classList.add("is-visible");
+        }
+      }
+
+      function applyReferenceWorkToFirstImage(workId) {
+        const firstItem = imageList.querySelector(".image-item");
+        if (!firstItem) return;
+        const referenceRadio = firstItem.querySelector('[name^="imageDesignType_"][value="参考画像あり"]');
+        const referenceUrl = firstItem.querySelector('[name="imageReferenceUrl"]');
+        if (referenceRadio) referenceRadio.checked = true;
+        if (referenceUrl) referenceUrl.value = workId;
+        updateImageItemBranching(firstItem);
+      }
+
+      setDesignerSelection("standard");
+      showStep(0);
+      syncSalesOptions();
+      syncMediaOptions();
+      updateBranching();
+      disableRequiredForPreview();
+      updateRemoveButtons();
+      applyCatalogParams();
+    </script>
+  </body>
+</html>

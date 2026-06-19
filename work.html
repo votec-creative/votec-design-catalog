@@ -1,0 +1,918 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>制作実績詳細 - VOTEC DESIGN CATALOG</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #18212b;
+        --muted: #667282;
+        --line: #e2e6eb;
+        --paper: #ffffff;
+        --soft: #f8fafb;
+        --brand: #169277;
+        --brand-strong: #0f6f5c;
+        --focus: 0 0 0 3px rgba(22, 146, 119, 0.18);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--ink);
+        background: var(--soft);
+        letter-spacing: 0;
+      }
+
+      a,
+      button {
+        font: inherit;
+      }
+
+      button {
+        border: 0;
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        border-bottom: 1px solid #e5e5e5;
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 1px 0 rgba(24, 33, 43, 0.04);
+      }
+
+      .header-inner {
+        width: min(1360px, calc(100% - 40px));
+        min-height: 72px;
+        margin: 0 auto;
+        padding: 12px 0;
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: center;
+      }
+
+      .brand-logo {
+        display: block;
+        width: 236px;
+        max-width: 42vw;
+        height: auto;
+      }
+
+      .site-nav {
+        display: flex;
+        gap: 2px;
+        align-items: center;
+      }
+
+      .site-nav a {
+        min-height: 42px;
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 0 16px;
+        color: #2c3542;
+        font-size: 14px;
+        font-weight: 900;
+        text-decoration: none;
+        transition: color 0.18s ease, box-shadow 0.18s ease;
+      }
+
+      .site-nav a:hover {
+        background: #eef6f4;
+        color: var(--brand-strong);
+      }
+
+      .site-nav .nav-cta {
+        margin-left: 8px;
+        border-radius: 999px;
+        padding: 0 20px;
+        background: var(--brand);
+        color: #fff;
+        box-shadow: 0 10px 22px rgba(22, 146, 119, 0.2);
+      }
+
+      .site-nav .nav-cta:hover {
+        color: #fff;
+        background: var(--brand-strong);
+        box-shadow: 0 14px 28px rgba(15, 111, 92, 0.24);
+      }
+
+      .detail-main {
+        width: min(100% - 44px, 1440px);
+        margin: 0 auto;
+        padding: 42px 0 76px;
+      }
+
+      .detail-hero {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 22px;
+        align-items: end;
+        margin: 0 0 28px;
+        padding: 28px 0 4px;
+      }
+
+      .eyebrow {
+        width: fit-content;
+        margin: 0 0 12px;
+        border-radius: 999px;
+        padding: 6px 11px;
+        background: #e8f5f2;
+        color: var(--brand-strong);
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .detail-hero h1 {
+        margin: 0;
+        font-size: clamp(30px, 4.2vw, 52px);
+        line-height: 1.15;
+        letter-spacing: 0;
+      }
+
+      .detail-hero p {
+        max-width: 640px;
+        margin: 14px 0 0;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .id-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: center;
+        margin: 0 0 34px;
+        padding: 16px 18px;
+        border: 1px solid rgba(213, 221, 229, 0.9);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 16px 40px rgba(24, 33, 43, 0.07);
+      }
+
+      .id-label {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        min-width: 0;
+      }
+
+      .id-label small {
+        border-radius: 999px;
+        padding: 5px 10px;
+        background: #eceff2;
+        color: #4d5967;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .id-label strong {
+        font-size: clamp(24px, 3vw, 34px);
+        line-height: 1;
+      }
+
+      .copy-button,
+      .ghost-link {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        padding: 0 18px;
+        font-weight: 900;
+        text-decoration: none;
+        white-space: nowrap;
+        cursor: pointer;
+      }
+
+      .copy-button {
+        background: var(--brand);
+        color: #fff;
+        box-shadow: 0 10px 22px rgba(22, 146, 119, 0.2);
+        transition: background 0.18s ease, color 0.18s ease;
+      }
+
+      .copy-button:hover {
+        background: var(--brand-strong);
+      }
+
+      .ghost-link {
+        border: 1px solid #cfd7df;
+        background: #fff;
+        color: #23303d;
+        transition: border 0.18s ease, color 0.18s ease, transform 0.18s ease;
+      }
+
+      .ghost-link:hover {
+        border-color: var(--brand);
+        color: var(--brand-strong);
+        transform: translateY(-1px);
+      }
+
+      .work-detail-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 320px;
+        gap: 24px;
+        align-items: start;
+      }
+
+      .work-stage {
+        min-width: 0;
+        display: grid;
+        justify-items: center;
+        padding: 26px;
+        border: 1px solid rgba(213, 221, 229, 0.9);
+        border-radius: 28px;
+        background: #fff;
+        box-shadow: 0 18px 48px rgba(24, 33, 43, 0.08);
+      }
+
+      .main-banner {
+        display: block;
+        width: auto;
+        max-width: 100%;
+        max-height: min(82vh, 980px);
+        height: auto;
+        border-radius: 22px;
+        box-shadow: 0 28px 70px rgba(22, 31, 42, 0.18);
+      }
+
+      .work-meta {
+        position: sticky;
+        top: 96px;
+        width: 100%;
+        margin: 0;
+        padding: 22px;
+        border: 1px solid rgba(213, 221, 229, 0.9);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: 0 16px 40px rgba(24, 33, 43, 0.07);
+        display: grid;
+        gap: 20px;
+      }
+
+      .panel-label {
+        margin: 0;
+        color: var(--brand-strong);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+      }
+
+      .meta-block {
+        display: grid;
+        gap: 10px;
+      }
+
+      .meta-block-title {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .designer-action {
+        display: grid;
+        gap: 10px;
+      }
+
+      .similar-section {
+        margin: 72px 0 0;
+      }
+
+      .section-head {
+        width: min(960px, 100%);
+        margin: 0 auto 24px;
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        align-items: end;
+      }
+
+      .section-head h2 {
+        margin: 0;
+        font-size: clamp(26px, 3vw, 38px);
+        line-height: 1.25;
+      }
+
+      .section-head p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.7;
+      }
+
+      .similar-grid {
+        display: block;
+        column-count: 5;
+        column-gap: 18px;
+      }
+
+      .similar-link {
+        break-inside: avoid;
+        display: block;
+        margin: 0 0 18px;
+        border-radius: 16px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 1px 0 rgba(18, 35, 45, 0.08);
+        text-decoration: none;
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+      }
+
+      .similar-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 18px 44px rgba(24, 33, 43, 0.16);
+      }
+
+      .similar-link img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .meta-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        align-items: flex-start;
+      }
+
+      .designer {
+        display: grid;
+        gap: 6px;
+      }
+
+      .designer-name {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 900;
+      }
+
+      .designer-sub {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.7;
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .tags span {
+        border-radius: 999px;
+        padding: 6px 10px;
+        background: #eaeeee;
+        color: #41505e;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      input:focus,
+      button:focus-visible,
+      a:focus-visible {
+        outline: none;
+        box-shadow: var(--focus);
+      }
+
+      @media (max-width: 760px) {
+        .header-inner,
+        .detail-hero,
+        .id-row,
+        .meta-top,
+        .section-head {
+          display: grid;
+        }
+
+        .site-nav {
+          width: 100%;
+          overflow-x: auto;
+          padding-bottom: 2px;
+        }
+
+        .site-nav a {
+          padding: 0 10px;
+          font-size: 13px;
+        }
+
+        .detail-main {
+          width: min(100% - 20px, 1180px);
+          padding-top: 20px;
+        }
+
+        .detail-hero {
+          gap: 16px;
+          padding-top: 10px;
+        }
+
+        .detail-hero h1 {
+          font-size: clamp(30px, 10vw, 42px);
+        }
+
+        .copy-button,
+        .ghost-link {
+          width: 100%;
+        }
+
+        .main-banner {
+          border-radius: 14px;
+        }
+
+        .work-stage {
+          padding: 12px;
+          border-radius: 20px;
+        }
+
+        .work-detail-layout {
+          grid-template-columns: 1fr;
+          gap: 18px;
+        }
+
+        .work-meta {
+          position: static;
+          padding: 18px;
+          border-radius: 18px;
+        }
+
+        .similar-grid {
+          column-count: 2;
+          column-gap: 10px;
+        }
+
+        .similar-link {
+          margin-bottom: 10px;
+          border-radius: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <a href="index.html" aria-label="VOTEC DESIGN CATALOG">
+          <img class="brand-logo" src="assets/logo.png" alt="VOTEC">
+        </a>
+        <nav class="site-nav" aria-label="サイトメニュー">
+          <a href="index.html">制作実績</a>
+          <a href="index.html#designers">在籍デザイナー</a>
+          <a href="index.html#templates">テンプレート</a>
+          <a class="nav-cta" href="form.html">依頼フォームはこちら</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="detail-main">
+      <section class="detail-hero">
+        <div>
+          <p class="eyebrow">WORK DETAIL</p>
+          <h1>制作実績詳細</h1>
+        </div>
+        <a class="ghost-link" href="index.html">制作実績一覧へ</a>
+      </section>
+
+      <div class="work-detail-layout">
+        <section class="work-stage">
+          <img class="main-banner" id="mainBanner" src="" alt="">
+        </section>
+
+        <aside class="work-meta" id="workMeta" aria-label="デザイナー情報"></aside>
+      </div>
+
+      <section class="similar-section" aria-label="似ているバナー">
+          <div class="section-head">
+            <div>
+              <h2>似ているバナー</h2>
+            </div>
+          <a class="ghost-link" href="index.html">制作実績一覧へ</a>
+        </div>
+        <div class="similar-grid" id="similarGrid"></div>
+      </section>
+    </main>
+    <script>
+      const portfolioImages = [
+              "assets/portfolio/work-01.jpg",
+              "assets/portfolio/work-02.jpg",
+              "assets/portfolio/work-03.jpg",
+              "assets/portfolio/work-04.jpg",
+              "assets/portfolio/work-05.jpg",
+              "assets/portfolio/work-06.jpg",
+              "assets/portfolio/work-07.jpg",
+              "assets/portfolio/work-08.jpg",
+              "assets/portfolio/work-09.jpg",
+              "assets/portfolio/work-10.jpg",
+              "assets/portfolio/work-011.jpg",
+              "assets/portfolio/work-012.jpg",
+              "assets/portfolio/work-013.jpg",
+              "assets/portfolio/work-014.jpg",
+              "assets/portfolio/work-015.jpg",
+              "assets/portfolio/work-016.jpg",
+              "assets/portfolio/work-017.png",
+              "assets/portfolio/work-018.jpg",
+              "assets/portfolio/work-019.jpg",
+              "assets/portfolio/work-020.jpg",
+              "assets/portfolio/work-021.jpg",
+              "assets/portfolio/work-022.jpg",
+              "assets/portfolio/work-023.png",
+              "assets/portfolio/work-024.jpg",
+              "assets/portfolio/work-025.jpg",
+              "assets/portfolio/work-026.jpg",
+              "assets/portfolio/work-027.jpg",
+              "assets/portfolio/work-028.jpg",
+              "assets/portfolio/work-029.jpg",
+              "assets/portfolio/work-030.jpg",
+              "assets/portfolio/work-031.jpg",
+              "assets/portfolio/work-032.jpg",
+              "assets/portfolio/work-033.jpg",
+              "assets/portfolio/work-034.jpg",
+              "assets/portfolio/work-035.jpg",
+              "assets/portfolio/work-036.jpg",
+              "assets/portfolio/work-037.jpg",
+              "assets/portfolio/work-038.jpg",
+              "assets/portfolio/work-039.jpg",
+              "assets/portfolio/work-040.jpg",
+              "assets/portfolio/work-041.jpg",
+              "assets/portfolio/work-042.jpg",
+              "assets/portfolio/work-043.jpg",
+              "assets/portfolio/work-044.jpg",
+              "assets/portfolio/work-045.jpg",
+              "assets/portfolio/work-046.jpg",
+              "assets/portfolio/work-047.jpg",
+              "assets/portfolio/work-048.jpg",
+              "assets/portfolio/work-049.jpg",
+              "assets/portfolio/work-050.jpg",
+              "assets/portfolio/work-051.jpg",
+              "assets/portfolio/work-052.jpg",
+              "assets/portfolio/work-053.jpg",
+              "assets/portfolio/work-054.jpg",
+              "assets/portfolio/work-055.jpg",
+              "assets/portfolio/work-056.jpg",
+              "assets/portfolio/work-057.jpg",
+              "assets/portfolio/work-058.jpg",
+              "assets/portfolio/work-059.jpg",
+              "assets/portfolio/work-060.jpg",
+              "assets/portfolio/work-061.jpg",
+              "assets/portfolio/work-062.jpg",
+              "assets/portfolio/work-063.jpg",
+              "assets/portfolio/work-064.jpg",
+              "assets/portfolio/work-065.jpg",
+              "assets/portfolio/work-066.jpg",
+              "assets/portfolio/work-067.jpg",
+              "assets/portfolio/work-068.jpg",
+              "assets/portfolio/work-069.jpg",
+              "assets/portfolio/work-070.jpg",
+              "assets/portfolio/work-071.jpg",
+              "assets/portfolio/work-072.jpg",
+              "assets/portfolio/work-073.jpg",
+              "assets/portfolio/work-074.jpg",
+              "assets/portfolio/work-075.jpg",
+              "assets/portfolio/work-076.gif",
+              "assets/portfolio/work-077.jpg",
+              "assets/portfolio/work-078.jpg",
+              "assets/portfolio/work-079.jpg",
+              "assets/portfolio/work-080.jpg",
+              "assets/portfolio/work-081.jpg",
+              "assets/portfolio/work-082.jpg",
+              "assets/portfolio/work-083.jpg",
+              "assets/portfolio/work-084.jpg",
+              "assets/portfolio/work-085.jpg",
+              "assets/portfolio/work-086.jpg",
+              "assets/portfolio/work-087.jpg",
+              "assets/portfolio/work-088.jpg",
+              "assets/portfolio/work-089.jpg",
+              "assets/portfolio/work-090.jpg",
+              "assets/portfolio/work-091.jpg",
+              "assets/portfolio/work-092.jpg",
+              "assets/portfolio/work-093.jpg",
+              "assets/portfolio/work-094.jpg",
+              "assets/portfolio/work-095.jpg",
+              "assets/portfolio/work-096.jpg",
+              "assets/portfolio/work-097.jpg",
+              "assets/portfolio/work-098.jpg",
+              "assets/portfolio/work-099.jpg",
+              "assets/portfolio/work-100.jpg",
+              "assets/portfolio/work-101.jpg"
+      ];
+
+      const designers = [
+              {
+                      "name": "堂角 翼",
+                      "region": "東京",
+                      "role": "リーダー"
+              },
+              {
+                      "name": "山口 あい",
+                      "region": "東京",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "佐藤 健",
+                      "region": "東京",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "田中 みな",
+                      "region": "東京",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "木村 拓",
+                      "region": "東京",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "中村 さき",
+                      "region": "東京",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "鈴木 俊",
+                      "region": "東京",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "高橋 澪",
+                      "region": "東京",
+                      "role": "リーダー"
+              },
+              {
+                      "name": "伊藤 蓮",
+                      "region": "東京",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "渡辺 優",
+                      "region": "東京",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "小林 葵",
+                      "region": "東京",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "加藤 凛",
+                      "region": "東京",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "吉田 悠",
+                      "region": "東京",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "山本 司",
+                      "region": "東京",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "松本 ひかり",
+                      "region": "東京",
+                      "role": "リーダー"
+              },
+              {
+                      "name": "井上 航",
+                      "region": "関西",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "清水 七海",
+                      "region": "関西",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "林 大地",
+                      "region": "関西",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "森 由衣",
+                      "region": "関西",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "池田 真",
+                      "region": "関西",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "橋本 彩",
+                      "region": "関西",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "石田 陸",
+                      "region": "関西",
+                      "role": "リーダー"
+              },
+              {
+                      "name": "藤原 葵",
+                      "region": "関西",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "岡田 蓮",
+                      "region": "関西",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "長谷川 結",
+                      "region": "関西",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "近藤 翼",
+                      "region": "関西",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "前田 茜",
+                      "region": "関西",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "遠藤 顕",
+                      "region": "九州",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "青木 美月",
+                      "region": "九州",
+                      "role": "リーダー"
+              },
+              {
+                      "name": "坂本 直",
+                      "region": "九州",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "村上 玲",
+                      "region": "九州",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "太田 樹央",
+                      "region": "九州",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "西村 圭",
+                      "region": "九州",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "福田 真央",
+                      "region": "九州",
+                      "role": "デザイナー"
+              },
+              {
+                      "name": "三浦 仁",
+                      "region": "九州",
+                      "role": "デザイナー"
+              }
+      ];
+
+      const palettes = ["pink","blue","green","warm","red","yellow","black","white","gold","silver"];
+      const tones = ["strong","luxury","fresh","pop","cute","simple","neon","classic"];
+      const tagSets = [
+              [
+                      "バナー",
+                      "訴求強め",
+                      "高単価"
+              ],
+              [
+                      "求人",
+                      "女性向け",
+                      "清潔感"
+              ],
+              [
+                      "イベント",
+                      "季節感",
+                      "キャンペーン"
+              ],
+              [
+                      "高級感",
+                      "ゴールド",
+                      "インパクト"
+              ],
+              [
+                      "ポップ",
+                      "かわいい",
+                      "ピンク"
+              ],
+              [
+                      "クール",
+                      "ネオン",
+                      "派手"
+              ],
+              [
+                      "シンプル",
+                      "白系",
+                      "読みやすい"
+              ],
+              [
+                      "和風",
+                      "正月",
+                      "華やか"
+              ],
+              [
+                      "男性求人",
+                      "ホスト",
+                      "黒系"
+              ],
+              [
+                      "縦長",
+                      "LP",
+                      "情報量多め"
+              ]
+      ];
+
+      const works = portfolioImages.map((image, index) => {
+        const designer = designers[index % designers.length];
+        return {
+          id: String(143667 + index),
+          designer: designer.name,
+          region: designer.region,
+          role: designer.role,
+          image,
+          color: palettes[index % palettes.length],
+          tone: tones[index % tones.length],
+          tags: tagSets[index % tagSets.length]
+        };
+      });
+
+      const params = new URLSearchParams(window.location.search);
+      const current = works.find((work) => work.id === params.get("id")) || works[0];
+
+      function render() {
+        document.title = `${current.designer}\u306e\u5236\u4f5c\u5b9f\u7e3e - VOTEC DESIGN CATALOG`;
+        const banner = document.querySelector("#mainBanner");
+        banner.src = current.image;
+        banner.alt = `${current.designer}\u306e\u5236\u4f5c\u5b9f\u7e3e`;
+        const designerWorksUrl = `index.html?designer=${encodeURIComponent(current.designer)}#works`;
+        const designerRequestUrl = `form.html?designer=${encodeURIComponent(current.designer)}`;
+        document.querySelector("#workMeta").innerHTML = `
+          <p class="panel-label">DESIGNER</p>
+          <div class="meta-block">
+            <p class="meta-block-title">\u30c7\u30b6\u30a4\u30ca\u30fc\u60c5\u5831</p>
+            <div class="designer">
+              <p class="designer-name">${escapeHtml(current.designer)}</p>
+              <p class="designer-sub">${escapeHtml(current.region)} / ${escapeHtml(current.role)}</p>
+            </div>
+          </div>
+          <div class="meta-block">
+            <p class="meta-block-title">\u3053\u306e\u5b9f\u7e3e\u306e\u30bf\u30b0</p>
+            <div class="tags">${current.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div>
+          </div>
+          <div class="designer-action">
+            <a class="ghost-link" href="${designerRequestUrl}">\u3053\u306e\u5236\u4f5c\u8005\u3092\u7b2c\u4e00\u5e0c\u671b\u306b\u3059\u308b</a>
+            <a class="ghost-link" href="${designerWorksUrl}">\u3053\u306e\u30c7\u30b6\u30a4\u30ca\u30fc\u306e\u5236\u4f5c\u5b9f\u7e3e\u3092\u898b\u308b</a>
+          </div>
+        `;
+        document.querySelector("#similarGrid").innerHTML = works
+          .filter((work) => work.id !== current.id)
+          .map((work) => ({ work, score: similarity(current, work) }))
+          .sort((a, b) => b.score - a.score)
+          .slice(0, 8)
+          .map(({ work }) => `
+            <a class="similar-link" href="work.html?id=${encodeURIComponent(work.id)}" aria-label="${escapeHtml(work.designer)}\u306e\u5236\u4f5c\u5b9f\u7e3e\u3092\u898b\u308b">
+              <img src="${escapeHtml(work.image)}" alt="${escapeHtml(work.designer)}\u306e\u5236\u4f5c\u5b9f\u7e3e" loading="lazy">
+            </a>
+          `)
+          .join("");
+      }
+      function similarity(base, candidate) {
+        let score = 0;
+        if (base.color === candidate.color) score += 5;
+        if (base.tone === candidate.tone) score += 4;
+        if (base.designer === candidate.designer) score += 2;
+        candidate.tags.forEach((tag) => {
+          if (base.tags.includes(tag)) score += 1;
+        });
+        return score;
+      }
+
+      function escapeHtml(text) {
+        return String(text)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      render();
+    </script>
+  </body>
+</html>

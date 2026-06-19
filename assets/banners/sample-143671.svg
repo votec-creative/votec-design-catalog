@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" role="img" aria-label="sample banner 143671">
+  <defs>
+    <radialGradient id="bg" cx=".5" cy=".35" r=".72">
+      <stop offset="0" stop-color="#fff4a7"/>
+      <stop offset=".5" stop-color="#ff6cad"/>
+      <stop offset="1" stop-color="#5c1548"/>
+    </radialGradient>
+  </defs>
+  <rect width="600" height="600" fill="url(#bg)"/>
+  <circle cx="305" cy="230" r="112" fill="#fff" opacity=".82"/>
+  <rect x="184" y="332" width="244" height="160" rx="80" fill="#fff" opacity=".62"/>
+  <text x="56" y="105" font-family="Arial, sans-serif" font-size="44" font-weight="900" fill="#fff">EVENT</text>
+  <text x="52" y="540" font-family="Arial Black, Arial, sans-serif" font-size="78" font-weight="900" fill="#fff" stroke="#a4146a" stroke-width="10" paint-order="stroke">OPEN</text>
+  <g opacity=".82" fill="#fff">
+    <circle cx="80" cy="180" r="10"/><circle cx="512" cy="118" r="12"/><circle cx="472" cy="500" r="9"/><circle cx="124" cy="460" r="14"/>
+  </g>
+</svg>
