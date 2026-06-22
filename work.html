@@ -245,6 +245,45 @@
         height: auto;
         border-radius: 22px;
         box-shadow: 0 28px 70px rgba(22, 31, 42, 0.18);
+        cursor: zoom-in;
+      }
+
+      .image-lightbox {
+        position: fixed;
+        inset: 0;
+        z-index: 80;
+        display: grid;
+        place-items: center;
+        padding: 28px;
+        background: rgba(7, 13, 18, 0.84);
+      }
+
+      .image-lightbox[hidden] {
+        display: none;
+      }
+
+      .image-lightbox img {
+        display: block;
+        width: auto;
+        max-width: min(100%, 1680px);
+        max-height: calc(100vh - 88px);
+        height: auto;
+        border-radius: 12px;
+        box-shadow: 0 30px 90px rgba(0, 0, 0, 0.44);
+      }
+
+      .lightbox-close {
+        position: fixed;
+        top: 18px;
+        right: 18px;
+        width: 44px;
+        height: 44px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.94);
+        color: #18212b;
+        font-size: 28px;
+        line-height: 1;
+        cursor: pointer;
       }
 
       .work-meta {
@@ -502,6 +541,10 @@
         <div class="similar-grid" id="similarGrid"></div>
       </section>
     </main>
+    <div class="image-lightbox" id="imageLightbox" hidden>
+      <button type="button" class="lightbox-close" id="lightboxClose" aria-label="閉じる">×</button>
+      <img id="lightboxImage" src="" alt="">
+    </div>
     <script>
       const portfolioImages = [
               "assets/portfolio/work-01.jpg",
@@ -844,6 +887,7 @@
         const designer = designers[index % designers.length];
         return {
           id: String(143667 + index),
+          type: "work",
           designer: designer.name,
           region: designer.region,
           role: designer.role,
@@ -854,42 +898,132 @@
         };
       });
 
+      const catalogItems = works.map((work, index) => ({
+        ...work,
+        id: `CT-${String(index + 1).padStart(4, "0")}`,
+        sourceId: work.id,
+        type: "catalog"
+      }));
+
+      const templates = portfolioImages.slice(0, Math.min(portfolioImages.length, 72)).map((image, index) => ({
+        id: `TP-${String(index + 1).padStart(4, "0")}`,
+        type: "template",
+        title: `テンプレート ${String(index + 1).padStart(3, "0")}`,
+        image,
+        color: palettes[index % palettes.length],
+        tone: tones[index % tones.length],
+        tags: tagSets[index % tagSets.length]
+      }));
+
       const params = new URLSearchParams(window.location.search);
-      const current = works.find((work) => work.id === params.get("id")) || works[0];
+      const requestedType = params.get("type") || "work";
+      const collections = {
+        work: works,
+        catalog: catalogItems,
+        template: templates
+      };
+      const currentCollection = collections[requestedType] || works;
+      const current = currentCollection.find((work) => work.id === params.get("id")) || currentCollection[0];
 
       function render() {
-        document.title = `${current.designer}\u306e\u30c7\u30b6\u30a4\u30ca\u30fc\u5b9f\u7e3e - VOTEC DESIGN CATALOG`;
+        const labels = {
+          work: {
+            title: "デザイナー実績詳細",
+            eyebrow: "DESIGNER WORK",
+            back: "デザイナー実績一覧へ",
+            backUrl: "index.html#works",
+            listLabel: "デザイナー実績を見る",
+            idLabel: "",
+            metaLabel: "DESIGNER",
+            tagTitle: "このデザイナー実績のタグ"
+          },
+          catalog: {
+            title: "制作カタログ詳細",
+            eyebrow: "CATALOG DETAIL",
+            back: "制作カタログ一覧へ",
+            backUrl: "index.html#catalog",
+            listLabel: "制作カタログを見る",
+            idLabel: "制作カタログID",
+            metaLabel: "CATALOG",
+            tagTitle: "この制作カタログのタグ"
+          },
+          template: {
+            title: "テンプレート詳細",
+            eyebrow: "TEMPLATE DETAIL",
+            back: "テンプレート一覧へ",
+            backUrl: "index.html#templates",
+            listLabel: "テンプレートを見る",
+            idLabel: "テンプレートID",
+            metaLabel: "TEMPLATE",
+            tagTitle: "このテンプレートのタグ"
+          }
+        };
+        const label = labels[current.type] || labels.work;
+        document.title = `${label.title} - VOTEC DESIGN CATALOG`;
+        document.querySelector(".eyebrow").textContent = label.eyebrow;
+        document.querySelector(".detail-hero h1").textContent = label.title;
+        const backLink = document.querySelector(".detail-hero .ghost-link");
+        backLink.textContent = label.back;
+        backLink.href = label.backUrl;
         const banner = document.querySelector("#mainBanner");
         banner.src = current.image;
-        banner.alt = `${current.designer}\u306e\u5236\u4f5c\u5b9f\u7e3e`;
-        const designerWorksUrl = `index.html?designer=${encodeURIComponent(current.designer)}#works`;
-        const designerRequestUrl = `form.html?designer=${encodeURIComponent(current.designer)}`;
-        document.querySelector("#workMeta").innerHTML = `
-          <p class="panel-label">DESIGNER</p>
+        banner.alt = `${label.title}`;
+        const designerWorksUrl = current.designer ? `index.html?designer=${encodeURIComponent(current.designer)}#works` : "index.html#works";
+        const designerRequestUrl = current.designer ? `form.html?designer=${encodeURIComponent(current.designer)}` : "form.html";
+        const idBlock = label.idLabel ? `
           <div class="meta-block">
-            <p class="meta-block-title">\u30c7\u30b6\u30a4\u30ca\u30fc\u60c5\u5831</p>
+            <p class="meta-block-title">${escapeHtml(label.idLabel)}</p>
+            <div class="designer">
+              <p class="designer-name">${escapeHtml(current.id)}</p>
+            </div>
+          </div>
+        ` : "";
+        const designerBlock = current.designer ? `
+          <div class="meta-block">
+            <p class="meta-block-title">デザイナー情報</p>
             <div class="designer">
               <p class="designer-name">${escapeHtml(current.designer)}</p>
               <p class="designer-sub">${escapeHtml(current.region)} / ${escapeHtml(current.role)}</p>
             </div>
           </div>
-          <div class="meta-block">
-              <p class="meta-block-title">\u3053\u306e\u30c7\u30b6\u30a4\u30ca\u30fc\u5b9f\u7e3e\u306e\u30bf\u30b0</p>
-            <div class="tags">${current.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div>
-          </div>
+        ` : "";
+        const actionBlock = current.type === "template" ? `
           <div class="designer-action">
-            <a class="ghost-link" href="${designerRequestUrl}">\u3053\u306e\u5236\u4f5c\u8005\u3092\u7b2c\u4e00\u5e0c\u671b\u306b\u3059\u308b</a>
-            <a class="ghost-link" href="${designerWorksUrl}">\u3053\u306e\u30c7\u30b6\u30a4\u30ca\u30fc\u306e\u5b9f\u7e3e\u3092\u898b\u308b</a>
+            <button type="button" class="copy-button" data-copy-id="${escapeHtml(current.id)}">IDをコピー</button>
+            <a class="ghost-link" href="index.html#templates">${escapeHtml(label.listLabel)}</a>
+          </div>
+        ` : current.type === "catalog" ? `
+          <div class="designer-action">
+            <button type="button" class="copy-button" data-copy-id="${escapeHtml(current.id)}">IDをコピー</button>
+            <a class="ghost-link" href="${designerRequestUrl}">この制作者を第一希望にする</a>
+            <a class="ghost-link" href="${designerWorksUrl}">このデザイナーの実績を見る</a>
+          </div>
+        ` : `
+          <div class="designer-action">
+            <a class="ghost-link" href="${designerRequestUrl}">この制作者を第一希望にする</a>
+            <a class="ghost-link" href="${designerWorksUrl}">このデザイナーの実績を見る</a>
           </div>
         `;
-        document.querySelector("#similarGrid").innerHTML = works
+        document.querySelector("#workMeta").innerHTML = `
+          <p class="panel-label">${escapeHtml(label.metaLabel)}</p>
+          ${idBlock}
+          ${designerBlock}
+          <div class="meta-block">
+            <p class="meta-block-title">${escapeHtml(label.tagTitle)}</p>
+            <div class="tags">${current.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div>
+          </div>
+          ${actionBlock}
+        `;
+        document.querySelector(".similar-section .ghost-link").textContent = label.listLabel;
+        document.querySelector(".similar-section .ghost-link").href = label.backUrl;
+        document.querySelector("#similarGrid").innerHTML = currentCollection
           .filter((work) => work.id !== current.id)
           .map((work) => ({ work, score: similarity(current, work) }))
           .sort((a, b) => b.score - a.score)
           .slice(0, 8)
           .map(({ work }) => `
-            <a class="similar-link" href="work.html?id=${encodeURIComponent(work.id)}" aria-label="${escapeHtml(work.designer)}\u306e\u5236\u4f5c\u5b9f\u7e3e\u3092\u898b\u308b">
-              <img src="${escapeHtml(work.image)}" alt="${escapeHtml(work.designer)}\u306e\u5236\u4f5c\u5b9f\u7e3e" loading="lazy">
+            <a class="similar-link" href="work.html?type=${encodeURIComponent(work.type)}&id=${encodeURIComponent(work.id)}" aria-label="${escapeHtml(label.title)}を見る">
+              <img src="${escapeHtml(work.image)}" alt="${escapeHtml(label.title)}" loading="lazy">
             </a>
           `)
           .join("");
@@ -915,6 +1049,41 @@
       }
 
       render();
+
+      const mainBanner = document.querySelector("#mainBanner");
+      const lightbox = document.querySelector("#imageLightbox");
+      const lightboxImage = document.querySelector("#lightboxImage");
+      const lightboxClose = document.querySelector("#lightboxClose");
+
+      mainBanner.addEventListener("click", () => {
+        lightboxImage.src = mainBanner.src;
+        lightboxImage.alt = mainBanner.alt;
+        lightbox.hidden = false;
+      });
+
+      function closeLightbox() {
+        lightbox.hidden = true;
+        lightboxImage.src = "";
+      }
+
+      lightboxClose.addEventListener("click", closeLightbox);
+      lightbox.addEventListener("click", (event) => {
+        if (event.target === lightbox) closeLightbox();
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !lightbox.hidden) closeLightbox();
+      });
+      document.addEventListener("click", (event) => {
+        const copyButton = event.target.closest("[data-copy-id]");
+        if (!copyButton) return;
+        const text = copyButton.dataset.copyId || "";
+        navigator.clipboard?.writeText(text).then(() => {
+          copyButton.textContent = "コピーしました";
+          setTimeout(() => {
+            copyButton.textContent = "IDをコピー";
+          }, 1200);
+        });
+      });
     </script>
   </body>
 </html>

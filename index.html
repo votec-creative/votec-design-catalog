@@ -440,7 +440,7 @@
       }
 
       .work-tile.is-portrait::after {
-        content: "縦長実績 / 詳細で全体を見る";
+        content: "縦長 / 詳細で全体を見る";
         position: absolute;
         left: 10px;
         right: 10px;
@@ -691,6 +691,32 @@
         font-weight: 900;
       }
 
+      .template-tile.is-portrait {
+        position: relative;
+      }
+
+      .template-tile.is-portrait img {
+        max-height: 460px;
+        object-fit: cover;
+        object-position: top center;
+      }
+
+      .template-tile.is-portrait::after {
+        content: "縦長 / 詳細で全体を見る";
+        position: absolute;
+        left: 10px;
+        right: 10px;
+        bottom: 48px;
+        min-height: 34px;
+        display: grid;
+        place-items: center;
+        border-radius: 999px;
+        background: rgba(12, 24, 32, 0.78);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
       .filter-body {
         max-height: min(720px, calc(100vh - 168px));
         overflow-y: auto;
@@ -782,6 +808,8 @@
         padding: 0;
         cursor: pointer;
         text-align: left;
+        text-decoration: none;
+        color: inherit;
         position: relative;
         overflow: hidden;
         border-radius: 12px;
@@ -1237,37 +1265,6 @@
         font-weight: 700;
       }
 
-      .quick-filters {
-        width: min(100%, 1680px);
-        margin: 0 auto 30px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        align-items: center;
-      }
-
-      .quick-filters span {
-        color: var(--muted);
-        font-size: 12px;
-        font-weight: 900;
-      }
-
-      .quick-chip {
-        min-height: 36px;
-        border: 1px solid #d3dce4;
-        border-radius: 999px;
-        padding: 0 13px;
-        background: #fff;
-        color: #334155;
-        font-weight: 900;
-        cursor: pointer;
-      }
-
-      .quick-chip:hover {
-        border-color: var(--brand);
-        color: var(--brand-strong);
-      }
-
       .section:not([data-section="works"]) {
         width: min(100%, 1680px);
         margin: 0 auto;
@@ -1463,10 +1460,6 @@
           margin: 0 auto 24px;
         }
 
-        .quick-filters {
-          margin-bottom: 22px;
-        }
-
         .search {
           min-height: 58px;
           padding-left: 22px;
@@ -1529,16 +1522,6 @@
         <div class="toolbar" aria-label="カタログ操作">
           <input class="search" id="catalogSearch" type="search" placeholder="デザイナー名・色味・雰囲気・カタログID・テンプレートIDで検索">
         </div>
-        <div class="quick-filters" aria-label="目的別検索">
-          <span>よく探す条件</span>
-          <button type="button" class="quick-chip" data-quick-search="高級感">高級感</button>
-          <button type="button" class="quick-chip" data-quick-search="求人">求人</button>
-          <button type="button" class="quick-chip" data-quick-search="女性向け">女性向け</button>
-          <button type="button" class="quick-chip" data-quick-search="派手">派手</button>
-          <button type="button" class="quick-chip" data-quick-search="ポップ">ポップ</button>
-          <button type="button" class="quick-chip" data-quick-search="LP">LP</button>
-        </div>
-
         <section class="section active" data-section="works">
           <div class="section-head">
             <div>
@@ -3218,9 +3201,9 @@
       }
 
 
-      function markPortraitTiles() {
-        document.querySelectorAll("#worksGrid .work-tile img").forEach((image) => {
-          const tile = image.closest(".work-tile");
+      function markPortraitTiles(selector = "#worksGrid .work-tile img") {
+        document.querySelectorAll(selector).forEach((image) => {
+          const tile = image.closest(".work-tile, .template-tile");
           const apply = () => {
             if (!tile || !image.naturalWidth) return;
             tile.classList.toggle("is-portrait", image.naturalHeight / image.naturalWidth > 1.45);
@@ -3301,11 +3284,12 @@
         const start = (currentPages.catalog - 1) * pageSizes.catalog;
         const pageItems = filtered.slice(start, start + pageSizes.catalog);
         grid.innerHTML = pageItems.map((item) => `
-          <button type="button" class="template-tile" data-catalog-id="${escapeHtml(item.id)}" data-search="${escapeHtml(searchText(item))}" aria-label="制作カタログID ${escapeHtml(item.id)}を確認">
+          <a class="template-tile" href="work.html?type=catalog&id=${encodeURIComponent(item.id)}" data-search="${escapeHtml(searchText(item))}" aria-label="制作カタログID ${escapeHtml(item.id)}の詳細を見る">
             <img src="${escapeHtml(item.image || sampleImage(item.sourceId))}" alt="" loading="lazy">
             <span class="template-id">${escapeHtml(item.id)}</span>
-          </button>
+          </a>
         `).join("");
+        markPortraitTiles("#catalogGrid .template-tile img");
         renderPagination("catalogPagination", "catalog", filtered.length);
         document.querySelector("#catalogEmpty").classList.toggle("is-visible", filtered.length === 0);
       }
@@ -3317,11 +3301,12 @@
         const start = (currentPages.templates - 1) * pageSizes.templates;
         const pageItems = filtered.slice(start, start + pageSizes.templates);
         grid.innerHTML = pageItems.map((template, index) => `
-          <button type="button" class="template-tile" data-template-id="${escapeHtml(template.id)}" data-search="${escapeHtml(searchText(template))}" aria-label="テンプレートID ${escapeHtml(template.id)}を確認">
+          <a class="template-tile" href="work.html?type=template&id=${encodeURIComponent(template.id)}" data-search="${escapeHtml(searchText(template))}" aria-label="テンプレートID ${escapeHtml(template.id)}の詳細を見る">
             <img src="${escapeHtml(template.image || sampleImage(String(143667 + index)))}" alt="" loading="lazy">
             <span class="template-id">${escapeHtml(template.id)}</span>
-          </button>
+          </a>
         `).join("");
+        markPortraitTiles("#templatesGrid .template-tile img");
         renderPagination("templatesPagination", "templates", filtered.length);
         document.querySelector("#templatesEmpty").classList.toggle("is-visible", filtered.length === 0);
       }
@@ -3534,22 +3519,8 @@
           if (activeTab === "catalog") renderCatalog(true);
           if (activeTab === "templates") renderTemplates(true);
         }
-        const quickSearch = event.target.closest("[data-quick-search]");
-        if (quickSearch) {
-          search.value = quickSearch.dataset.quickSearch;
-          currentPages.works = 1;
-          currentPages.designers = 1;
-          currentPages.catalog = 1;
-          currentPages.templates = 1;
-          applySearch();
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        }
         const designerButton = event.target.closest("[data-designer]");
         if (designerButton) showDesignerWorks(designerButton.dataset.designer);
-        const templateTile = event.target.closest("[data-template-id]");
-        if (templateTile) showTemplate(templateTile.dataset.templateId);
-        const catalogTile = event.target.closest("[data-catalog-id]");
-        if (catalogTile) showCatalogItem(catalogTile.dataset.catalogId);
         const copyTemplate = event.target.closest("#templateModalCopy");
         if (copyTemplate) copyText(copyTemplate.dataset.copy || "");
       });
