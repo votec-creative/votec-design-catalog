@@ -227,6 +227,7 @@
       }
 
       .work-stage {
+        position: relative;
         min-width: 0;
         display: grid;
         justify-items: center;
@@ -246,6 +247,44 @@
         border-radius: 22px;
         box-shadow: 0 28px 70px rgba(22, 31, 42, 0.18);
         cursor: zoom-in;
+      }
+
+      .detail-nav-arrow {
+        position: absolute;
+        top: 50%;
+        z-index: 3;
+        width: 52px;
+        height: 52px;
+        display: inline-grid;
+        place-items: center;
+        border: 1px solid rgba(207, 215, 223, 0.9);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.94);
+        color: #18212b;
+        font-size: 24px;
+        font-weight: 900;
+        text-decoration: none;
+        box-shadow: 0 14px 34px rgba(24, 33, 43, 0.18);
+        transform: translateY(-50%);
+        transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+      }
+
+      .detail-nav-arrow:hover {
+        background: var(--brand);
+        color: #fff;
+        transform: translateY(-50%) scale(1.04);
+      }
+
+      .detail-nav-prev {
+        left: 16px;
+      }
+
+      .detail-nav-next {
+        right: 16px;
+      }
+
+      .detail-nav-mobile {
+        display: none;
       }
 
       .image-lightbox {
@@ -477,6 +516,31 @@
           border-radius: 20px;
         }
 
+        .detail-nav-arrow {
+          display: none;
+        }
+
+        .detail-nav-mobile {
+          width: 100%;
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 10px;
+          margin-top: 12px;
+        }
+
+        .detail-nav-mobile a {
+          min-height: 46px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid #cfd7df;
+          border-radius: 999px;
+          background: #fff;
+          color: #23303d;
+          font-weight: 900;
+          text-decoration: none;
+        }
+
         .work-detail-layout {
           grid-template-columns: 1fr;
           gap: 18px;
@@ -527,7 +591,13 @@
 
       <div class="work-detail-layout">
         <section class="work-stage" id="workStage">
+          <a class="detail-nav-arrow detail-nav-prev" id="prevWorkLink" href="#" aria-label="前の画像へ">←</a>
           <img class="main-banner" id="mainBanner" src="" alt="" tabindex="0" role="button" aria-label="画像を拡大">
+          <a class="detail-nav-arrow detail-nav-next" id="nextWorkLink" href="#" aria-label="次の画像へ">→</a>
+          <div class="detail-nav-mobile">
+            <a id="prevWorkMobileLink" href="#">前へ</a>
+            <a id="nextWorkMobileLink" href="#">次へ</a>
+          </div>
         </section>
 
         <aside class="work-meta" id="workMeta" aria-label="デザイナー情報"></aside>
@@ -926,6 +996,25 @@
       };
       const currentCollection = collections[requestedType] || works;
       const current = currentCollection.find((work) => work.id === params.get("id")) || currentCollection[0];
+      const currentIndex = currentCollection.findIndex((work) => work.id === current.id);
+      const prevItem = currentIndex > 0 ? currentCollection[currentIndex - 1] : null;
+      const nextItem = currentIndex >= 0 && currentIndex < currentCollection.length - 1 ? currentCollection[currentIndex + 1] : null;
+
+      function detailUrl(item) {
+        return `work.html?type=${encodeURIComponent(item.type)}&id=${encodeURIComponent(item.id)}`;
+      }
+
+      function setupAdjacentLink(selector, item, fallbackLabel) {
+        const link = document.querySelector(selector);
+        if (!link) return;
+        if (!item) {
+          link.hidden = true;
+          return;
+        }
+        link.hidden = false;
+        link.href = detailUrl(item);
+        link.setAttribute("aria-label", `${fallbackLabel}: ${item.id}`);
+      }
 
       function render() {
         const labels = {
@@ -1029,6 +1118,10 @@
             </a>
           `)
           .join("");
+        setupAdjacentLink("#prevWorkLink", prevItem, "前の画像へ");
+        setupAdjacentLink("#nextWorkLink", nextItem, "次の画像へ");
+        setupAdjacentLink("#prevWorkMobileLink", prevItem, "前の画像へ");
+        setupAdjacentLink("#nextWorkMobileLink", nextItem, "次の画像へ");
       }
       function similarity(base, candidate) {
         let score = 0;
@@ -1066,6 +1159,7 @@
 
       mainBanner.addEventListener("click", openLightbox);
       workStage.addEventListener("click", (event) => {
+        if (event.target.closest(".detail-nav-arrow, .detail-nav-mobile")) return;
         if (event.target === mainBanner) return;
         openLightbox();
       });
@@ -1088,6 +1182,9 @@
       });
       document.addEventListener("keydown", (event) => {
         if (event.key === "Escape" && !lightbox.hidden) closeLightbox();
+        if (!lightbox.hidden) return;
+        if (event.key === "ArrowLeft" && prevItem) window.location.href = detailUrl(prevItem);
+        if (event.key === "ArrowRight" && nextItem) window.location.href = detailUrl(nextItem);
       });
       document.addEventListener("click", (event) => {
         const copyButton = event.target.closest("[data-copy-id]");
