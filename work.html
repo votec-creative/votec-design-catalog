@@ -253,9 +253,10 @@
         inset: 0;
         z-index: 80;
         display: grid;
-        place-items: center;
+        place-items: start center;
         padding: 28px;
         background: rgba(7, 13, 18, 0.84);
+        overflow: auto;
       }
 
       .image-lightbox[hidden] {
@@ -266,10 +267,11 @@
         display: block;
         width: auto;
         max-width: min(100%, 1680px);
-        max-height: calc(100vh - 88px);
+        max-height: none;
         height: auto;
         border-radius: 12px;
         box-shadow: 0 30px 90px rgba(0, 0, 0, 0.44);
+        cursor: zoom-out;
       }
 
       .lightbox-close {
@@ -524,8 +526,8 @@
       </section>
 
       <div class="work-detail-layout">
-        <section class="work-stage">
-          <img class="main-banner" id="mainBanner" src="" alt="">
+        <section class="work-stage" id="workStage">
+          <img class="main-banner" id="mainBanner" src="" alt="" tabindex="0" role="button" aria-label="画像を拡大">
         </section>
 
         <aside class="work-meta" id="workMeta" aria-label="デザイナー情報"></aside>
@@ -1051,14 +1053,27 @@
       render();
 
       const mainBanner = document.querySelector("#mainBanner");
+      const workStage = document.querySelector("#workStage");
       const lightbox = document.querySelector("#imageLightbox");
       const lightboxImage = document.querySelector("#lightboxImage");
       const lightboxClose = document.querySelector("#lightboxClose");
 
-      mainBanner.addEventListener("click", () => {
+      function openLightbox() {
         lightboxImage.src = mainBanner.src;
         lightboxImage.alt = mainBanner.alt;
         lightbox.hidden = false;
+      }
+
+      mainBanner.addEventListener("click", openLightbox);
+      workStage.addEventListener("click", (event) => {
+        if (event.target === mainBanner) return;
+        openLightbox();
+      });
+      mainBanner.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openLightbox();
+        }
       });
 
       function closeLightbox() {
@@ -1069,6 +1084,7 @@
       lightboxClose.addEventListener("click", closeLightbox);
       lightbox.addEventListener("click", (event) => {
         if (event.target === lightbox) closeLightbox();
+        if (event.target === lightboxImage) closeLightbox();
       });
       document.addEventListener("keydown", (event) => {
         if (event.key === "Escape" && !lightbox.hidden) closeLightbox();
