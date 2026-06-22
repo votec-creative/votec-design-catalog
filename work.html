@@ -978,7 +978,8 @@
             </div>
           </div>
         ` : "";
-        const designerBlock = current.designer ? `
+        const showDesignerInfo = current.type === "work" && current.designer;
+        const designerBlock = showDesignerInfo ? `
           <div class="meta-block">
             <p class="meta-block-title">デザイナー情報</p>
             <div class="designer">
@@ -995,8 +996,7 @@
         ` : current.type === "catalog" ? `
           <div class="designer-action">
             <button type="button" class="copy-button" data-copy-id="${escapeHtml(current.id)}">IDをコピー</button>
-            <a class="ghost-link" href="${designerRequestUrl}">この制作者を第一希望にする</a>
-            <a class="ghost-link" href="${designerWorksUrl}">このデザイナーの実績を見る</a>
+            <a class="ghost-link" href="index.html#catalog">${escapeHtml(label.listLabel)}</a>
           </div>
         ` : `
           <div class="designer-action">
