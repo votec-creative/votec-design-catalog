@@ -259,6 +259,7 @@
         height: auto;
         min-height: 0;
         object-fit: contain;
+        scroll-margin-top: 96px;
         border-radius: 22px;
         box-shadow: 0 28px 70px rgba(22, 31, 42, 0.18);
         cursor: zoom-in;
@@ -1075,8 +1076,9 @@
       const prevItem = currentIndex > 0 ? currentCollection[currentIndex - 1] : null;
       const nextItem = currentIndex >= 0 && currentIndex < currentCollection.length - 1 ? currentCollection[currentIndex + 1] : null;
 
-      function detailUrl(item) {
-        return `work.html?type=${encodeURIComponent(item.type)}&id=${encodeURIComponent(item.id)}`;
+      function detailUrl(item, alignToBanner = false) {
+        const hash = alignToBanner ? "#mainBanner" : "";
+        return `work.html?type=${encodeURIComponent(item.type)}&id=${encodeURIComponent(item.id)}${hash}`;
       }
 
       function setupAdjacentLink(selector, item, fallbackLabel) {
@@ -1087,7 +1089,7 @@
           return;
         }
         link.hidden = false;
-        link.href = detailUrl(item);
+        link.href = detailUrl(item, true);
         link.setAttribute("aria-label", `${fallbackLabel}: ${item.id}`);
       }
 
@@ -1226,6 +1228,19 @@
       const lightboxImage = document.querySelector("#lightboxImage");
       const lightboxClose = document.querySelector("#lightboxClose");
 
+      function alignBannerTopFromHash() {
+        if (window.location.hash !== "#mainBanner") return;
+        requestAnimationFrame(() => {
+          mainBanner.scrollIntoView({ block: "start", inline: "nearest" });
+        });
+      }
+
+      if (mainBanner.complete) {
+        alignBannerTopFromHash();
+      } else {
+        mainBanner.addEventListener("load", alignBannerTopFromHash, { once: true });
+      }
+
       function openLightbox() {
         lightboxImage.src = mainBanner.src;
         lightboxImage.alt = mainBanner.alt;
@@ -1258,8 +1273,8 @@
       document.addEventListener("keydown", (event) => {
         if (event.key === "Escape" && !lightbox.hidden) closeLightbox();
         if (!lightbox.hidden) return;
-        if (event.key === "ArrowLeft" && prevItem) window.location.href = detailUrl(prevItem);
-        if (event.key === "ArrowRight" && nextItem) window.location.href = detailUrl(nextItem);
+        if (event.key === "ArrowLeft" && prevItem) window.location.href = detailUrl(prevItem, true);
+        if (event.key === "ArrowRight" && nextItem) window.location.href = detailUrl(nextItem, true);
       });
       document.addEventListener("click", (event) => {
         const copyButton = event.target.closest("[data-copy-id]");
