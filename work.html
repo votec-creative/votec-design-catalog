@@ -287,6 +287,18 @@
         display: none;
       }
 
+      @media (min-width: 761px) {
+        .work-stage {
+          height: min(86vh, 1030px);
+          min-height: 560px;
+          align-content: center;
+        }
+
+        .main-banner {
+          max-height: calc(100% - 52px);
+        }
+      }
+
       .image-lightbox {
         position: fixed;
         inset: 0;
@@ -516,6 +528,8 @@
         }
 
         .work-stage {
+          height: auto;
+          min-height: 0;
           padding: 12px;
           border-radius: 20px;
         }
