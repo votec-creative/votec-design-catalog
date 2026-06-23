@@ -1150,7 +1150,12 @@
         catalog: catalogItems,
         template: templates
       };
-      const currentCollection = collections[requestedType] || works;
+      const baseCollection = collections[requestedType] || works;
+      const requestedDesigner = params.get("designer") || "";
+      const scopedCollection = requestedType === "work" && requestedDesigner
+        ? baseCollection.filter((work) => work.designer === requestedDesigner)
+        : baseCollection;
+      const currentCollection = scopedCollection.length ? scopedCollection : baseCollection;
       const current = currentCollection.find((work) => work.id === params.get("id")) || currentCollection[0];
       const currentIndex = currentCollection.findIndex((work) => work.id === current.id);
       const prevItem = currentIndex > 0 ? currentCollection[currentIndex - 1] : null;
@@ -1158,7 +1163,8 @@
 
       function detailUrl(item, alignToBanner = false) {
         const hash = alignToBanner ? "#mainBanner" : "";
-        return `work.html?type=${encodeURIComponent(item.type)}&id=${encodeURIComponent(item.id)}${hash}`;
+        const designerScope = item.type === "work" && requestedDesigner ? `&designer=${encodeURIComponent(requestedDesigner)}` : "";
+        return `work.html?type=${encodeURIComponent(item.type)}&id=${encodeURIComponent(item.id)}${designerScope}${hash}`;
       }
 
       function setupAdjacentLink(selector, item, fallbackLabel) {
@@ -1270,7 +1276,7 @@
           .sort((a, b) => b.score - a.score)
           .slice(0, 18)
           .map(({ work }) => `
-            <a class="similar-link" href="work.html?type=${encodeURIComponent(work.type)}&id=${encodeURIComponent(work.id)}" aria-label="${escapeHtml(label.title)}を見る">
+            <a class="similar-link" href="${detailUrl(work)}" aria-label="${escapeHtml(label.title)}を見る">
               <img src="${escapeHtml(work.image)}" alt="${escapeHtml(label.title)}" loading="lazy">
             </a>
           `)

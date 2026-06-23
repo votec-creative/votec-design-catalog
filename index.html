@@ -3245,6 +3245,11 @@
         return `<img src="${escapeHtml(work.image || sampleImage(work.id))}" alt="" loading="lazy">`;
       }
 
+      function workDetailUrl(work) {
+        const scope = activeDesignerFilter ? `&designer=${encodeURIComponent(activeDesignerFilter)}` : "";
+        return `work.html?type=work&id=${encodeURIComponent(work.id)}${scope}`;
+      }
+
       function sampleImage(id) {
         const numericId = Number(String(id).replace(/\D/g, ""));
         return portfolioImages[numericId % portfolioImages.length] || portfolioImages[0];
@@ -3328,7 +3333,7 @@
             : "";
         }
         grid.innerHTML = pageItems.map((work) => `
-          <a class="work-tile tone-${escapeHtml(work.tone)} shape-${escapeHtml(work.shape)}" href="work.html?id=${encodeURIComponent(work.id)}" data-search="${escapeHtml(searchText(work))}" aria-label="${escapeHtml(work.designer)}のデザイナー実績を見る">
+          <a class="work-tile tone-${escapeHtml(work.tone)} shape-${escapeHtml(work.shape)}" href="${workDetailUrl(work)}" data-search="${escapeHtml(searchText(work))}" aria-label="${escapeHtml(work.designer)}のデザイナー実績を見る">
             <span class="work-image-frame">${bannerImage(work)}</span>
             <span class="work-caption">
               <b>${escapeHtml(work.designer)}</b>
