@@ -230,6 +230,7 @@
         position: relative;
         min-width: 0;
         display: grid;
+        align-items: center;
         justify-items: center;
         padding: 26px;
         border: 1px solid rgba(213, 221, 229, 0.9);
@@ -244,6 +245,8 @@
         max-width: 100%;
         max-height: min(82vh, 980px);
         height: auto;
+        min-height: 0;
+        object-fit: contain;
         border-radius: 22px;
         box-shadow: 0 28px 70px rgba(22, 31, 42, 0.18);
         cursor: zoom-in;
@@ -291,11 +294,12 @@
         .work-stage {
           height: min(86vh, 1030px);
           min-height: 560px;
-          align-content: center;
         }
 
         .main-banner {
-          max-height: calc(100% - 52px);
+          width: auto;
+          height: auto;
+          max-height: min(calc(86vh - 52px), 978px);
         }
       }
 
@@ -524,12 +528,13 @@
         }
 
         .main-banner {
+          max-height: min(calc(78vh - 86px), 674px);
           border-radius: 14px;
         }
 
         .work-stage {
-          height: auto;
-          min-height: 0;
+          height: min(78vh, 760px);
+          min-height: 420px;
           padding: 12px;
           border-radius: 20px;
         }
@@ -539,11 +544,15 @@
         }
 
         .detail-nav-mobile {
-          width: 100%;
+          position: absolute;
+          left: 12px;
+          right: 12px;
+          bottom: 12px;
+          z-index: 4;
           display: grid;
           grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 10px;
-          margin-top: 12px;
+          margin: 0;
         }
 
         .detail-nav-mobile a {
