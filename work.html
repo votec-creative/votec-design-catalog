@@ -250,9 +250,9 @@
       }
 
       .detail-nav-arrow {
-        position: fixed;
+        position: absolute;
         top: 50%;
-        z-index: 30;
+        z-index: 3;
         width: 56px;
         height: 56px;
         display: inline-grid;
@@ -276,11 +276,11 @@
       }
 
       .detail-nav-prev {
-        left: max(18px, calc((100vw - 1440px) / 2 + 18px));
+        left: 18px;
       }
 
       .detail-nav-next {
-        right: max(18px, calc((100vw - 1440px) / 2 + 18px));
+        right: 18px;
       }
 
       .detail-nav-mobile {
@@ -299,10 +299,6 @@
       }
 
       .image-lightbox[hidden] {
-        display: none;
-      }
-
-      body:has(.image-lightbox:not([hidden])) .detail-nav-arrow {
         display: none;
       }
 
@@ -371,11 +367,13 @@
       }
 
       .similar-section {
-        margin: 72px 0 0;
+        width: 100vw;
+        margin: 72px 0 0 calc(50% - 50vw);
+        padding: 0 14px;
       }
 
       .section-head {
-        width: min(960px, 100%);
+        width: min(100%, 1680px);
         margin: 0 auto 24px;
         display: flex;
         justify-content: space-between;
@@ -397,8 +395,10 @@
       }
 
       .similar-grid {
+        width: min(100%, 1680px);
+        margin: 0 auto;
         display: block;
-        column-count: 5;
+        column-count: 7;
         column-gap: 18px;
       }
 
@@ -561,9 +561,36 @@
           column-gap: 10px;
         }
 
+        .similar-section {
+          margin-top: 42px;
+          padding: 0 10px;
+        }
+
+        .section-head {
+          width: 100%;
+        }
+
         .similar-link {
           margin-bottom: 10px;
           border-radius: 10px;
+        }
+      }
+
+      @media (min-width: 761px) and (max-width: 1180px) {
+        .similar-grid {
+          column-count: 4;
+        }
+      }
+
+      @media (min-width: 1181px) and (max-width: 1500px) {
+        .similar-grid {
+          column-count: 6;
+        }
+      }
+
+      @media (min-width: 1700px) {
+        .similar-grid {
+          column-count: 8;
         }
       }
     </style>
@@ -1115,7 +1142,7 @@
           .filter((work) => work.id !== current.id)
           .map((work) => ({ work, score: similarity(current, work) }))
           .sort((a, b) => b.score - a.score)
-          .slice(0, 8)
+          .slice(0, 18)
           .map(({ work }) => `
             <a class="similar-link" href="work.html?type=${encodeURIComponent(work.type)}&id=${encodeURIComponent(work.id)}" aria-label="${escapeHtml(label.title)}を見る">
               <img src="${escapeHtml(work.image)}" alt="${escapeHtml(label.title)}" loading="lazy">
