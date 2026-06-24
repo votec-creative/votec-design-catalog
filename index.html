@@ -1817,41 +1817,321 @@
 
     <script>
       const designers = [
-        { name: "堂角 翼", initials: "DT", region: "東京", tone: "lp", summary: "案件理解が早く修正が少ない。業種を問わず幅広く対応。", tags: ["LP", "高単価", "女性向け"] },
-        { name: "山口 あい", initials: "YA", region: "東京", tone: "sns", summary: "読みやすい文字組みとテンポのよいレイアウトが得意。", tags: ["バナー", "SNS", "女性向け"] },
-        { name: "佐藤 健", initials: "SK", region: "東京", tone: "video", summary: "高単価店の実績多数。訴求力の高い構成が得意。", tags: ["LP", "高単価", "動画"] },
-        { name: "田中 みな", initials: "TM", region: "東京", tone: "banner", summary: "柔らかい色使いと繊細な女性向けデザインが得意。", tags: ["女性向け", "人妻", "バナー"] },
-        { name: "木村 拓", initials: "KT", region: "東京", tone: "hp", summary: "ブランド感のあるHP画像や落ち着いた広告が得意。", tags: ["高単価", "LP", "バナー"] },
-        { name: "中村 さき", initials: "NS", region: "東京", tone: "sns", summary: "SNS特化。若年層への訴求と拡散されやすい表現が得意。", tags: ["SNS", "女性向け", "バナー"] },
-        { name: "鈴木 俊", initials: "SR", region: "東京", tone: "video", summary: "短納期の大量展開に強い。キャンペーン画像の量産が得意。", tags: ["バナー", "短納期", "量産"] },
-        { name: "高橋 澪", initials: "TR", region: "東京", tone: "banner", summary: "色気と清潔感のバランス調整が得意。写真選定も強い。", tags: ["女性向け", "写真", "バナー"] },
-        { name: "伊藤 蓮", initials: "IR", region: "東京", tone: "lp", summary: "情報量の多いLPを迷わず読める構成にまとめる。", tags: ["LP", "構成", "高単価"] },
-        { name: "渡辺 優", initials: "WY", region: "東京", tone: "hp", summary: "店舗HPの世界観作りと落ち着いたビジュアル設計が得意。", tags: ["HP", "ブランディング", "高単価"] },
-        { name: "小林 葵", initials: "KA", region: "東京", tone: "sns", summary: "明るく親しみやすいトーン。求人・イベント告知に強い。", tags: ["SNS", "求人", "イベント"] },
-        { name: "加藤 凛", initials: "KR", region: "東京", tone: "banner", summary: "可読性重視。スマホで見やすいバナー制作が得意。", tags: ["スマホ", "バナー", "読みやすい"] },
-        { name: "吉田 悠", initials: "YY", region: "東京", tone: "video", summary: "強めの訴求と目立つ配色。期間限定キャンペーン向き。", tags: ["キャンペーン", "動画", "訴求強め"] },
-        { name: "山本 司", initials: "YS", region: "東京", tone: "lp", summary: "男性向け訴求と比較情報の整理が得意。媒体LPとの相性がよい。", tags: ["LP", "男性向け", "比較"] },
-        { name: "松本 ひかり", initials: "MH", region: "東京", tone: "sns", summary: "柔らかい雰囲気と視線誘導。初回利用向けの安心感づくりが得意。", tags: ["女性向け", "安心感", "SNS"] },
-        { name: "井上 航", initials: "IW", region: "関西", tone: "hp", summary: "情報設計が得意。店舗紹介や料金表まわりの整理に強い。", tags: ["HP", "情報整理", "料金"] },
-        { name: "清水 七海", initials: "SN", region: "関西", tone: "banner", summary: "写真を大きく見せる構成が得意。人物素材を活かしたデザイン向き。", tags: ["写真", "人物", "バナー"] },
-        { name: "林 大地", initials: "HD", region: "関西", tone: "video", summary: "インパクト重視。目立たせたい文言が多い案件をまとめるのが得意。", tags: ["訴求強め", "動画", "キャンペーン"] },
-        { name: "森 由衣", initials: "MY", region: "関西", tone: "sns", summary: "上品で控えめな雰囲気。高級感を損なわないデザインが得意。", tags: ["高級感", "女性向け", "SNS"] },
-        { name: "池田 真", initials: "IM", region: "関西", tone: "lp", summary: "コンバージョン重視。導線と見出しの整理が得意。", tags: ["LP", "導線", "高単価"] },
-        { name: "橋本 彩", initials: "HA", region: "関西", tone: "banner", summary: "ポップで分かりやすいバナー。新店告知やイベント画像に強い。", tags: ["新店", "イベント", "バナー"] },
-        { name: "石田 陸", initials: "IR2", region: "関西", tone: "hp", summary: "オリジナルHP向け。落ち着いた配色と余白設計が得意。", tags: ["HP", "余白", "ブランディング"] },
-        { name: "藤原 葵", initials: "FA", region: "関西", tone: "sns", summary: "短いコピーを活かしたSNS画像が得意。求人・日次投稿向け。", tags: ["SNS", "求人", "コピー"] },
-        { name: "岡田 蓮", initials: "OA", region: "関西", tone: "video", summary: "動画サムネの動き前提の画作りに強い。派手めの案件向き。", tags: ["動画", "サムネ", "訴求強め"] },
-        { name: "長谷川 結", initials: "HY", region: "関西", tone: "banner", summary: "大人っぽい女性向けデザイン。落ち着いた色味が得意。", tags: ["女性向け", "大人", "バナー"] },
-        { name: "近藤 翼", initials: "KS", region: "関西", tone: "lp", summary: "媒体ごとのサイズ展開に強い。共通デザインの横展開が速い。", tags: ["展開", "LP", "量産"] },
-        { name: "前田 茜", initials: "MS", region: "関西", tone: "sns", summary: "若年層向けの明るいデザイン。軽快なSNSトーンが得意。", tags: ["SNS", "若年層", "求人"] },
-        { name: "遠藤 顕", initials: "EH", region: "九州", tone: "hp", summary: "店舗の世界観整理が得意。写真とテキストのバランスがよい。", tags: ["HP", "写真", "構成"] },
-        { name: "青木 美月", initials: "AM", region: "九州", tone: "banner", summary: "読みやすく締まったバナー。訴求文言が多い案件にも対応。", tags: ["読みやすい", "バナー", "量産"] },
-        { name: "坂本 直", initials: "SN2", region: "九州", tone: "video", summary: "勢いのあるキャンペーン表現。限定感・緊急感の演出が得意。", tags: ["キャンペーン", "動画", "限定"] },
-        { name: "村上 玲", initials: "MR", region: "九州", tone: "lp", summary: "高単価系の落ち着いたLP。丁寧な情報整理が強み。", tags: ["LP", "高単価", "情報整理"] },
-        { name: "太田 樹央", initials: "OR", region: "九州", tone: "sns", summary: "女性目線の柔らかいデザイン。清潔感のある投稿画像が得意。", tags: ["女性向け", "SNS", "清潔感"] },
-        { name: "西村 圭", initials: "NK", region: "九州", tone: "hp", summary: "ブランド感のあるHP画像。締めのある高級感表現が得意。", tags: ["HP", "高級感", "ブランド"] },
-        { name: "福田 真央", initials: "FM", region: "九州", tone: "banner", summary: "かわいい系とポップ系に強い。イベント訴求の見せ方が得意。", tags: ["ポップ", "イベント", "バナー"] },
-        { name: "三浦 仁", initials: "MJ", region: "九州", tone: "video", summary: "訴求の優先順位整理が得意。複数サイズでも見え方が安定する。", tags: ["動画", "展開", "構成"] }
+              {
+                      "name": "堂角美樹",
+                      "initials": "DK",
+                      "region": "東京",
+                      "role": "",
+                      "tone": "lp",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "村松純汰",
+                      "initials": "MJ",
+                      "region": "東京",
+                      "role": "",
+                      "tone": "sns",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "浅利あつ美",
+                      "initials": "AA",
+                      "region": "東京",
+                      "role": "",
+                      "tone": "video",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "笹沼萌",
+                      "initials": "SM",
+                      "region": "東京",
+                      "role": "",
+                      "tone": "banner",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "桑原智美",
+                      "initials": "KT",
+                      "region": "東京",
+                      "role": "",
+                      "tone": "hp",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "川浦有稀",
+                      "initials": "KY",
+                      "region": "東京",
+                      "role": "",
+                      "tone": "sns",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "加賀千安紀",
+                      "initials": "KC",
+                      "region": "東京",
+                      "role": "",
+                      "tone": "video",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "寺嶋茉奈",
+                      "initials": "TM",
+                      "region": "東京",
+                      "role": "",
+                      "tone": "banner",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "小野口和暉",
+                      "initials": "OK",
+                      "region": "東京",
+                      "role": "",
+                      "tone": "lp",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "森永大介",
+                      "initials": "MD",
+                      "region": "東京",
+                      "role": "",
+                      "tone": "sns",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "佐藤麻衣",
+                      "initials": "MI",
+                      "region": "東京",
+                      "role": "",
+                      "tone": "video",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "佐藤彩夏",
+                      "initials": "SA",
+                      "region": "東京",
+                      "role": "",
+                      "tone": "banner",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "齋藤亜琉",
+                      "initials": "AR",
+                      "region": "東京",
+                      "role": "",
+                      "tone": "hp",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "田仲邑莉野",
+                      "initials": "TR",
+                      "region": "東京",
+                      "role": "",
+                      "tone": "sns",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "松本考史",
+                      "initials": "MT",
+                      "region": "関西",
+                      "role": "",
+                      "tone": "video",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "原勇貴",
+                      "initials": "HY",
+                      "region": "関西",
+                      "role": "",
+                      "tone": "banner",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "仙谷優依",
+                      "initials": "SY",
+                      "region": "関西",
+                      "role": "",
+                      "tone": "lp",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "高木弓",
+                      "initials": "TY",
+                      "region": "関西",
+                      "role": "",
+                      "tone": "sns",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "田中ひかる",
+                      "initials": "TH",
+                      "region": "関西",
+                      "role": "",
+                      "tone": "video",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "板坂莉琴",
+                      "initials": "IR",
+                      "region": "関西",
+                      "role": "",
+                      "tone": "banner",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "山本瑞樹",
+                      "initials": "YM",
+                      "region": "関西",
+                      "role": "",
+                      "tone": "hp",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "大和谷知沙",
+                      "initials": "YC",
+                      "region": "関西",
+                      "role": "",
+                      "tone": "sns",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "中野亜海",
+                      "initials": "NA",
+                      "region": "関西",
+                      "role": "",
+                      "tone": "video",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "金行凜空",
+                      "initials": "KR",
+                      "region": "関西",
+                      "role": "",
+                      "tone": "banner",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "小野寺亮周",
+                      "initials": "OR",
+                      "region": "九州",
+                      "role": "",
+                      "tone": "video",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "白谷祐人",
+                      "initials": "SH",
+                      "region": "九州",
+                      "role": "",
+                      "tone": "banner",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "大家美咲",
+                      "initials": "OM",
+                      "region": "九州",
+                      "role": "",
+                      "tone": "hp",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "佐藤瑞歩",
+                      "initials": "MZ",
+                      "region": "九州",
+                      "role": "",
+                      "tone": "sns",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "平野亜利沙",
+                      "initials": "HA",
+                      "region": "九州",
+                      "role": "",
+                      "tone": "video",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "小桝由聖",
+                      "initials": "KO",
+                      "region": "九州",
+                      "role": "",
+                      "tone": "banner",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "峯田ひより",
+                      "initials": "MH",
+                      "region": "九州",
+                      "role": "",
+                      "tone": "lp",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "溝上洋子",
+                      "initials": "MY",
+                      "region": "九州",
+                      "role": "",
+                      "tone": "sns",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "松山桃花",
+                      "initials": "MM",
+                      "region": "九州",
+                      "role": "",
+                      "tone": "video",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "山口瞬",
+                      "initials": "YS",
+                      "region": "九州",
+                      "role": "",
+                      "tone": "lp",
+                      "summary": "",
+                      "tags": []
+              },
+              {
+                      "name": "石橋美佳",
+                      "initials": "IM",
+                      "region": "九州",
+                      "role": "",
+                      "tone": "sns",
+                      "summary": "",
+                      "tags": []
+              }
       ];
 
       const portfolioImages = [
@@ -3208,7 +3488,9 @@
 
       designers.forEach((designer, index) => {
         const profile = designerProfiles[index % designerProfiles.length];
-        designer.role = profile.role;
+        if (!Object.prototype.hasOwnProperty.call(designer, "role")) {
+          designer.role = profile.role;
+        }
         designer.focus = profile.focus;
         designer.tags = [...new Set([...profile.tags, ...(designer.tags || [])])].slice(0, 5);
       });
@@ -3375,7 +3657,7 @@
                 <span class="avatar">${escapeHtml(designer.initials)}</span>
                 <div><b>${escapeHtml(designer.name)}</b><small>${escapeHtml(designer.region)}</small></div>
               </div>
-              <p class="desc">${escapeHtml(designer.summary)}</p>
+              ${designer.summary ? `<p class="desc">${escapeHtml(designer.summary)}</p>` : ""}
               <div class="tags">${tagHtml(designer.tags.slice(0, 3))}</div>
             </div>
           </article>
