@@ -126,6 +126,10 @@
         box-shadow: 0 14px 28px rgba(15, 111, 92, 0.24);
       }
 
+      .mobile-nav-cta {
+        display: none;
+      }
+
       .site-nav small {
         display: block;
         margin-top: 3px;
@@ -1450,6 +1454,25 @@
           white-space: nowrap;
         }
 
+        .site-nav .nav-cta {
+          display: none;
+        }
+
+        .mobile-nav-cta {
+          min-height: 46px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 999px;
+          padding: 0 18px;
+          background: var(--brand);
+          color: #fff;
+          font-size: 14px;
+          font-weight: 900;
+          text-decoration: none;
+          box-shadow: 0 12px 26px rgba(22, 146, 119, 0.22);
+        }
+
         .catalog-main {
           width: min(100% - 20px, 1680px);
           padding-top: 16px;
@@ -1661,6 +1684,7 @@
             <a href="#" data-nav-tab="templates">テンプレート</a>
             <a class="nav-cta" href="form.html">依頼フォームはこちら</a>
           </nav>
+          <a class="mobile-nav-cta" href="form.html">依頼フォームはこちら</a>
         </div>
       </header>
       <main class="catalog-main">
