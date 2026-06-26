@@ -3804,7 +3804,6 @@
         grid.innerHTML = pageItems.map((item) => `
           <a class="template-tile" href="work.html?type=catalog&id=${encodeURIComponent(item.id)}" data-search="${escapeHtml(searchText(item))}" aria-label="制作カタログID ${escapeHtml(item.id)}の詳細を見る">
             <img src="${escapeHtml(item.image || sampleImage(item.sourceId))}" alt="" loading="lazy">
-            <span class="template-id">${escapeHtml(item.id)}</span>
           </a>
         `).join("");
         markPortraitTiles("#catalogGrid .template-tile img");
@@ -3821,7 +3820,6 @@
         grid.innerHTML = pageItems.map((template, index) => `
           <a class="template-tile" href="work.html?type=template&id=${encodeURIComponent(template.id)}" data-search="${escapeHtml(searchText(template))}" aria-label="テンプレートID ${escapeHtml(template.id)}の詳細を見る">
             <img src="${escapeHtml(template.image || sampleImage(String(143667 + index)))}" alt="" loading="lazy">
-            <span class="template-id">${escapeHtml(template.id)}</span>
           </a>
         `).join("");
         markPortraitTiles("#templatesGrid .template-tile img");
