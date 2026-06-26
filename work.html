@@ -1128,22 +1128,90 @@
         };
       });
 
+      const designerIdMap = new Map([
+        ["堂角美樹", "d85"],
+        ["村松純汰", "d107"],
+        ["浅利あつ美", "d10"],
+        ["笹沼萌", "d87"],
+        ["桑原智美", "d68"],
+        ["川浦有稀", "d90"],
+        ["加賀千安紀", "d92"],
+        ["寺嶋茉奈", "d94"],
+        ["小野口和暉", "d103"],
+        ["森永大介", "d104"],
+        ["佐藤麻衣", "d116"],
+        ["佐藤彩夏", "d119"],
+        ["齋藤亜琉", "d122"],
+        ["田仲邑莉野", "d138"],
+        ["松本考史", "d42"],
+        ["原勇貴", "d106"],
+        ["仙谷優依", "d76"],
+        ["高木弓", "d82"],
+        ["田中ひかる", "d109"],
+        ["板坂莉琴", "d110"],
+        ["山本瑞樹", "d111"],
+        ["大和谷知沙", "d113"],
+        ["中野亜海", "d120"],
+        ["金行凜空", "d123"],
+        ["小野寺亮周", "d64"],
+        ["白谷祐人", "d108"],
+        ["大家美咲", "d72"],
+        ["佐藤瑞歩", "d81"],
+        ["平野亜利沙", "d95"],
+        ["小桝由聖", "d121"],
+        ["峯田ひより", "d117"],
+        ["溝上洋子", "d135"],
+        ["松山桃花", "d136"],
+        ["山口瞬", "d04"],
+        ["石橋美佳", "d44"]
+      ]);
+
+      function designerIdFor(name, index) {
+        return designerIdMap.get(name) || `d${String((index % 138) + 1).padStart(2, "0")}`;
+      }
+
+      function dateCodeFor(index) {
+        const base = new Date(2026, 5, 25);
+        base.setDate(base.getDate() + Math.floor(index / 30));
+        const year = String(base.getFullYear()).slice(-2);
+        const month = String(base.getMonth() + 1).padStart(2, "0");
+        const day = String(base.getDate()).padStart(2, "0");
+        return `${year}${month}${day}`;
+      }
+
+      function serialCodeFor(index) {
+        return String((index % 30) + 1).padStart(2, "0");
+      }
+
+      function catalogIdFor(work, index) {
+        return `${designerIdFor(work.designer, index)}_${dateCodeFor(index)}_${serialCodeFor(index)}.jpg`;
+      }
+
+      function templateIdFor(template, index) {
+        return `tpl_${designerIdFor(template.designer, index)}_${dateCodeFor(index)}_${serialCodeFor(index)}.jpg`;
+      }
+
       const catalogItems = works.map((work, index) => ({
         ...work,
-        id: `CT-${String(index + 1).padStart(4, "0")}`,
+        id: catalogIdFor(work, index),
         sourceId: work.id,
         type: "catalog"
       }));
 
-      const templates = portfolioImages.slice(0, Math.min(portfolioImages.length, 72)).map((image, index) => ({
-        id: `TP-${String(index + 1).padStart(4, "0")}`,
-        type: "template",
-        title: `テンプレート ${String(index + 1).padStart(3, "0")}`,
-        image,
-        color: palettes[index % palettes.length],
-        tone: tones[index % tones.length],
-        tags: tagSets[index % tagSets.length]
-      }));
+      const templates = portfolioImages.slice(0, Math.min(portfolioImages.length, 72)).map((image, index) => {
+        const designer = designers[index % designers.length];
+        const template = {
+          type: "template",
+          title: `テンプレート ${String(index + 1).padStart(3, "0")}`,
+          designer: designer.name,
+          image,
+          color: palettes[index % palettes.length],
+          tone: tones[index % tones.length],
+          tags: tagSets[index % tagSets.length]
+        };
+        template.id = templateIdFor(template, index);
+        return template;
+      });
 
       const params = new URLSearchParams(window.location.search);
       const requestedType = params.get("type") || "work";
