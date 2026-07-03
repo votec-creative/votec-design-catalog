@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" role="img" aria-label="PC main event template">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#120615"/>
+      <stop offset=".5" stop-color="#3b1045"/>
+      <stop offset="1" stop-color="#08070c"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" x2="1">
+      <stop offset="0" stop-color="#fff5b8"/>
+      <stop offset=".35" stop-color="#d99528"/>
+      <stop offset=".7" stop-color="#fff0a7"/>
+      <stop offset="1" stop-color="#9f5e13"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <circle cx="420" cy="220" r="260" fill="#ff2ac8" opacity=".13"/>
+  <circle cx="1510" cy="800" r="380" fill="#f4b543" opacity=".12"/>
+  <path d="M0 850 C370 730 640 910 980 790 C1260 690 1520 710 1920 610 L1920 1080 L0 1080Z" fill="#09070a" opacity=".72"/>
+  <text x="960" y="160" fill="#fff" font-family="Arial, sans-serif" font-size="72" text-anchor="middle" letter-spacing="6">00/00 - 00</text>
+  <text x="960" y="410" fill="url(#gold)" font-family="Georgia, serif" font-size="210" font-weight="700" text-anchor="middle">SPECIAL</text>
+  <text x="960" y="585" fill="#fff" font-family="Arial, sans-serif" font-size="118" font-weight="900" text-anchor="middle">EVENT</text>
+  <text x="960" y="745" fill="url(#gold)" font-family="Georgia, serif" font-size="150" font-weight="700" text-anchor="middle">0,000円</text>
+  <rect x="705" y="825" width="510" height="74" rx="37" fill="#e80aa4"/>
+  <text x="960" y="875" fill="#fff" font-family="Arial, sans-serif" font-size="40" font-weight="700" text-anchor="middle">テキスト差し替え</text>
+</svg>

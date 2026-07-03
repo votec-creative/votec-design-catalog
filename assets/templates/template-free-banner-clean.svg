@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 300" role="img" aria-label="Free banner clean shop template">
+  <defs>
+    <linearGradient id="mint" x1="0" x2="1">
+      <stop offset="0" stop-color="#e9fff8"/>
+      <stop offset="1" stop-color="#8fe7d5"/>
+    </linearGradient>
+  </defs>
+  <rect width="700" height="300" fill="url(#mint)"/>
+  <rect x="24" y="24" width="652" height="252" rx="26" fill="#fff" opacity=".58"/>
+  <circle cx="580" cy="150" r="92" fill="#1db9a3" opacity=".2"/>
+  <text x="60" y="100" fill="#0f5b55" font-family="Arial, sans-serif" font-size="34" font-weight="700">SHOP INTRODUCTION</text>
+  <text x="60" y="168" fill="#09322f" font-family="Arial, sans-serif" font-size="58" font-weight="900">お店紹介</text>
+  <text x="60" y="225" fill="#0f5b55" font-family="Arial, sans-serif" font-size="26">営業時間・特徴・PR文を差し替え</text>
+  <rect x="470" y="206" width="160" height="42" rx="21" fill="#0f9f8e"/>
+  <text x="550" y="234" fill="#fff" font-family="Arial, sans-serif" font-size="20" font-weight="700" text-anchor="middle">CHECK</text>
+</svg>

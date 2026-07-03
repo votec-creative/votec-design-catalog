@@ -1751,9 +1751,9 @@
           <div class="section-head">
             <div>
               <div class="section-title-row">
-                <h2>制作カタログ</h2>
+                <h2>制作カタログ（参考画像）</h2>
                 <span class="section-badge">ID指定可</span>
-                <span class="section-badge">デザイン寄せ可</span>
+                <span class="section-badge">参考画像として指定</span>
               </div>
             </div>
           </div>
@@ -1769,13 +1769,13 @@
                   <b>カテゴリー</b>
                   <select data-filter-category>
                     <option value="">すべて</option>
-                    <option>営業バナー</option>
-                    <option>求人バナー</option>
-                    <option>ナイトワーク</option>
-                    <option>男性求人</option>
-                    <option>ホスト</option>
-                    <option>GIF</option>
-                    <option>縦制限無し</option>
+                    <option>PCメイン画像</option>
+                    <option>スマホスライド画像</option>
+                    <option>フリーバナー</option>
+                    <option>ノーフォトパネル</option>
+                    <option>男性求人系</option>
+                    <option>プロフィール系</option>
+                    <option>姫デコ / 特殊系</option>
                   </select>
                 </div>
                 <div class="filter-block">
@@ -1808,7 +1808,7 @@
               <div class="section-title-row">
                 <h2>テンプレート</h2>
                 <span class="section-badge">ID指定可</span>
-                <span class="section-badge is-locked">デザイン変更不可</span>
+                <span class="section-badge is-locked">サイズ変更OK</span>
                 <span class="section-badge is-locked">打ち換えのみ</span>
               </div>
             </div>
@@ -1819,19 +1819,19 @@
               <div class="filter-body" data-shared-filter="templates">
               <div class="filter-block">
                 <b>ID検索</b>
-                <input type="search" data-filter-id placeholder="例: tpl_d136_260625_01.jpg">
+                <input type="search" data-filter-id placeholder="例: tpl_d136_sp_00450">
               </div>
               <div class="filter-block">
                 <b>カテゴリー</b>
                 <select data-filter-category>
                   <option value="">すべて</option>
-                  <option>営業バナー</option>
-                  <option>求人バナー</option>
-                  <option>ナイトワーク</option>
-                  <option>男性求人</option>
-                  <option>ホスト</option>
-                  <option>GIF</option>
-                  <option>縦制限無し</option>
+                  <option>PCメイン画像</option>
+                  <option>スマホスライド画像</option>
+                  <option>フリーバナー</option>
+                  <option>ノーフォトパネル</option>
+                  <option>男性求人系</option>
+                  <option>プロフィール系</option>
+                  <option>姫デコ / 特殊系</option>
                 </select>
               </div>
               <div class="filter-block">
@@ -3517,42 +3517,152 @@
         return `${designerIdFor(work.designer, index)}_${dateCodeFor(index)}_${serialCodeFor(index)}.jpg`;
       }
 
-      function templateIdFor(template, index) {
-        return `tpl_${designerIdFor(template.designer, index)}_${dateCodeFor(index)}_${serialCodeFor(index)}.jpg`;
-      }
-
-      const templateTypes = [
-        { title: "写真大きめ・文言少なめ", tags: ["人物", "写真", "バナー"] },
-        { title: "キャンペーン告知型", tags: ["イベント", "限定", "訴求強め"] },
-        { title: "高単価・落ち着き型", tags: ["高単価", "ブランド", "余白"] },
-        { title: "求人・SNS投稿型", tags: ["求人", "SNS", "読みやすい"] },
-        { title: "複数媒体 横展開型", tags: ["複数媒体", "量産", "展開"] },
-        { title: "新店オープン告知型", tags: ["新店", "エリア", "告知"] },
-        { title: "料金訴求型", tags: ["料金", "割引", "訴求強め"] },
-        { title: "季節イベント型", tags: ["季節", "イベント", "華やか"] },
-        { title: "求人LP型", tags: ["求人", "LP", "情報整理"] },
-        { title: "シンプル告知型", tags: ["シンプル", "告知", "読みやすい"] },
-        { title: "ポップ訴求型", tags: ["ポップ", "明るい", "バナー"] },
-        { title: "高級感演出型", tags: ["高級感", "黒系", "ブランド"] }
+      const templates = [
+        {
+          type: "template",
+          id: "tpl_d04_np_00100",
+          title: "ノーフォトパネル / ネオン",
+          designer: "山口瞬",
+          category: "ノーフォトパネル",
+          color: "パープル",
+          tone: "特殊 / 装飾系",
+          tags: ["ノーフォトパネル", "写真準備中", "特殊 / 装飾系", "サイズ変更", "文言打ち換えのみ"],
+          image: "assets/templates/template-np-00100.jpg"
+        },
+        {
+          type: "template",
+          id: "tpl_d44_np_00104",
+          title: "ノーフォトパネル / 花柄",
+          designer: "石橋美佳",
+          category: "ノーフォトパネル",
+          color: "ピンク",
+          tone: "清楚 / ナチュラル",
+          tags: ["ノーフォトパネル", "写真準備中", "清楚 / ナチュラル", "文言打ち換えのみ"],
+          image: "assets/templates/template-np-00104.jpg"
+        },
+        {
+          type: "template",
+          id: "tpl_d108_np_00090",
+          title: "ノーフォトパネル / ゴールド",
+          designer: "白谷祐人",
+          category: "ノーフォトパネル",
+          color: "ゴールド",
+          tone: "高級 / シック",
+          tags: ["ノーフォトパネル", "写真準備中", "高級 / シック", "文言打ち換えのみ"],
+          image: "assets/templates/template-np-00090.jpg"
+        },
+        {
+          type: "template",
+          id: "tpl_d42_pc_00142",
+          title: "PCメイン画像 / イベント",
+          designer: "松本考史",
+          category: "PCメイン画像",
+          color: "パープル",
+          tone: "ダーク / 力強め",
+          tags: ["PCメイン画像", "イベント", "高級 / シック", "サイズ変更", "文言打ち換えのみ"],
+          image: "assets/templates/template-pc-00142.jpg"
+        },
+        {
+          type: "template",
+          id: "tpl_d110_sp_00509",
+          title: "スマホスライド画像 / イベント",
+          designer: "板坂莉琴",
+          category: "スマホスライド画像",
+          color: "ゴールド",
+          tone: "セクシー / ゴージャス",
+          tags: ["スマホスライド画像", "イベント", "特典", "サイズ変更", "文言打ち換えのみ"],
+          image: "assets/templates/template-sp-00509.jpg"
+        },
+        {
+          type: "template",
+          id: "tpl_d136_sp_00450",
+          title: "スマホスライド画像 / 夜割",
+          designer: "松山桃花",
+          category: "スマホスライド画像",
+          color: "ブラック",
+          tone: "高級 / シック",
+          tags: ["スマホスライド画像", "ポイント / 特典", "営業時間 / お知らせ", "文言打ち換えのみ"],
+          image: "assets/templates/template-sp-00450.jpg"
+        },
+        {
+          type: "template",
+          id: "tpl_d64_pc_event_001",
+          title: "PCメイン画像 / 高級イベント",
+          designer: "小野寺亮周",
+          category: "PCメイン画像",
+          color: "ゴールド",
+          tone: "高級 / シック",
+          tags: ["PCメイン画像", "イベント", "高級 / シック", "文言打ち換えのみ"],
+          image: "assets/templates/template-pc-event-luxury.svg"
+        },
+        {
+          type: "template",
+          id: "tpl_d72_sp_point_001",
+          title: "スマホスライド画像 / ポイント特典",
+          designer: "大家美咲",
+          category: "スマホスライド画像",
+          color: "ピンク",
+          tone: "ポップ / かわいい",
+          tags: ["スマホスライド画像", "ポイント / 特典", "ポップ / かわいい", "文言打ち換えのみ"],
+          image: "assets/templates/template-sp-pop-benefit.svg"
+        },
+        {
+          type: "template",
+          id: "tpl_d82_fr_shop_001",
+          title: "フリーバナー / お店紹介",
+          designer: "高木弓",
+          category: "フリーバナー",
+          color: "エメラルドグリーン",
+          tone: "清楚 / ナチュラル",
+          tags: ["フリーバナー", "お店紹介", "清楚 / ナチュラル", "文言打ち換えのみ"],
+          image: "assets/templates/template-free-banner-clean.svg"
+        },
+        {
+          type: "template",
+          id: "tpl_d106_mr_recruit_001",
+          title: "男性求人系 / ダーク",
+          designer: "原勇貴",
+          category: "男性求人系",
+          color: "ブラック",
+          tone: "ダーク / 力強め",
+          tags: ["男性求人系", "男性求人", "ダーク / 力強め", "文言打ち換えのみ"],
+          image: "assets/templates/template-men-recruit-dark.svg"
+        },
+        {
+          type: "template",
+          id: "tpl_d111_pr_profile_001",
+          title: "プロフィール系 / ナチュラル",
+          designer: "山本瑞樹",
+          category: "プロフィール系",
+          color: "水色",
+          tone: "清楚 / ナチュラル",
+          tags: ["プロフィール系", "女性紹介", "清楚 / ナチュラル", "文言打ち換えのみ"],
+          image: "assets/templates/template-profile-natural.svg"
+        },
+        {
+          type: "template",
+          id: "tpl_d121_deco_special_001",
+          title: "姫デコ / 特殊系",
+          designer: "小桝由聖",
+          category: "姫デコ / 特殊系",
+          color: "ブルー",
+          tone: "特殊 / 装飾系",
+          tags: ["姫デコ / 特殊系", "特殊 / 装飾系", "女性紹介", "文言打ち換えのみ"],
+          image: "assets/templates/template-special-deco.svg"
+        }
       ];
-      const templates = portfolioImages.slice(0, Math.min(portfolioImages.length, 72)).map((image, index) => {
-        const type = templateTypes[index % templateTypes.length];
-        const preset = workPresets[index % workPresets.length];
-        const designer = designers[index % designers.length];
-        return {
-          title: type.title,
-          designer: designer.name,
-          tone: preset.tone,
-          category: preset.category,
-          tags: [...new Set([...type.tags, ...preset.tags.slice(0, 2)])],
-          image
-        };
-      });
-      templates.forEach((template, index) => {
-        template.id = templateIdFor(template, index);
-      });
+      const templateCategories = [
+        "PCメイン画像",
+        "スマホスライド画像",
+        "フリーバナー",
+        "ノーフォトパネル",
+        "男性求人系",
+        "プロフィール系",
+        "姫デコ / 特殊系"
+      ];
       const catalogItems = works.map((work, index) => ({
         ...work,
+        category: templateCategories[index % templateCategories.length],
         id: catalogIdFor(work, index),
         sourceId: work.id,
         title: `制作カタログ ${String(index + 1).padStart(3, "0")}`

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 370" role="img" aria-label="Men recruit dark template">
+  <defs>
+    <linearGradient id="dark" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#111"/>
+      <stop offset=".52" stop-color="#3f180c"/>
+      <stop offset="1" stop-color="#080808"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0" x2="1">
+      <stop offset="0" stop-color="#e5b04a"/>
+      <stop offset=".5" stop-color="#fff2a8"/>
+      <stop offset="1" stop-color="#ad661b"/>
+    </linearGradient>
+  </defs>
+  <rect width="740" height="370" fill="url(#dark)"/>
+  <path d="M20 330 C170 250 310 380 470 250 C575 165 650 190 740 138 L740 370 L20 370Z" fill="#000" opacity=".55"/>
+  <text x="370" y="84" fill="#fff" font-family="Arial, sans-serif" font-size="34" font-weight="700" text-anchor="middle">MEN'S RECRUIT</text>
+  <text x="370" y="170" fill="url(#shine)" font-family="Arial, sans-serif" font-size="74" font-weight="900" text-anchor="middle">男性求人</text>
+  <text x="370" y="240" fill="#fff" font-family="Arial, sans-serif" font-size="34" font-weight="700" text-anchor="middle">体験入店 0万円</text>
+  <rect x="220" y="280" width="300" height="48" rx="24" fill="#b90d16"/>
+  <text x="370" y="312" fill="#fff" font-family="Arial, sans-serif" font-size="24" font-weight="700" text-anchor="middle">打ち換えのみ対応</text>
+</svg>

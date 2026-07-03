@@ -1236,32 +1236,156 @@
         return `${designerIdFor(work.designer, index)}_${dateCodeFor(index)}_${serialCodeFor(index)}.jpg`;
       }
 
-      function templateIdFor(template, index) {
-        return `tpl_${designerIdFor(template.designer, index)}_${dateCodeFor(index)}_${serialCodeFor(index)}.jpg`;
-      }
-
       const catalogItems = works.map((work, index) => ({
         ...work,
+        category: [
+          "PCメイン画像",
+          "スマホスライド画像",
+          "フリーバナー",
+          "ノーフォトパネル",
+          "男性求人系",
+          "プロフィール系",
+          "姫デコ / 特殊系"
+        ][index % 7],
         id: catalogIdFor(work, index),
         sourceId: work.id,
         type: "catalog"
       }));
 
-      const templates = portfolioImages.slice(0, Math.min(portfolioImages.length, 72)).map((image, index) => {
-        const designer = designers[index % designers.length];
-        const template = {
+      const templates = [
+        {
           type: "template",
-          title: `テンプレート ${String(index + 1).padStart(3, "0")}`,
-          designer: designer.name,
-          image,
-          color: palettes[index % palettes.length],
-          tone: tones[index % tones.length],
-          tags: tagSets[index % tagSets.length]
-        };
-        template.id = templateIdFor(template, index);
-        return template;
-      });
-
+          id: "tpl_d04_np_00100",
+          title: "ノーフォトパネル / ネオン",
+          designer: "山口瞬",
+          category: "ノーフォトパネル",
+          color: "パープル",
+          tone: "特殊 / 装飾系",
+          tags: ["ノーフォトパネル", "写真準備中", "特殊 / 装飾系", "サイズ変更", "文言打ち換えのみ"],
+          image: "assets/templates/template-np-00100.jpg"
+        },
+        {
+          type: "template",
+          id: "tpl_d44_np_00104",
+          title: "ノーフォトパネル / 花柄",
+          designer: "石橋美佳",
+          category: "ノーフォトパネル",
+          color: "ピンク",
+          tone: "清楚 / ナチュラル",
+          tags: ["ノーフォトパネル", "写真準備中", "清楚 / ナチュラル", "文言打ち換えのみ"],
+          image: "assets/templates/template-np-00104.jpg"
+        },
+        {
+          type: "template",
+          id: "tpl_d108_np_00090",
+          title: "ノーフォトパネル / ゴールド",
+          designer: "白谷祐人",
+          category: "ノーフォトパネル",
+          color: "ゴールド",
+          tone: "高級 / シック",
+          tags: ["ノーフォトパネル", "写真準備中", "高級 / シック", "文言打ち換えのみ"],
+          image: "assets/templates/template-np-00090.jpg"
+        },
+        {
+          type: "template",
+          id: "tpl_d42_pc_00142",
+          title: "PCメイン画像 / イベント",
+          designer: "松本考史",
+          category: "PCメイン画像",
+          color: "パープル",
+          tone: "ダーク / 力強め",
+          tags: ["PCメイン画像", "イベント", "高級 / シック", "サイズ変更", "文言打ち換えのみ"],
+          image: "assets/templates/template-pc-00142.jpg"
+        },
+        {
+          type: "template",
+          id: "tpl_d110_sp_00509",
+          title: "スマホスライド画像 / イベント",
+          designer: "板坂莉琴",
+          category: "スマホスライド画像",
+          color: "ゴールド",
+          tone: "セクシー / ゴージャス",
+          tags: ["スマホスライド画像", "イベント", "特典", "サイズ変更", "文言打ち換えのみ"],
+          image: "assets/templates/template-sp-00509.jpg"
+        },
+        {
+          type: "template",
+          id: "tpl_d136_sp_00450",
+          title: "スマホスライド画像 / 夜割",
+          designer: "松山桃花",
+          category: "スマホスライド画像",
+          color: "ブラック",
+          tone: "高級 / シック",
+          tags: ["スマホスライド画像", "ポイント / 特典", "営業時間 / お知らせ", "文言打ち換えのみ"],
+          image: "assets/templates/template-sp-00450.jpg"
+        },
+        {
+          type: "template",
+          id: "tpl_d64_pc_event_001",
+          title: "PCメイン画像 / 高級イベント",
+          designer: "小野寺亮周",
+          category: "PCメイン画像",
+          color: "ゴールド",
+          tone: "高級 / シック",
+          tags: ["PCメイン画像", "イベント", "高級 / シック", "文言打ち換えのみ"],
+          image: "assets/templates/template-pc-event-luxury.svg"
+        },
+        {
+          type: "template",
+          id: "tpl_d72_sp_point_001",
+          title: "スマホスライド画像 / ポイント特典",
+          designer: "大家美咲",
+          category: "スマホスライド画像",
+          color: "ピンク",
+          tone: "ポップ / かわいい",
+          tags: ["スマホスライド画像", "ポイント / 特典", "ポップ / かわいい", "文言打ち換えのみ"],
+          image: "assets/templates/template-sp-pop-benefit.svg"
+        },
+        {
+          type: "template",
+          id: "tpl_d82_fr_shop_001",
+          title: "フリーバナー / お店紹介",
+          designer: "高木弓",
+          category: "フリーバナー",
+          color: "エメラルドグリーン",
+          tone: "清楚 / ナチュラル",
+          tags: ["フリーバナー", "お店紹介", "清楚 / ナチュラル", "文言打ち換えのみ"],
+          image: "assets/templates/template-free-banner-clean.svg"
+        },
+        {
+          type: "template",
+          id: "tpl_d106_mr_recruit_001",
+          title: "男性求人系 / ダーク",
+          designer: "原勇貴",
+          category: "男性求人系",
+          color: "ブラック",
+          tone: "ダーク / 力強め",
+          tags: ["男性求人系", "男性求人", "ダーク / 力強め", "文言打ち換えのみ"],
+          image: "assets/templates/template-men-recruit-dark.svg"
+        },
+        {
+          type: "template",
+          id: "tpl_d111_pr_profile_001",
+          title: "プロフィール系 / ナチュラル",
+          designer: "山本瑞樹",
+          category: "プロフィール系",
+          color: "水色",
+          tone: "清楚 / ナチュラル",
+          tags: ["プロフィール系", "女性紹介", "清楚 / ナチュラル", "文言打ち換えのみ"],
+          image: "assets/templates/template-profile-natural.svg"
+        },
+        {
+          type: "template",
+          id: "tpl_d121_deco_special_001",
+          title: "姫デコ / 特殊系",
+          designer: "小桝由聖",
+          category: "姫デコ / 特殊系",
+          color: "ブルー",
+          tone: "特殊 / 装飾系",
+          tags: ["姫デコ / 特殊系", "特殊 / 装飾系", "女性紹介", "文言打ち換えのみ"],
+          image: "assets/templates/template-special-deco.svg"
+        }
+      ];
       const params = new URLSearchParams(window.location.search);
       const requestedType = params.get("type") || "work";
       const collections = {
@@ -1320,14 +1444,14 @@
             tagTitle: "このデザイナー実績のタグ"
           },
           catalog: {
-            title: "制作カタログ詳細",
+            title: "参考画像詳細",
             eyebrow: "CATALOG DETAIL",
-            back: "制作カタログ一覧へ",
+            back: "制作カタログ（参考画像）一覧へ",
             backUrl: "index.html#catalog",
-            listLabel: "制作カタログを見る",
-            idLabel: "制作カタログID",
+            listLabel: "制作カタログ（参考画像）を見る",
+            idLabel: "参考画像ID",
             metaLabel: "CATALOG",
-            tagTitle: "この制作カタログのタグ"
+            tagTitle: "この参考画像のタグ"
           },
           template: {
             title: "テンプレート詳細",
