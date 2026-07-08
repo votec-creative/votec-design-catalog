@@ -900,6 +900,108 @@
         background: rgba(9, 18, 22, 0.66);
       }
 
+      .nomination-tray {
+        position: fixed;
+        right: 22px;
+        bottom: 22px;
+        z-index: 45;
+        width: min(360px, calc(100vw - 32px));
+        padding: 16px;
+        border: 1px solid rgba(15, 39, 46, 0.14);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow: 0 24px 70px rgba(15, 39, 46, 0.18);
+        backdrop-filter: blur(12px);
+      }
+
+      .nomination-tray[hidden] {
+        display: none;
+      }
+
+      .nomination-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 10px;
+      }
+
+      .nomination-head b {
+        font-size: 15px;
+      }
+
+      .nomination-clear {
+        border: 0;
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        font-size: 12px;
+      }
+
+      .nomination-list {
+        display: grid;
+        gap: 8px;
+        margin: 0;
+      }
+
+      .nomination-row {
+        display: grid;
+        grid-template-columns: 74px 1fr auto;
+        gap: 8px;
+        align-items: center;
+        min-height: 32px;
+        padding: 7px 8px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #f8fafb;
+        font-size: 13px;
+      }
+
+      .nomination-row dt {
+        color: var(--muted);
+        font-weight: 700;
+      }
+
+      .nomination-row dd {
+        margin: 0;
+        font-weight: 800;
+      }
+
+      .nomination-remove {
+        width: 26px;
+        height: 26px;
+        border: 1px solid #d7e0e7;
+        border-radius: 999px;
+        background: #fff;
+        cursor: pointer;
+      }
+
+      .nomination-note {
+        margin: 10px 0 12px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      .nomination-actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      .nomination-actions .primary-link {
+        width: 100%;
+        justify-content: center;
+      }
+
+      @media (max-width: 760px) {
+        .nomination-tray {
+          right: 12px;
+          left: 12px;
+          bottom: 12px;
+          width: auto;
+        }
+      }
+
       .dialog {
         width: min(880px, 100%);
         max-height: min(760px, calc(100vh - 40px));
@@ -1769,13 +1871,13 @@
                   <b>カテゴリー</b>
                   <select data-filter-category>
                     <option value="">すべて</option>
-                    <option>PCメイン画像</option>
-                    <option>スマホスライド画像</option>
-                    <option>フリーバナー</option>
-                    <option>ノーフォトパネル</option>
-                    <option>男性求人系</option>
-                    <option>プロフィール系</option>
-                    <option>姫デコ / 特殊系</option>
+                    <option>営業バナー</option>
+                    <option>求人バナー</option>
+                    <option>ナイトワーク</option>
+                    <option>男性求人</option>
+                    <option>ホスト</option>
+                    <option>GIF</option>
+                    <option>縦制限無し</option>
                   </select>
                 </div>
                 <div class="filter-block">
@@ -1825,13 +1927,13 @@
                 <b>カテゴリー</b>
                 <select data-filter-category>
                   <option value="">すべて</option>
-                  <option>PCメイン画像</option>
-                  <option>スマホスライド画像</option>
-                  <option>フリーバナー</option>
-                  <option>ノーフォトパネル</option>
-                  <option>男性求人系</option>
-                  <option>プロフィール系</option>
-                  <option>姫デコ / 特殊系</option>
+                  <option>営業バナー</option>
+                  <option>求人バナー</option>
+                  <option>ナイトワーク</option>
+                  <option>男性求人</option>
+                  <option>ホスト</option>
+                  <option>GIF</option>
+                  <option>縦制限無し</option>
                 </select>
               </div>
               <div class="filter-block">
@@ -1875,10 +1977,22 @@
           <div class="sample-grid" id="designerModalWorks"></div>
         </div>
         <div class="dialog-actions">
-          <a class="primary-link" id="designerModalSelect" href="form.html">フォームへ進む</a>
+          <button type="button" class="primary-link" id="designerModalSelect">指名候補に追加</button>
         </div>
       </div>
     </div>
+
+    <aside class="nomination-tray" id="nominationTray" hidden aria-label="指名候補">
+      <div class="nomination-head">
+        <b>指名候補</b>
+        <button type="button" class="nomination-clear" id="nominationClear">クリア</button>
+      </div>
+      <dl class="nomination-list" id="nominationList"></dl>
+      <p class="nomination-note" id="nominationNote">第二・第三希望も選ぶと、指名で進行しやすくなります。</p>
+      <div class="nomination-actions">
+        <a class="primary-link" id="nominationFormLink" href="form.html">この内容で依頼フォームへ進む</a>
+      </div>
+    </aside>
 
     <div class="modal" id="templateModal" hidden>
       <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="templateModalName">
@@ -3523,7 +3637,7 @@
           id: "tpl_d04_np_00100",
           title: "ノーフォトパネル / ネオン",
           designer: "山口瞬",
-          category: "ノーフォトパネル",
+          category: "ナイトワーク",
           color: "パープル",
           tone: "特殊 / 装飾系",
           tags: ["ノーフォトパネル", "写真準備中", "特殊 / 装飾系", "サイズ変更", "文言打ち換えのみ"],
@@ -3534,7 +3648,7 @@
           id: "tpl_d44_np_00104",
           title: "ノーフォトパネル / 花柄",
           designer: "石橋美佳",
-          category: "ノーフォトパネル",
+          category: "ナイトワーク",
           color: "ピンク",
           tone: "清楚 / ナチュラル",
           tags: ["ノーフォトパネル", "写真準備中", "清楚 / ナチュラル", "文言打ち換えのみ"],
@@ -3545,7 +3659,7 @@
           id: "tpl_d108_np_00090",
           title: "ノーフォトパネル / ゴールド",
           designer: "白谷祐人",
-          category: "ノーフォトパネル",
+          category: "ナイトワーク",
           color: "ゴールド",
           tone: "高級 / シック",
           tags: ["ノーフォトパネル", "写真準備中", "高級 / シック", "文言打ち換えのみ"],
@@ -3556,7 +3670,7 @@
           id: "tpl_d42_pc_00142",
           title: "PCメイン画像 / イベント",
           designer: "松本考史",
-          category: "PCメイン画像",
+          category: "営業バナー",
           color: "パープル",
           tone: "ダーク / 力強め",
           tags: ["PCメイン画像", "イベント", "高級 / シック", "サイズ変更", "文言打ち換えのみ"],
@@ -3567,7 +3681,7 @@
           id: "tpl_d110_sp_00509",
           title: "スマホスライド画像 / イベント",
           designer: "板坂莉琴",
-          category: "スマホスライド画像",
+          category: "営業バナー",
           color: "ゴールド",
           tone: "セクシー / ゴージャス",
           tags: ["スマホスライド画像", "イベント", "特典", "サイズ変更", "文言打ち換えのみ"],
@@ -3578,7 +3692,7 @@
           id: "tpl_d136_sp_00450",
           title: "スマホスライド画像 / 夜割",
           designer: "松山桃花",
-          category: "スマホスライド画像",
+          category: "営業バナー",
           color: "ブラック",
           tone: "高級 / シック",
           tags: ["スマホスライド画像", "ポイント / 特典", "営業時間 / お知らせ", "文言打ち換えのみ"],
@@ -3589,7 +3703,7 @@
           id: "tpl_d64_pc_event_001",
           title: "PCメイン画像 / 高級イベント",
           designer: "小野寺亮周",
-          category: "PCメイン画像",
+          category: "営業バナー",
           color: "ゴールド",
           tone: "高級 / シック",
           tags: ["PCメイン画像", "イベント", "高級 / シック", "文言打ち換えのみ"],
@@ -3600,7 +3714,7 @@
           id: "tpl_d72_sp_point_001",
           title: "スマホスライド画像 / ポイント特典",
           designer: "大家美咲",
-          category: "スマホスライド画像",
+          category: "営業バナー",
           color: "ピンク",
           tone: "ポップ / かわいい",
           tags: ["スマホスライド画像", "ポイント / 特典", "ポップ / かわいい", "文言打ち換えのみ"],
@@ -3611,7 +3725,7 @@
           id: "tpl_d82_fr_shop_001",
           title: "フリーバナー / お店紹介",
           designer: "高木弓",
-          category: "フリーバナー",
+          category: "営業バナー",
           color: "エメラルドグリーン",
           tone: "清楚 / ナチュラル",
           tags: ["フリーバナー", "お店紹介", "清楚 / ナチュラル", "文言打ち換えのみ"],
@@ -3622,7 +3736,7 @@
           id: "tpl_d106_mr_recruit_001",
           title: "男性求人系 / ダーク",
           designer: "原勇貴",
-          category: "男性求人系",
+          category: "男性求人",
           color: "ブラック",
           tone: "ダーク / 力強め",
           tags: ["男性求人系", "男性求人", "ダーク / 力強め", "文言打ち換えのみ"],
@@ -3633,7 +3747,7 @@
           id: "tpl_d111_pr_profile_001",
           title: "プロフィール系 / ナチュラル",
           designer: "山本瑞樹",
-          category: "プロフィール系",
+          category: "求人バナー",
           color: "水色",
           tone: "清楚 / ナチュラル",
           tags: ["プロフィール系", "女性紹介", "清楚 / ナチュラル", "文言打ち換えのみ"],
@@ -3644,7 +3758,7 @@
           id: "tpl_d121_deco_special_001",
           title: "姫デコ / 特殊系",
           designer: "小桝由聖",
-          category: "姫デコ / 特殊系",
+          category: "ナイトワーク",
           color: "ブルー",
           tone: "特殊 / 装飾系",
           tags: ["姫デコ / 特殊系", "特殊 / 装飾系", "女性紹介", "文言打ち換えのみ"],
@@ -3652,13 +3766,13 @@
         }
       ];
       const templateCategories = [
-        "PCメイン画像",
-        "スマホスライド画像",
-        "フリーバナー",
-        "ノーフォトパネル",
-        "男性求人系",
-        "プロフィール系",
-        "姫デコ / 特殊系"
+        "営業バナー",
+        "求人バナー",
+        "ナイトワーク",
+        "男性求人",
+        "ホスト",
+        "GIF",
+        "縦制限無し"
       ];
       const catalogItems = works.map((work, index) => ({
         ...work,
@@ -3780,6 +3894,75 @@
           if (value) url.searchParams.set(key, value);
         });
         return url.pathname.split("/").pop() + url.search;
+      }
+
+      const NOMINATION_STORAGE_KEY = "votecDesignerNominations";
+      const nominationState = [];
+      let activeModalDesigner = "";
+
+      try {
+        const savedNominations = JSON.parse(localStorage.getItem(NOMINATION_STORAGE_KEY) || "[]");
+        if (Array.isArray(savedNominations)) nominationState.push(...savedNominations.filter(Boolean).slice(0, 3));
+      } catch (error) {
+        nominationState.length = 0;
+      }
+
+      function saveNominations() {
+        localStorage.setItem(NOMINATION_STORAGE_KEY, JSON.stringify(nominationState.slice(0, 3)));
+      }
+
+      function nominationFormUrl() {
+        const url = new URL("form.html", window.location.href);
+        nominationState.forEach((name, index) => {
+          url.searchParams.set(`designer${index + 1}`, name);
+        });
+        if (nominationState[0]) url.searchParams.set("designer", nominationState[0]);
+        return url.pathname.split("/").pop() + url.search;
+      }
+
+      function renderNominationTray() {
+        const tray = document.querySelector("#nominationTray");
+        const list = document.querySelector("#nominationList");
+        const note = document.querySelector("#nominationNote");
+        const link = document.querySelector("#nominationFormLink");
+        tray.hidden = nominationState.length === 0;
+        list.innerHTML = ["第一希望", "第二希望", "第三希望"].map((label, index) => {
+          const name = nominationState[index] || "未選択";
+          const remove = nominationState[index]
+            ? `<button type="button" class="nomination-remove" data-remove-nomination="${index}" aria-label="${escapeHtml(label)}を削除">×</button>`
+            : "";
+          return `
+            <div class="nomination-row">
+              <dt>${label}</dt>
+              <dd>${escapeHtml(name)}</dd>
+              ${remove}
+            </div>
+          `;
+        }).join("");
+        note.textContent = nominationState.length === 1
+          ? "第一希望のみでも依頼できますが、状況により指名なしで進行する場合があります。"
+          : "この指名内容をフォームへ反映します。";
+        link.href = nominationFormUrl();
+      }
+
+      function addNomination(name) {
+        if (!name || nominationState.includes(name)) return;
+        if (nominationState.length >= 3) nominationState.shift();
+        nominationState.push(name);
+        saveNominations();
+        renderNominationTray();
+      }
+
+      function removeNomination(index) {
+        nominationState.splice(index, 1);
+        saveNominations();
+        renderNominationTray();
+      }
+
+      function clearNominations() {
+        nominationState.length = 0;
+        saveNominations();
+        renderNominationTray();
       }
 
       function thumb(tone) {
@@ -4050,11 +4233,11 @@
       function openDesigner(name) {
         const designer = designers.find((item) => item.name === name);
         if (!designer) return;
+        activeModalDesigner = designer.name;
         document.querySelector("#designerModalInitials").textContent = designer.initials;
         document.querySelector("#designerModalName").textContent = designer.name;
         document.querySelector("#designerModalSummary").textContent = designer.summary;
         document.querySelector("#designerModalTags").innerHTML = tagHtml([designer.region, ...designer.tags]);
-        document.querySelector("#designerModalSelect").href = formUrl({ designer: designer.name });
         const designerWorks = works.filter((work) => work.designer === designer.name);
         const samples = designerWorks.length ? designerWorks : works.filter((work) => work.tone === designer.tone).slice(0, 3);
         document.querySelector("#designerModalWorks").innerHTML = samples.map((work) => `
@@ -4181,6 +4364,15 @@
         if (designerButton) showDesignerWorks(designerButton.dataset.designer);
         const copyTemplate = event.target.closest("#templateModalCopy");
         if (copyTemplate) copyText(copyTemplate.dataset.copy || "");
+        const addDesigner = event.target.closest("#designerModalSelect");
+        if (addDesigner) {
+          addNomination(activeModalDesigner);
+          designerModal.hidden = true;
+        }
+        const removeDesigner = event.target.closest("[data-remove-nomination]");
+        if (removeDesigner) removeNomination(Number(removeDesigner.dataset.removeNomination));
+        const clearNominationButton = event.target.closest("#nominationClear");
+        if (clearNominationButton) clearNominations();
       });
 
       document.addEventListener("keydown", (event) => {
@@ -4255,6 +4447,7 @@
       renderCatalog();
       renderTemplates();
       applyInitialState();
+      renderNominationTray();
     </script>
   </body>
 </html>

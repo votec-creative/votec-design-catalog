@@ -2911,11 +2911,22 @@
       function applyCatalogParams() {
         const params = new URLSearchParams(window.location.search);
         const selectedDesigner = params.get("designer") || "";
+        const selectedDesigners = [
+          params.get("designer1") || selectedDesigner,
+          params.get("designer2") || "",
+          params.get("designer3") || ""
+        ].filter(Boolean);
         const selectedWork = params.get("work") || "";
         const reflected = [];
         if (selectedDesigner) {
           setDesignerSelection("catalog", selectedDesigner);
           reflected.push(`第一希望に「${selectedDesigner}」を反映しました`);
+        }
+        if (selectedDesigners.length) {
+          setDesignerSelection("catalog", selectedDesigners[0]);
+          designerFirstChoice.value = selectedDesigners[0] || "";
+          designerSecondChoice.value = selectedDesigners[1] || "";
+          designerThirdChoice.value = selectedDesigners[2] || "";
         }
         if (selectedWork) {
           applyReferenceWorkToFirstImage(selectedWork);
