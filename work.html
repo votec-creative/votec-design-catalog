@@ -470,15 +470,15 @@
 
       .nomination-tray {
         position: fixed;
-        right: 22px;
-        bottom: 22px;
+        right: 18px;
+        bottom: 18px;
         z-index: 45;
-        width: min(360px, calc(100vw - 32px));
-        padding: 16px;
+        width: min(300px, calc(100vw - 28px));
+        padding: 12px;
         border: 1px solid rgba(15, 39, 46, 0.14);
-        border-radius: 14px;
+        border-radius: 12px;
         background: rgba(255, 255, 255, 0.96);
-        box-shadow: 0 24px 70px rgba(15, 39, 46, 0.18);
+        box-shadow: 0 18px 48px rgba(15, 39, 46, 0.16);
         backdrop-filter: blur(12px);
       }
 
@@ -490,12 +490,12 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 12px;
-        margin-bottom: 10px;
+        gap: 8px;
+        margin-bottom: 8px;
       }
 
       .nomination-head b {
-        font-size: 15px;
+        font-size: 13px;
       }
 
       .nomination-clear {
@@ -503,30 +503,31 @@
         background: transparent;
         color: var(--muted);
         cursor: pointer;
-        font-size: 12px;
+        font-size: 11px;
       }
 
       .nomination-list {
         display: grid;
-        gap: 8px;
+        gap: 6px;
         margin: 0;
       }
 
       .nomination-row {
         display: grid;
-        grid-template-columns: 74px 1fr auto;
-        gap: 8px;
+        grid-template-columns: 64px 1fr auto;
+        gap: 6px;
         align-items: center;
-        min-height: 32px;
-        padding: 7px 8px;
+        min-height: 30px;
+        padding: 6px 7px;
         border: 1px solid var(--line);
-        border-radius: 8px;
+        border-radius: 7px;
         background: #f8fafb;
-        font-size: 13px;
+        font-size: 12px;
       }
 
       .nomination-row dt {
         color: var(--muted);
+        font-size: 11px;
         font-weight: 700;
       }
 
@@ -536,8 +537,8 @@
       }
 
       .nomination-remove {
-        width: 26px;
-        height: 26px;
+        width: 22px;
+        height: 22px;
         border: 1px solid #d7e0e7;
         border-radius: 999px;
         background: #fff;
@@ -545,14 +546,18 @@
       }
 
       .nomination-note {
-        margin: 10px 0 12px;
+        margin: 8px 0 10px;
         color: var(--muted);
-        font-size: 12px;
+        font-size: 11px;
         line-height: 1.6;
       }
 
       .nomination-actions .ghost-link {
         width: 100%;
+        min-height: 38px;
+        padding: 0 12px;
+        font-size: 12px;
+        justify-content: center;
       }
 
       .similar-section {
@@ -709,10 +714,15 @@
         }
 
         .nomination-tray {
-          right: 12px;
-          left: 12px;
-          bottom: 12px;
+          right: 10px;
+          left: 10px;
+          bottom: 10px;
           width: auto;
+          padding: 10px;
+        }
+
+        .nomination-note {
+          margin-bottom: 8px;
         }
 
         .image-lightbox {
@@ -1365,8 +1375,8 @@
           designer: "山口瞬",
           category: "ナイトワーク",
           color: "パープル",
-          tone: "特殊 / 装飾系",
-          tags: ["ノーフォトパネル", "写真準備中", "特殊 / 装飾系", "サイズ変更", "文言打ち換えのみ"],
+          tone: "ネオン",
+          tags: ["ナイトワーク", "パープル", "ネオン"],
           image: "assets/templates/template-np-00100.jpg"
         },
         {
@@ -1376,8 +1386,8 @@
           designer: "石橋美佳",
           category: "ナイトワーク",
           color: "ピンク",
-          tone: "清楚 / ナチュラル",
-          tags: ["ノーフォトパネル", "写真準備中", "清楚 / ナチュラル", "文言打ち換えのみ"],
+          tone: "清楚",
+          tags: ["ナイトワーク", "ピンク", "清楚"],
           image: "assets/templates/template-np-00104.jpg"
         },
         {
@@ -1387,8 +1397,8 @@
           designer: "白谷祐人",
           category: "ナイトワーク",
           color: "ゴールド",
-          tone: "高級 / シック",
-          tags: ["ノーフォトパネル", "写真準備中", "高級 / シック", "文言打ち換えのみ"],
+          tone: "高級",
+          tags: ["ナイトワーク", "ゴールド", "高級"],
           image: "assets/templates/template-np-00090.jpg"
         },
         {
@@ -1398,8 +1408,8 @@
           designer: "松本考史",
           category: "営業バナー",
           color: "パープル",
-          tone: "ダーク / 力強め",
-          tags: ["PCメイン画像", "イベント", "高級 / シック", "サイズ変更", "文言打ち換えのみ"],
+          tone: "クール",
+          tags: ["営業バナー", "パープル", "クール"],
           image: "assets/templates/template-pc-00142.jpg"
         },
         {
@@ -1409,8 +1419,8 @@
           designer: "板坂莉琴",
           category: "営業バナー",
           color: "ゴールド",
-          tone: "セクシー / ゴージャス",
-          tags: ["スマホスライド画像", "イベント", "特典", "サイズ変更", "文言打ち換えのみ"],
+          tone: "ゴージャス",
+          tags: ["営業バナー", "ゴールド", "ゴージャス"],
           image: "assets/templates/template-sp-00509.jpg"
         },
         {
@@ -1420,8 +1430,8 @@
           designer: "松山桃花",
           category: "営業バナー",
           color: "ブラック",
-          tone: "高級 / シック",
-          tags: ["スマホスライド画像", "ポイント / 特典", "営業時間 / お知らせ", "文言打ち換えのみ"],
+          tone: "高級",
+          tags: ["営業バナー", "ブラック", "高級"],
           image: "assets/templates/template-sp-00450.jpg"
         },
         {
@@ -1431,8 +1441,8 @@
           designer: "小野寺亮周",
           category: "営業バナー",
           color: "ゴールド",
-          tone: "高級 / シック",
-          tags: ["PCメイン画像", "イベント", "高級 / シック", "文言打ち換えのみ"],
+          tone: "高級",
+          tags: ["営業バナー", "ゴールド", "高級"],
           image: "assets/templates/template-pc-event-luxury.svg"
         },
         {
@@ -1442,8 +1452,8 @@
           designer: "大家美咲",
           category: "営業バナー",
           color: "ピンク",
-          tone: "ポップ / かわいい",
-          tags: ["スマホスライド画像", "ポイント / 特典", "ポップ / かわいい", "文言打ち換えのみ"],
+          tone: "ポップ",
+          tags: ["営業バナー", "ピンク", "ポップ"],
           image: "assets/templates/template-sp-pop-benefit.svg"
         },
         {
@@ -1452,9 +1462,9 @@
           title: "フリーバナー / お店紹介",
           designer: "高木弓",
           category: "営業バナー",
-          color: "エメラルドグリーン",
-          tone: "清楚 / ナチュラル",
-          tags: ["フリーバナー", "お店紹介", "清楚 / ナチュラル", "文言打ち換えのみ"],
+          color: "グリーン",
+          tone: "清楚",
+          tags: ["営業バナー", "グリーン", "清楚"],
           image: "assets/templates/template-free-banner-clean.svg"
         },
         {
@@ -1464,8 +1474,8 @@
           designer: "原勇貴",
           category: "男性求人",
           color: "ブラック",
-          tone: "ダーク / 力強め",
-          tags: ["男性求人系", "男性求人", "ダーク / 力強め", "文言打ち換えのみ"],
+          tone: "クール",
+          tags: ["男性求人", "ブラック", "クール"],
           image: "assets/templates/template-men-recruit-dark.svg"
         },
         {
@@ -1474,9 +1484,9 @@
           title: "プロフィール系 / ナチュラル",
           designer: "山本瑞樹",
           category: "求人バナー",
-          color: "水色",
-          tone: "清楚 / ナチュラル",
-          tags: ["プロフィール系", "女性紹介", "清楚 / ナチュラル", "文言打ち換えのみ"],
+          color: "ブルー",
+          tone: "清楚",
+          tags: ["求人バナー", "ブルー", "清楚"],
           image: "assets/templates/template-profile-natural.svg"
         },
         {
@@ -1486,8 +1496,8 @@
           designer: "小桝由聖",
           category: "ナイトワーク",
           color: "ブルー",
-          tone: "特殊 / 装飾系",
-          tags: ["姫デコ / 特殊系", "特殊 / 装飾系", "女性紹介", "文言打ち換えのみ"],
+          tone: "ゴージャス",
+          tags: ["ナイトワーク", "ブルー", "ゴージャス"],
           image: "assets/templates/template-special-deco.svg"
         }
       ];
@@ -1634,7 +1644,7 @@
             listLabel: "テンプレートを見る",
             idLabel: "テンプレートID",
             metaLabel: "TEMPLATE",
-            tagTitle: "このテンプレートのタグ"
+            tagTitle: "テンプレート分類"
           }
         };
         const label = labels[current.type] || labels.work;
