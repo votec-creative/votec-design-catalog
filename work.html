@@ -1351,17 +1351,53 @@
         return `${designerIdFor(work.designer, index)}_${dateCodeFor(index)}_${serialCodeFor(index)}.jpg`;
       }
 
+      const catalogCategories = [
+        "営業バナー",
+        "求人バナー",
+        "ナイトワーク",
+        "男性求人",
+        "ホスト",
+        "GIF",
+        "縦制限無し"
+      ];
+      const catalogColors = [
+        "ゴールド",
+        "シルバー",
+        "ホワイト",
+        "ブラック",
+        "グレー",
+        "レッド",
+        "オレンジ",
+        "イエロー",
+        "グリーン",
+        "ブルー",
+        "パープル",
+        "ピンク",
+        "ブラウン・ベージュ",
+        "マルチカラー"
+      ];
+      const catalogTones = [
+        "高級",
+        "ゴージャス",
+        "かわいい",
+        "きれい",
+        "清楚",
+        "クール",
+        "ネオン",
+        "ポップ",
+        "シンプル",
+        "和風"
+      ];
       const catalogItems = works.map((work, index) => ({
         ...work,
-        category: [
-          "営業バナー",
-          "求人バナー",
-          "ナイトワーク",
-          "男性求人",
-          "ホスト",
-          "GIF",
-          "縦制限無し"
-        ][index % 7],
+        category: catalogCategories[index % catalogCategories.length],
+        color: catalogColors[index % catalogColors.length],
+        tone: catalogTones[index % catalogTones.length],
+        tags: [
+          catalogCategories[index % catalogCategories.length],
+          catalogColors[index % catalogColors.length],
+          catalogTones[index % catalogTones.length]
+        ],
         id: catalogIdFor(work, index),
         sourceId: work.id,
         type: "catalog"
@@ -1634,7 +1670,7 @@
             listLabel: "制作カタログ（参考画像）を見る",
             idLabel: "参考画像ID",
             metaLabel: "CATALOG",
-            tagTitle: "この参考画像のタグ"
+            tagTitle: "参考画像分類"
           },
           template: {
             title: "テンプレート詳細",

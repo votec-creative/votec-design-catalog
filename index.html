@@ -1821,7 +1821,7 @@
           </div>
         </section>
         <div class="toolbar" aria-label="カタログ操作">
-          <input class="search" id="catalogSearch" type="search" placeholder="デザイナー名・色味・雰囲気・カタログID・テンプレートIDで検索">
+          <input class="search" id="catalogSearch" type="search" placeholder="デザイナー名・カラー・テイスト・カタログID・テンプレートIDで検索">
         </div>
         <section class="section active" data-section="works">
           <div class="section-head">
@@ -1877,7 +1877,7 @@
                   <input type="search" data-filter-id placeholder="例: d136_260625_01.jpg">
                 </div>
                 <div class="filter-block">
-                  <b>カテゴリー</b>
+                  <b>カテゴリ</b>
                   <select data-filter-category>
                     <option value="">すべて</option>
                     <option>営業バナー</option>
@@ -1890,16 +1890,12 @@
                   </select>
                 </div>
                 <div class="filter-block">
-                  <b>色</b>
+                  <b>カラー</b>
                   <div class="filter-checks" data-filter-colors></div>
                 </div>
                 <div class="filter-block">
-                  <b>雰囲気</b>
+                  <b>テイスト</b>
                   <div class="filter-checks" data-filter-tones></div>
-                </div>
-                <div class="filter-block">
-                  <b>季節・イベント</b>
-                  <div class="filter-checks" data-filter-seasons></div>
                 </div>
                 <div class="filter-block">
                   <div class="filter-actions">
@@ -3787,9 +3783,44 @@
         "GIF",
         "縦制限無し"
       ];
+      const catalogColors = [
+        "ゴールド",
+        "シルバー",
+        "ホワイト",
+        "ブラック",
+        "グレー",
+        "レッド",
+        "オレンジ",
+        "イエロー",
+        "グリーン",
+        "ブルー",
+        "パープル",
+        "ピンク",
+        "ブラウン・ベージュ",
+        "マルチカラー"
+      ];
+      const catalogTones = [
+        "高級",
+        "ゴージャス",
+        "かわいい",
+        "きれい",
+        "清楚",
+        "クール",
+        "ネオン",
+        "ポップ",
+        "シンプル",
+        "和風"
+      ];
       const catalogItems = works.map((work, index) => ({
         ...work,
         category: templateCategories[index % templateCategories.length],
+        color: catalogColors[index % catalogColors.length],
+        tone: catalogTones[index % catalogTones.length],
+        tags: [
+          templateCategories[index % templateCategories.length],
+          catalogColors[index % catalogColors.length],
+          catalogTones[index % catalogTones.length]
+        ],
         id: catalogIdFor(work, index),
         sourceId: work.id,
         title: `制作カタログ ${String(index + 1).padStart(3, "0")}`
